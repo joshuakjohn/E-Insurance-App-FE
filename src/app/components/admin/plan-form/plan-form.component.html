@@ -1,0 +1,26 @@
+<body>
+    <div class="plan-form-container">
+        <h2>Create a Plan</h2>
+        <form [formGroup]="planForm">
+            <div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Plan Name</mat-label>
+                    <input matInput formControlName="planName">
+                    <mat-error *ngIf="planFormControls['planName']?.errors?.['required']">Plan Name is required</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput formControlName="description"></textarea>
+                    <mat-error *ngIf="planFormControls['description']?.errors?.['required']">Description is required</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Category</mat-label>
+                    <input matInput formControlName="category">
+                    <mat-error *ngIf="planFormControls['category']?.errors?.['required']">Category is required</mat-error>
+                </mat-form-field>
+            </div>
+            <br>
+            <button mat-raised-button color="primary">Create Plan</button>
+        </form>
+    </div>    
+</body>
