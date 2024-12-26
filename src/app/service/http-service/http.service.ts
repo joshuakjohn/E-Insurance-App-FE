@@ -11,4 +11,10 @@ export class HttpService {
   getAllPlan(endpoint: string): Observable<any> {
     return this.http.get('http://localhost:4000'+endpoint);
 }
+getAllScheme(endpoint:string):Observable<any>{
+  return this.http.get('http://localhost:4000'+endpoint)
+}
+getPlanById(endpoint:string):Observable<any>{
+  return this.http.get('http://localhost:4000'+endpoint)
+}
 }
