@@ -2,33 +2,28 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #121212; 
+    color: white; 
 
-    .plan-form-container {
-        border: 1px solid;
+    .dark-theme .add-plan-box{
+        background-color: #1e1e1e;
+        padding: 20px;
         border-radius: 8px;
-        width: 320px;
-        padding: 40px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
-        h2 {
-            text-align: center;
-            margin-bottom: 40px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
+
+        span {
+            font-size: 24px;
         }
-    
-        form {
-            display: flex;
-            flex-direction: column;
-    
-            mat-form-field {
-            width: 100%;
-            margin-bottom: 10px;
-            }
-    
-            button {
-                align-self: flex-start;
-            }
+
+        &:hover {
+            background-color: #292929;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
         }
-    }    
-}
+    }
+  }
+  
+
+  
 
 

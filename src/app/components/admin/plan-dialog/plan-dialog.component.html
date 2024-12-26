@@ -1,0 +1,30 @@
+<body>
+    <div class="plan-form-container">
+        <h2>Create New Plan</h2>
+        <form [formGroup]="planForm">
+            <div>
+                <div class="form-group">
+                    <label for="planName">Plan Name*</label>
+                    <input id="planName" type="text" formControlName="planName" class="form-control">
+                    <span class="error" *ngIf="isFormSubmitted && planFormControls['planName']?.errors?.['required']">
+                        Plan Name is required
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description (Optional)</label>
+                    <textarea id="description" formControlName="description" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category*</label>
+                    <input id="category" type="text" formControlName="category" class="form-control">
+                    <span class="error" *ngIf="isFormSubmitted && planFormControls['category']?.errors?.['required']">
+                        Category is required
+                    </span>
+                </div>
+            </div>
+            <br>
+            <button type="button" (click)="onClose()">Cancel</button>
+            <button type="button" class="primary" (click)="handleSubmit()">Create Plan</button>
+        </form>
+    </div>    
+</body>

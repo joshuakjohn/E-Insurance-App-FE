@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http'; 
 import  {MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { PlanFormComponent } from './components/admin/plan-form/plan-form.component';
 import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.component';
+import { PlanDialogComponent } from './components/admin/plan-dialog/plan-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.
     AdminComponent,
     PlanFormComponent,
     SchemeFormComponent,
+    PlanDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,8 @@ import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.
     ReactiveFormsModule,
     MatInputModule,
     HttpClientModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
