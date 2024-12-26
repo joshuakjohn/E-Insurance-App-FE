@@ -11,7 +11,8 @@ export class SchemeComponent implements OnInit {
   schemes: any[] = [];
   planId: string | null = null;
   planDetails: any = {}; 
-  // Pass the plan category
+  isOverlayVisible: boolean = false;
+  selectedScheme: any = {};
 
   constructor(
     private httpService: HttpService,
@@ -81,5 +82,14 @@ export class SchemeComponent implements OnInit {
       default:
         return 'assets/images/default-scheme.jpg';
     }
+  }
+  openDetailOverlay(scheme: any): void {
+    this.selectedScheme = scheme;
+    this.isOverlayVisible = true;
+  }
+
+  // Close the overlay
+  closeOverlay(): void {
+    this.isOverlayVisible = false;
   }
 }

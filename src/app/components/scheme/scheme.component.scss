@@ -1,15 +1,18 @@
+/* Scheme card layout */
 .scheme-card {
     display: flex; /* Use flexbox to align the card horizontally */
-    background-color: #333; /* Dark background */
+    background-color: #1f1f1f; /* Dark background */
     color: #fff; /* White text color */
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7); /* Darker shadow */
     padding: 20px;
     max-width: 1400px; /* Increase max-width for a horizontal layout */
     margin: 20px auto;
     font-family: 'Arial', sans-serif;
+    
   }
   
+  /* Image section */
   .scheme-image {
     flex: 1; /* Allow the image to take up equal space */
     padding-right: 20px;
@@ -24,6 +27,7 @@
     border-radius: 8px;
   }
   
+  /* Scheme details section */
   .scheme-details {
     flex: 2; /* Allow the details to take more space than the image */
     display: flex;
@@ -33,16 +37,17 @@
   
   .scheme-details h2 {
     font-size: 1.8rem;
-    color: #ffcc00; /* Accent color */
+    color: #ffcc00; /* Accent color - yellow */
     margin-bottom: 10px;
   }
   
   .scheme-details p {
     font-size: 1rem;
-    color: #ddd; /* Light gray text for description */
+    color: #ccc; /* Light gray text for description */
     margin-bottom: 10px;
   }
   
+  /* View Details Button */
   .view-details {
     background-color: #ffcc00; /* Accent button color */
     color: #333;
@@ -53,9 +58,170 @@
     border-radius: 4px;
     transition: background-color 0.3s ease;
     margin-top: 15px;
+    width: 208px;
   }
   
   .view-details:hover {
     background-color: #ff9900; /* Darker orange when hovered */
+  }
+//  /* Overlay Styling */
+// .overlay {
+//     position: fixed; /* Fixed position on screen */
+//     top: 50%; /* Center vertically */
+//     left: 50%; /* Center horizontally */
+//     transform: translate(-50%, -50%); /* Centering offset */
+//     width: 600px; /* Fixed width for the overlay */
+//     height: 90%; /* Fixed height for the overlay */
+//     background-color: #333; /* Solid dark background */
+//     display: flex;
+//     flex-direction: column; /* Column layout for image and content */
+//     z-index: 1000; /* Overlay on top of other content */
+//     border-radius: 8px; /* Rounded corners */
+//     overflow: hidden; /* Hide the scrollbar on the overlay itself */
+//     justify-content: center;
+//   }
+  
+//   /* Scrollable Content */
+//   .overlay-content {
+//     display: flex;
+//     flex-direction: column;
+//     overflow-y: auto; /* Allow scrolling for the entire content */
+//     height: 100%; /* Fill the overlay with content */
+//     overflow-x: hidden;
+//   }
+  
+//   /* Image Section */
+//   .overlay-content .scheme-image {
+//     width: 100%;
+//     height: 300px; /* Fixed height for the image */
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     margin-bottom: 10px; /* Spacing between image and text */
+//     overflow: hidden; /* Hide any overflow for the image */
+//   }
+  
+//   .overlay-content .scheme-image img {
+//     width: 65%; /* Image takes up full width */
+//     height: 100%; /* Image takes up full height */
+//     object-fit: cover; /* Ensure image doesn't stretch */
+//     border-radius: 8px;
+//     padding-top:30px ;/* Rounded corners for the image */
+//   }
+  
+//   /* Content Section */
+//   .overlay-content .scheme-details {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: flex-start;
+//     padding: 10px;
+//   }
+  
+//   .overlay-content h2 {
+//     font-size: 1.6rem; /* Title size */
+//     color: #ffcc00; /* Accent color */
+//     margin-bottom: 10px;
+//     display: flex;
+//     justify-content: center;
+//   }
+  
+//   .overlay-content p {
+//     font-size: 1rem; /* Paragraph size */
+//     color: #ddd; /* Light gray color */
+//     margin-bottom: 8px;
+//     display: flex;
+//     justify-content: center;
+//   }
+  
+//   .overlay-content button {
+//     background-color: #ffcc00;
+//     color: #333;
+//     border: none;
+//     padding: 10px 20px;
+//     font-size: 1rem;
+//     cursor: pointer;
+//     border-radius: 4px;
+//     transition: background-color 0.3s ease;
+//     margin-top: 10px;
+//   }
+  
+//   .overlay-content button:hover {
+//     background-color: #ff9900;
+//   }
+  
+/* Unique Overlay Styling */
+.unique-overlay {
+    position: fixed; /* Ensure the overlay is fixed to the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9); /* Dark background with slight transparency */
+    display: flex;
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    z-index: 1000; /* Ensure it appears above other content */
+    overflow: hidden; /* Prevent scrollbars on the overlay itself */
+  }
+  
+  /* Content inside the overlay */
+  .overlay-content {
+    display: flex;
+    flex-direction: column; /* Arrange content in a column */
+    width: 80%; /* Set a maximum width for the content */
+    max-height: 90%; /* Limit the height */
+    background: #222; /* Dark background for the overlay content */
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    overflow: auto; /* Enable scrolling for the content */
+    padding: 20px;
+  }
+  
+  /* Image Section */
+  .overlay-image {
+    flex: none; /* Prevent the image from growing/shrinking */
+    margin-bottom: 20px; /* Space between image and details */
+  }
+  
+  .overlay-image img {
+    width: 100%; /* Make the image responsive */
+    max-height: 300px; /* Limit image height */
+    object-fit: cover; /* Maintain aspect ratio */
+    border-radius: 8px;
+  }
+  
+  /* Details Section */
+  .overlay-details {
+    flex: 1; /* Allow the details section to grow */
+    color: #fff; /* Light text color */
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .overlay-details h2 {
+    font-size: 1.8rem; /* Large title font size */
+    margin-bottom: 10px;
+    color: #ffcc00; /* Highlight color for the title */
+  }
+  
+  .overlay-details p {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: #ddd; /* Subtle gray text for details */
+  }
+  
+  .overlay-details .close-btn {
+    background-color: #ffcc00; /* Accent button color */
+    color: #222;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    align-self: flex-start; /* Align close button to the left */
+  }
+  
+  .overlay-details .close-btn:hover {
+    background-color: #ff9900; /* Slightly darker shade on hover */
   }
   

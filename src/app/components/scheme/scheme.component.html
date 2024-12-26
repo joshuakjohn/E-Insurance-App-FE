@@ -9,7 +9,33 @@
       <p>Premium: ₹{{ scheme.premium }}</p>
       <p>Maturity Period: {{ scheme.maturityPeriod }} months</p>
       <p>Coverage: ₹{{ scheme.coverage }}</p>
-      <button class="view-details">View Details</button>
+      <!-- View Details Button -->
+      <button class="view-details" (click)="openDetailOverlay(scheme)">View Details</button>
+    </div>
+  </div>
+ <!-- Overlay - Hidden by default -->
+<div class="overlay" *ngIf="isOverlayVisible">
+    <div class="overlay-content">
+      <!-- Image Section -->
+      <div class="scheme-image">
+        <img [src]="getPlanImage()" alt="Plan Image" />
+      </div>
+      
+     <!-- Overlay Section -->
+<div class="unique-overlay" *ngIf="isOverlayVisible">
+    <div class="overlay-content">
+      <div class="overlay-image">
+        <img [src]="getPlanImage()" alt="Plan Image" />
+      </div>
+      <div class="overlay-details">
+        <h2>{{ selectedScheme.schemeName }}</h2>
+        <p>{{ selectedScheme.description }}</p>
+        <p>Eligibility Criteria: {{ selectedScheme.eligibilityCriteria }}</p>
+        <p>Premium: ₹{{ selectedScheme.premium }}</p>
+        <p>Maturity Period: {{ selectedScheme.maturityPeriod }} months</p>
+        <p>Coverage: ₹{{ selectedScheme.coverage }}</p>
+        <button class="close-btn" (click)="closeOverlay()">Close</button>
+      </div>
     </div>
   </div>
   
