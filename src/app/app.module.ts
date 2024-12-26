@@ -12,6 +12,7 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { PlanFormComponent } from './components/admin/plan-form/plan-form.component';
+import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { PlanFormComponent } from './components/admin/plan-form/plan-form.compon
     HomePageComponent,
     AdminComponent,
     PlanFormComponent,
+    SchemeFormComponent,
   ],
   imports: [
     BrowserModule,
