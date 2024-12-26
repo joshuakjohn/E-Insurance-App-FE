@@ -1,0 +1,55 @@
+.plan{
+    width: 400px;
+    height: 400px;
+    margin: 20px;
+    border-radius: 10px;
+    padding: 20px;
+    background-size: cover;
+    transition: transform 0.3s ease;
+}
+
+.plan:hover {
+    transform: translateY(-5px);
+    transition: .1s;
+}
+
+.plans{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: auto;
+
+    .images{
+        display: flex;
+        margin-top: 50px;
+        justify-content: space-around;
+    }
+
+    .text{
+        display: flex;
+        // font-size: small
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 10px 0px 0px 35px;
+        gap: 0px;
+    }
+}
+
+button{
+    height: 40px;
+    width: 100px;
+    border-radius: 30px;
+    background-color: transparent;
+    color: whitesmoke;
+    border: 1px solid lightblue;
+    margin-top: 10px;
+}
+
+button:hover{
+    transition: background-color ease .5s;
+    background-color: lightblue;
+}
+
+button:active{
+    border: 3px transparent ;
+}
