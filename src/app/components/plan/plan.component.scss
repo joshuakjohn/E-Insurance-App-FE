@@ -1,4 +1,11 @@
-.plan{
+.plans {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: auto;
+  }
+  
+  .plan {
     width: 400px;
     height: 400px;
     margin: 20px;
@@ -6,36 +13,39 @@
     padding: 20px;
     background-size: cover;
     transition: transform 0.3s ease;
-}
-
-.plan:hover {
+  }
+  
+  .plan:hover {
     transform: translateY(-5px);
     transition: .1s;
-}
-
-.plans{
+  }
+  
+  .plan-title {
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+  }
+  
+  .plan-description {
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+  }
+  
+  .text {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    height: auto;
-
-    .images{
-        display: flex;
-        margin-top: 50px;
-        justify-content: space-around;
-    }
-
-    .text{
-        display: flex;
-        // font-size: small
-        flex-direction: column;
-        align-items: flex-start;
-        margin: 10px 0px 0px 35px;
-        gap: 0px;
-    }
-}
-
-button{
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 10px 0px 0px 35px;
+  }
+  
+  .plan-details {
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+  }
+  
+  button {
     height: 40px;
     width: 100px;
     border-radius: 30px;
@@ -43,6 +53,7 @@ button{
     color: whitesmoke;
     border: 1px solid lightblue;
     margin-top: 10px;
+    margin-left: 150px;
 }
 
 button:hover{
