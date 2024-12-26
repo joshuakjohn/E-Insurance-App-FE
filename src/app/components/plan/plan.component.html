@@ -1,12 +1,8 @@
 <div class="plans">
     <div *ngFor="let plan of plans" class="plan" 
          [ngStyle]="{ 'background-image': 'url(' + plan.imageUrl + ')' }">
-      <h3 class="plan-title">
-        {{ plan.planName }}
-      </h3>
-      <p class="plan-description">
-        {{ plan.description }}
-      </p>
+      <h3 class="plan-title">{{ plan.planName }}</h3>
+      <p class="plan-description">{{ plan.description }}</p>
   
       <div class="text">
         <pre class="plan-details">
@@ -14,7 +10,8 @@
         </pre>
       </div>
   
-      <button class="explore">View</button>
+      <button class="explore" (click)="viewScheme(plan._id)">View</button>
     </div>
+    <router-outlet></router-outlet>
   </div>
   

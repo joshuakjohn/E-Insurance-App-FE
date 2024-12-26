@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { HttpService } from 'src/app/service/http-service/http.service';
 export class PlanComponent implements OnInit {
   plans: any[] = [];
 
-  constructor(private httpService: HttpService) {}
+  constructor(private httpService: HttpService,public router:Router) {}
 
   ngOnInit(): void {
     this.fetchPlans();
@@ -44,6 +45,14 @@ getImageUrl(category: string): string {
     default:
       return 'assets/default-image.jpg'; // Default image if no match
   }
+}
+viewScheme(planId: string) {
+  console.log('Navigating to:', `/plans/${planId}/scheme`);
+  if (!planId) {
+    console.error('Invalid planId:', planId);
+    return;
+  }
+  this.router.navigate([`/dashboard/plans/${planId}/scheme`]);
 }
 
 }
