@@ -15,7 +15,7 @@ export class PlanFormComponent {
   ngOnInit(): void {
     this.planForm = this.formBuilder.group({
       planName: ['', Validators.required],
-      description: ['', Validators.required],
+      description: [''],
       category: ['', Validators.required]
     });
   }
@@ -27,8 +27,15 @@ export class PlanFormComponent {
   handleSubmit() {
     if (this.planForm.valid) {
       const { planName, description, category } = this.planForm.value;
+  
+      const payload: { planName: string; category: string; description?: string } = {planName, category};
 
-      this.httpService.postApiCall('/api/v1/plan', { planName, description, category }).subscribe({
+      // Add description if it's not empty
+      if (description) {
+        payload.description = description;
+      }
+  
+      this.httpService.postApiCall('/api/v1/plan', payload).subscribe({
         next: (response) => {
           console.log('Plan created successfully:', response);
         },

@@ -9,9 +9,8 @@
                     <mat-error *ngIf="planFormControls['planName']?.errors?.['required']">Plan Name is required</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
-                    <mat-label>Description</mat-label>
+                    <mat-label>Description (Optional)</mat-label>
                     <textarea matInput formControlName="description"></textarea>
-                    <mat-error *ngIf="planFormControls['description']?.errors?.['required']">Description is required</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Category</mat-label>
