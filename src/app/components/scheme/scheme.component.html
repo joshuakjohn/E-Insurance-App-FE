@@ -1,8 +1,5 @@
 <!-- Scheme Card List -->
 <div *ngFor="let scheme of schemes" class="scheme-card">
-  <div class="scheme-image">
-    <img [src]="getPlanImage()" alt="Plan Image" />
-  </div>
   <div class="scheme-details">
     <h2>{{ scheme.schemeName }}</h2>
     <p>{{ scheme.description }}</p>
@@ -11,8 +8,13 @@
     <p>Maturity Period: {{ scheme.maturityPeriod }} months</p>
     <p>Coverage: ₹{{ scheme.coverage }}</p>
     <!-- View Details Button -->
-    <button class="view-details" (click)="openDetailOverlay(scheme)">View Details</button>
+    <button class="view-details" (click)="openDetailOverlay(scheme)">
+      View Details
+    </button>
   </div>
+
+  <!-- Background Image Section -->
+  <div class="scheme-background" [style.backgroundImage]="'url(' + getPlanImage() + ')'"></div>
 </div>
 
 <!-- Overlay Section -->
@@ -35,4 +37,5 @@
         <button class="close-btn" (click)="closeOverlay()">Cancel</button>
       </div>
     </div>
-
+  </div>
+</div>
