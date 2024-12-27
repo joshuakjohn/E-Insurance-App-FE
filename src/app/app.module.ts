@@ -7,6 +7,8 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { PlanComponent } from './components/plan/plan.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SchemeComponent } from './components/scheme/scheme.component';
+import { PolicyComponent } from './components/policy/policy.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,11 +16,12 @@ import { SchemeComponent } from './components/scheme/scheme.component';
     HomePageComponent,
     PlanComponent,
     SchemeComponent,
+    PolicyComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
