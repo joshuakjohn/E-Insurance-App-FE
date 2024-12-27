@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpLoginService } from '../../services/http-services/http-login.service';
 
 @Component({
   selector: 'app-login-and-signup',
@@ -12,7 +13,9 @@ export class LoginAndSignupComponent {
   signinForm!: FormGroup;
   signupForm!: FormGroup
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    public httpService: HttpLoginService,
+    public formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<LoginAndSignupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -71,8 +74,18 @@ get signinFormControls() { return this.signinForm.controls; }
   }
 
   handleSignin(){
-    const { signin_role, email, password} = this.signinForm.value
-    console.log(this.signinForm.value)
+    if(this.signinForm.valid){
+      const { signin_role, email, password} = this.signinForm.value
+      const role_lower = signin_role.toLowerCase()
+      this.httpService.postApiCall(`/api/v1/${role_lower}`, {email, password}).subscribe({
+        next: (res) => {
+          console.log(res)
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
+    }
 }
 
 }
