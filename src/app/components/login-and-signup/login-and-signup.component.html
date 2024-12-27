@@ -5,7 +5,7 @@
             <h1>Create Account</h1>
               <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Role</mat-label>
-                <mat-select formControlName="signup_role">
+                <mat-select formControlName="signup_role" [(ngModel)]="role" (selectionChange)="onRoleChange($event.value)">
                   <mat-option value="Customer">Customer</mat-option>
                   <mat-option value="Agent">Agent</mat-option>
                   <mat-option value="Employee">Employee</mat-option>
@@ -17,7 +17,7 @@
               <div class="horizontal">
                 <mat-form-field appearance="outline">
                     <mat-label>Name</mat-label>
-                    <input matInput formControlName="name">
+                    <input matInput formControlName="username">
                     <mat-error *ngIf="signupFormControls['name']['errors']?.['required']">This field is required</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
@@ -27,28 +27,36 @@
                     <mat-error *ngIf="signupFormControls['email']['errors']?.['email']">Invalid email format</mat-error>
                 </mat-form-field>
               </div>
-              <div style="display: flex;
-              gap: 5px;">
+              <mat-form-field appearance="outline" style="width: 100%;" *ngIf="role !== 'Customer'; else agentPhone">
+                <mat-label>Phone No.</mat-label>
+                <input matInput formControlName="phno">
+                <mat-error *ngIf="signupFormControls['phone']['errors']?.['required']">This field is required</mat-error>
+                <mat-error *ngIf="signupFormControls['phone']['errors']?.['pattern']">Invalid phone number format</mat-error>
+              </mat-form-field>
+              <ng-template #agentPhone>
+                <div style="display: flex;
+                gap: 5px;">
                 <mat-form-field appearance="outline">
                   <mat-label>Phone No.</mat-label>
-                  <input matInput formControlName="phone">
+                  <input matInput formControlName="phno">
                   <mat-error *ngIf="signupFormControls['phone']['errors']?.['required']">This field is required</mat-error>
                   <mat-error *ngIf="signupFormControls['phone']['errors']?.['pattern']">Invalid phone number format</mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" *ngIf="role === 'Customer'">
                   <mat-label>Age</mat-label>
                   <input matInput formControlName="age">
                   <mat-error *ngIf="signupFormControls['age']['errors']?.['required']">This field is required</mat-error>
                   <mat-error *ngIf="signupFormControls['age']['errors']?.['pattern']">Invalid age format</mat-error>
                 </mat-form-field>
               </div>
+              </ng-template>
               <div>
-                <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-form-field appearance="outline" style="width: 100%;" *ngIf="role === 'Customer' || role === 'Agent'">
                   <mat-label>Region</mat-label>
                   <input matInput formControlName="region">
                   <mat-error *ngIf="signupFormControls['region']['errors']?.['required']">This field is required</mat-error>
                 </mat-form-field>
-                <div class="horizontal">
+                <div class="horizontal" *ngIf="role === 'Customer'">
                   <span>Upload your image</span>
                   <input type="file" style="margin: 0 0 22.4px 30px;" formControlName="image">
                 </div>

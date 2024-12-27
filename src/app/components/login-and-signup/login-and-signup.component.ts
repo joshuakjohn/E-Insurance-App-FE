@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpLoginService } from '../../services/http-services/http-login.service';
@@ -10,12 +10,15 @@ import { HttpLoginService } from '../../services/http-services/http-login.servic
 })
 export class LoginAndSignupComponent {
 
+  role: string = ''
+
   signinForm!: FormGroup;
   signupForm!: FormGroup
 
   constructor(
     public httpService: HttpLoginService,
     public formBuilder: FormBuilder,
+    public cdr: ChangeDetectorRef,
     public dialogRef: MatDialogRef<LoginAndSignupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -25,9 +28,9 @@ export class LoginAndSignupComponent {
   ngOnInit() {
       this.signupForm = this.formBuilder.group({
         signup_role: ['', [Validators.required]],
-        name: ['', [Validators.required]],
+        username: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        phno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         age: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
         region: ['', [Validators.required]],
         image: [''],
@@ -69,8 +72,17 @@ get signinFormControls() { return this.signinForm.controls; }
   }
 
   handleRegistration(){
-      const { signup_role, name, email, password, phone, age, region, image } = this.signupForm.value
-      console.log(this.signupForm.value)
+      const { signup_role, username, email, password, phno, age, region, image } = this.signupForm.value
+      if(signup_role === 'Customer'){
+        this.httpService.postApiCall(`/api/v1/customer/register`, {username, email, password, phno, age, region}).subscribe({
+        next: (res) => {
+          console.log(res)
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
+      }
   }
 
   handleSignin(){
@@ -86,6 +98,11 @@ get signinFormControls() { return this.signinForm.controls; }
         }
       })
     }
-}
+  }
+
+  onRoleChange(newRole: string) {
+    console.log('Role changed to:', newRole);
+    this.role = newRole;
+  }
 
 }
