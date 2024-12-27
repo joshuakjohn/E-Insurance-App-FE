@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginAndSignupComponent {
 
   signinForm!: FormGroup;
-  submitted = false;
+  signupForm!: FormGroup
 
   constructor(private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<LoginAndSignupComponent>,
@@ -20,12 +20,30 @@ export class LoginAndSignupComponent {
   }
 
   ngOnInit() {
-    this.signinForm = this.formBuilder.group({
-        role: ['', Validators.required],
+      this.signupForm = this.formBuilder.group({
+        signup_role: ['', [Validators.required]],
+        name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
-        password: ['', Validators.required],
-    });
+        phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+        age: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+        region: ['', [Validators.required]],
+        image: [''],
+        password: ['', [Validators.required]],
+        confirm: ['', [Validators.required]]
+      }, {updateOn: 'submit'})
+    
+
+    this.signinForm = this.formBuilder.group({
+      signin_role: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    })
 }
+
+get signupFormControls() { return this.signupForm.controls; }
+
+get signinFormControls() { return this.signinForm.controls; }
+
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -46,5 +64,15 @@ export class LoginAndSignupComponent {
       });
     }
   }
+
+  handleRegistration(){
+      const { signup_role, name, email, password, phone, age, region, image } = this.signupForm.value
+      console.log(this.signupForm.value)
+  }
+
+  handleSignin(){
+    const { signin_role, email, password} = this.signinForm.value
+    console.log(this.signinForm.value)
+}
 
 }

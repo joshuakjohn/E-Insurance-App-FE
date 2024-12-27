@@ -1,56 +1,72 @@
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up-container">
-          <form action="#" class="signup-form">
+          <form action="#" class="signup-form" [formGroup]="signupForm">
             <h1>Create Account</h1>
-              <mat-form-field appearance="outline" style="width: 96.5%;">
+              <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>Role</mat-label>
-                <mat-select>
+                <mat-select formControlName="signup_role">
                   <mat-option value="Customer">Customer</mat-option>
                   <mat-option value="Agent">Agent</mat-option>
                   <mat-option value="Employee">Employee</mat-option>
                   <mat-option value="Admin">Admin</mat-option>
                 </mat-select>
+                <mat-error *ngIf="signupFormControls['signup_role']['errors']?.['required']">This field is required</mat-error>
               </mat-form-field>
             <div>
               <div class="horizontal">
                 <mat-form-field appearance="outline">
                     <mat-label>Name</mat-label>
-                    <input matInput>
+                    <input matInput formControlName="name">
+                    <mat-error *ngIf="signupFormControls['name']['errors']?.['required']">This field is required</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                     <mat-label>Email</mat-label>
-                    <input matInput>
+                    <input matInput formControlName="email">
+                    <mat-error *ngIf="signupFormControls['email']['errors']?.['required']">This field is required</mat-error>
+                    <mat-error *ngIf="signupFormControls['email']['errors']?.['email']">Invalid email format</mat-error>
                 </mat-form-field>
-            </div>
+              </div>
               <div style="display: flex;
               gap: 5px;">
                 <mat-form-field appearance="outline">
                   <mat-label>Phone No.</mat-label>
-                  <input matInput>
+                  <input matInput formControlName="phone">
+                  <mat-error *ngIf="signupFormControls['phone']['errors']?.['required']">This field is required</mat-error>
+                  <mat-error *ngIf="signupFormControls['phone']['errors']?.['pattern']">Invalid phone number format</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Age</mat-label>
-                  <input matInput>
+                  <input matInput formControlName="age">
+                  <mat-error *ngIf="signupFormControls['age']['errors']?.['required']">This field is required</mat-error>
+                  <mat-error *ngIf="signupFormControls['age']['errors']?.['pattern']">Invalid age format</mat-error>
                 </mat-form-field>
               </div>
-              
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Region</mat-label>
-                <input matInput>
-              </mat-form-field>
+              <div>
+                <mat-form-field appearance="outline" style="width: 100%;">
+                  <mat-label>Region</mat-label>
+                  <input matInput formControlName="region">
+                  <mat-error *ngIf="signupFormControls['region']['errors']?.['required']">This field is required</mat-error>
+                </mat-form-field>
+                <div class="horizontal">
+                  <span>Upload your image</span>
+                  <input type="file" style="margin: 0 0 22.4px 30px;" formControlName="image">
+                </div>
+              </div>
               <div class="horizontal">
                 <mat-form-field appearance="outline">
                   <mat-label>Password</mat-label>
-                  <input matInput>
+                  <input matInput formControlName="password">
+                  <mat-error *ngIf="signupFormControls['password']['errors']?.['required']">This field is required</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Confirm password</mat-label>
-                  <input matInput>
+                  <input matInput formControlName="confirm">
+                  <mat-error *ngIf="signupFormControls['confirm']['errors']?.['required']">This field is required</mat-error>
                 </mat-form-field>
               </div>
             </div>
-            <button style="margin-top: 20px;" type="submit">Sign Up</button>
+            <button type="submit" (click)="handleRegistration()">Sign Up</button>
           </form>
         </div>
         <div class="form-container sign-in-container">
@@ -58,23 +74,27 @@
             <h1>Sign in</h1>
             <mat-form-field appearance="outline" style="width: 90%;">
               <mat-label>Role</mat-label>
-              <mat-select formControlName="role">
+              <mat-select formControlName="signin_role">
                 <mat-option value="Customer">Customer</mat-option>
                 <mat-option value="Agent">Agent</mat-option>
                 <mat-option value="Employee">Employee</mat-option>
                 <mat-option value="Admin">Admin</mat-option>
               </mat-select>
+              <mat-error *ngIf="signinFormControls['signin_role']['errors']?.['required']">This field is required</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" style="width: 90%;">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email">
+                <mat-error *ngIf="signinFormControls['email']['errors']?.['required']">This field is required</mat-error>
+                <mat-error *ngIf="signinFormControls['email']['errors']?.['email']">Invalid email format</mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" style="width: 90%;">
                 <mat-label>Password</mat-label>
                 <input matInput formControlName="password">
+                <mat-error *ngIf="signinFormControls['password']['errors']?.['required']">This field is required</mat-error>
             </mat-form-field>
             <a href="#">Forgot your password?</a>
-            <button type="submit">Sign In</button>
+            <button type="submit" (click)="handleSignin()">Sign In</button>
           </form>
         </div>
         <div class="overlay-container">
