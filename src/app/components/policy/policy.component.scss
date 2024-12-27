@@ -1,5 +1,5 @@
 /* General Styling */
-body {
+*body {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg, #f4f8fb, #e3f2fd); /* Subtle gradient */
   display: flex;
@@ -8,6 +8,10 @@ body {
   height: 100vh;
   margin: 0;
   color: #333;
+}
+.container{
+  display: flex;
+  justify-content: center;
 }
 
 /* Policy Card */
@@ -179,4 +183,51 @@ body {
 
 .contact-support-btn:hover {
   background: #d32f2f; /* Darker red */
+}
+/* Styling for all buttons to ensure consistent size */
+.button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%; /* Make buttons take full width */
+  margin: 10px 0;
+}
+
+.buy-now-btn {
+  background: #4caf50;
+  color: #fff;
+}
+
+.buy-now-btn:hover {
+  background: #388e3c;
+}
+
+.confirm-btn {
+  background: #2196f3;
+  color: #fff;
+}
+
+.confirm-btn:hover {
+  background: #1565c0;
+}
+
+.cancel-btn {
+  background: #f44336; /* Red for cancel */
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background: #d32f2f; /* Darker red */
+}
+
+.go-back-btn {
+  background: #9e9e9e; /* Grey for go back */
+  color: #fff;
+}
+
+.go-back-btn:hover {
+  background: #616161; /* Darker grey */
 }

@@ -61,12 +61,10 @@ export class SchemeComponent implements OnInit {
     } 
   }
   
-  
-  
-  getPlanImage(): string {
+    getPlanImage(): string {
 
     if (!this.planDetails.category) {
-      return 'assets/images/default-scheme.jpg'; // Default image
+      return 'assets/images/default-scheme.jpg'; 
     }
 
     const lowerCaseCategory = this.planDetails.category.toLowerCase(); // Normalize the category
@@ -87,9 +85,22 @@ export class SchemeComponent implements OnInit {
     this.selectedScheme = scheme;
     this.isOverlayVisible = true;
   }
+  
+  navigateToPolicy(schemeId: string): void {
+    if (schemeId) {
+      this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${schemeId}/policy`]);
+    } else {
+      console.error('Scheme ID is missing.');
+    }
+  }
+  
 
   // Close the overlay
   closeOverlay(): void {
     this.isOverlayVisible = false;
   }
-}
+  
+  }
+  
+  
+

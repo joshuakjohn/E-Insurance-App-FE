@@ -32,8 +32,6 @@ export class PlanComponent implements OnInit {
     });
   }
 
-  // Helper function to assign an image URL based on the category
- // Helper function to assign an image URL based on the category
 getImageUrl(category: string): string {
   switch (category) {
     case 'Health':
@@ -47,7 +45,6 @@ getImageUrl(category: string): string {
   }
 }
 viewScheme(planId: string) {
-  console.log('Navigating to:', `/plans/${planId}/scheme`);
   if (!planId) {
     console.error('Invalid planId:', planId);
     return;

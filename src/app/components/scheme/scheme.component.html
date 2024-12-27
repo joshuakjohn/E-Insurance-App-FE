@@ -30,10 +30,11 @@
       <p>Premium: ₹{{ selectedScheme.premium }}</p>
       <p>Maturity Period: {{ selectedScheme.maturityPeriod }} months</p>
       <p>Coverage: ₹{{ selectedScheme.coverage }}</p>
-    
+
       <!-- Buttons -->
       <div class="button-container">
-        <button class="buy">Buy</button>
+        <!-- Use selectedScheme.id for navigation -->
+        <button (click)="navigateToPolicy(selectedScheme._id)" class="buy-btn">Buy</button>
         <button class="close-btn" (click)="closeOverlay()">Cancel</button>
       </div>
     </div>

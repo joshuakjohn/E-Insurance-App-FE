@@ -1,40 +1,47 @@
-<div class="policy-card">
-  <div class="policy-card-header">
-    <div class="icon">
-      <img src="insurance-icon.png" alt="Policy Icon">
+<div class="container">
+  <div class="policy-card">
+    <div class="policy-card-header">
+      <div class="icon">
+        <img src="insurance-icon.png" alt="Policy Icon">
+      </div>
+      <div class="title">
+        <h1>Comprehensive Health Plan</h1>
+        <span class="status">Active</span>
+      </div>
     </div>
-    <div class="title">
-      <h1>Comprehensive Health Plan</h1>
-      <span class="status">Active</span>
-    </div>
-  </div>
 
-  <div class="policy-card-details">
-    <div class="detail-card">
-      <h2>₹10,00,000</h2>
-      <p>Total Coverage</p>
+    <div class="policy-card-details">
+      <div class="detail-card">
+        <h2>₹10,00,000</h2>
+        <p>Total Coverage</p>
+      </div>
+      <div class="detail-card">
+        <h2>₹2,000</h2>
+        <p>Monthly Premium</p>
+      </div>
+      <div class="detail-card">
+        <h2>24 months</h2>
+        <p>Duration</p>
+      </div>
     </div>
-    <div class="detail-card">
-      <h2>₹2,000</h2>
-      <p>Monthly Premium</p>
-    </div>
-    <div class="detail-card">
-      <h2>24 months</h2>
-      <p>Duration</p>
-    </div>
-  </div>
 
-  <div class="policy-card-benefits">
-    <h2>Key Benefits</h2>
-    <ul>
-      <li>✔ Free health check-ups</li>
-      <li>✔ Cashless hospital coverage</li>
-      <li>✔ 24/7 customer support</li>
-    </ul>
-  </div>
+    <div class="policy-card-benefits">
+      <h2>Key Benefits</h2>
+      <ul>
+        <li>✔ Free health check-ups</li>
+        <li>✔ Cashless hospital coverage</li>
+        <li>✔ 24/7 customer support</li>
+      </ul>
+    </div>
 
-  <div class="policy-card-actions">
-    <button class="buy-now-btn">Buy Now</button>
-    <button class="contact-support-btn">Contact Support</button>
+    <div class="policy-card-actions">
+      <!-- Show Buy Now and Go Back buttons initially -->
+      <button *ngIf="!isBuyNowClicked" class="buy-now-btn" (click)="onBuyNowClick()">Buy Now</button>
+      <button *ngIf="!isBuyNowClicked" class="go-back-btn" (click)="onGoBackClick()">Go Back</button>
+
+      <!-- Show Confirm and Cancel buttons after Buy Now is clicked -->
+      <button *ngIf="isConfirmVisible" class="confirm-btn" (click)="onConfirmClick()">Confirm</button>
+      <button *ngIf="isConfirmVisible" class="cancel-btn" (click)="onCancelClick()">Cancel</button>
+    </div>
   </div>
 </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Location } from '@angular/common'; // Import Location service
 
 @Component({
   selector: 'app-policy',
@@ -6,33 +7,31 @@ import { Component } from '@angular/core';
   styleUrls: ['./policy.component.scss']
 })
 export class PolicyComponent {
-  policy = {
-    policyName: '',
-    description: '',
-    eligibilityCriteria: '',
-    premium: 0,
-    maturityPeriod: 0,
-    coverage: 0,
-  };
+  isBuyNowClicked = false; // Flag to track Buy Now button click state
+  isConfirmVisible = false; // Flag to track Confirm/Cancel button visibility
 
-  createPolicy() {
-    console.log('Policy Created:', this.policy);
+  constructor(private location: Location) {}
 
-    // Replace this with an API call to save the policy
-    // Example:
-    // this.policyService.createPolicy(this.policy).subscribe(response => {
-    //   console.log('Policy saved:', response);
-    // });
-
-    alert('Policy Created Successfully!');
-    this.policy = {
-      policyName: '',
-      description: '',
-      eligibilityCriteria: '',
-      premium: 0,
-      maturityPeriod: 0,
-      coverage: 0,
-    }; // Reset the form after creation
+  // Handle Buy Now button click
+  onBuyNowClick() {
+    this.isBuyNowClicked = true; // Mark Buy Now button as clicked
+    this.isConfirmVisible = true; // Show Confirm/Cancel buttons
   }
 
+  // Handle Confirm button click
+  onConfirmClick() {
+    alert('Purchase Confirmed!');
+    // Implement further confirmation logic as needed
+  }
+
+  // Handle Cancel button click
+  onCancelClick() {
+    this.isBuyNowClicked = false; // Hide Confirm/Cancel buttons
+    this.isConfirmVisible = false; // Hide Confirm/Cancel buttons
+  }
+
+  // Handle Go Back button click
+  onGoBackClick() {
+    this.location.back(); 
+  }
 }
