@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginAndSignupComponent } from '../login-and-signup/login-and-signup.component';
 
 @Component({
   selector: 'app-home-page',
@@ -6,5 +8,19 @@ import { Component } from '@angular/core';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
+
+  constructor(public dialog: MatDialog){}
+
+  editNotesDialog(){
+    let dialogRef = this.dialog.open(LoginAndSignupComponent, {
+      height: 'auto',
+      width: 'auto',
+    }
+  );
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
 }
