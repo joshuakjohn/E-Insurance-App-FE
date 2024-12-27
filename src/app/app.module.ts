@@ -11,6 +11,10 @@ import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { PlanComponent } from './components/plan/plan.component';
+import { SchemeComponent } from './components/scheme/scheme.component';
+import { PolicyComponent } from './components/policy/policy.component';
+import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './components/admin/admin.component';
 import { PlanFormComponent } from './components/admin/plan-form/plan-form.component';
 import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.component';
@@ -20,6 +24,9 @@ import { PlanDialogComponent } from './components/admin/plan-dialog/plan-dialog.
   declarations: [
     AppComponent,
     HomePageComponent,
+    PlanComponent,
+    SchemeComponent,
+    PolicyComponent,
     AdminComponent,
     PlanFormComponent,
     SchemeFormComponent,
@@ -28,6 +35,7 @@ import { PlanDialogComponent } from './components/admin/plan-dialog/plan-dialog.
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,FormsModule,
     MatFormFieldModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
