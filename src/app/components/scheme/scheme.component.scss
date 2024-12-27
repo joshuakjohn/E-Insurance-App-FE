@@ -1,0 +1,169 @@
+.scheme-card {
+  position: relative;
+  display: flex;
+  flex-direction: row; /* Arrange content side by side */
+  width: 100%;
+  max-width: 1400px;
+  margin: 20px auto;
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: 'Arial', sans-serif;
+  height: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+  color: #fff;
+}
+
+.scheme-details {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 30%; /* Content area takes up 30% of the width */
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.6); /* Dark overlay for content */
+  color: white;
+  border-radius: 10px 0 0 10px; /* Rounded corners for the left side */
+}
+
+.scheme-details h2 {
+  font-size: 1.6rem;
+  color: #ffcc00;
+  margin: 0 0 10px;
+}
+
+.scheme-details p {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #ddd;
+}
+
+.view-details {
+  background-color: #ffcc00;
+  color: #333;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.view-details:hover {
+  background-color: #ff9900;
+}
+
+/* Background Image Section */
+.scheme-background {
+  flex: 1; 
+  height: 100%; 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0 10px 10px 0;
+  opacity: 45%; 
+}
+
+/* Unique Overlay Styling */
+.unique-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.overlay-content {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  max-height: 85%;
+  background: #222;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+}
+
+.overlay-content::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.overlay-image img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* Details Section */
+.overlay-details {
+  flex: 1;
+  color: #fff;
+  font-family: 'Arial', sans-serif;
+}
+
+.overlay-details h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+  color: #ffcc00;
+}
+
+.overlay-details p {
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: #ddd;
+}
+
+/* Common Button Styles */
+.overlay-details button {
+  width: 140px;
+  height: 50px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+
+/* Unique Buy Button */
+.overlay-details .buy {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+}
+
+.overlay-details .buy:hover {
+  background-color: #218838;
+  transform: scale(1.02);
+}
+
+/* Unique Cancel Button */
+.overlay-details .close-btn {
+  background-color: #ff0000;
+  color: #fff;
+  border: 2px solid #ff0000;
+}
+
+.overlay-details .close-btn:hover {
+  background-color: #ff0000;
+  color: #fff;
+  transform: scale(1.02);
+}
+
+/* Container for Buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
