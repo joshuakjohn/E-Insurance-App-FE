@@ -4,8 +4,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    // min-height: 100vh;
-    // margin: 0;
 }
   
 .plan-form-container {
@@ -71,8 +69,8 @@ body {
             border-radius: 4px;
             font-size: 16px;
             transition: background-color 0.3s ease, transform 0.2s ease;
-    
-            &.primary {
+
+            &.createplanbutton {
                 background-color: #3a9f3d;
     
                 &:hover {
@@ -81,7 +79,7 @@ body {
             }
         }
     }
-
+   
 }
   
  

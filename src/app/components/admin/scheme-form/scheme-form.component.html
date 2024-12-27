@@ -1,41 +1,51 @@
 <body>
     <div class="scheme-form-container">
-        <h2>Create a Scheme</h2>
-        <form [formGroup]="schemeForm">
-            <div>
-                <mat-form-field appearance="outline">
-                    <mat-label>Scheme Name</mat-label>
-                    <input matInput formControlName="schemeName">
-                    <mat-error *ngIf="SchemeFormControls['schemeName']?.errors?.['required']">Scheme Name is required</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput formControlName="description"></textarea>
-                    <mat-error *ngIf="SchemeFormControls['description']?.errors?.['required']">Description is required</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Eligibility Criteria</mat-label>
-                    <input matInput formControlName="eligibilityCriteria">
-                    <mat-error *ngIf="SchemeFormControls['eligibilityCriteria']?.errors?.['required']">Eligibility Criteria is required</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Premium</mat-label>
-                    <input matInput formControlName="premium">
-                    <mat-error *ngIf="SchemeFormControls['premium']?.errors?.['required']">Premium is required</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Maturity period</mat-label>
-                    <input matInput formControlName="maturityPeriod">
-                    <mat-error *ngIf="SchemeFormControls['maturityPeriod']?.errors?.['required']">Maturity Period is required</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Coverage</mat-label>
-                    <input matInput formControlName="coverage">
-                    <mat-error *ngIf="SchemeFormControls['coverage']?.errors?.['required']">Coverage is required</mat-error>
-                </mat-form-field>
-            </div>
-            <br>
-            <button mat-raised-button color="primary">Create Scheme</button>
-        </form>
-    </div>    
-</body>
+      <h2>Create a Scheme</h2>
+      <form [formGroup]="schemeForm">
+        <!-- Top Section -->
+        <div class="top-section">
+          <div class="form-group">
+            <label for="schemeName">Scheme Name*</label>
+            <input id="schemeName" type="text" formControlName="schemeName" />
+            <span *ngIf="isFormSubmitted && SchemeFormControls['schemeName']?.errors?.['required']">Scheme Name is required</span>
+          </div>
+          <div class="form-group">
+            <label for="description">Description*</label>
+            <textarea id="description" formControlName="description"></textarea>
+            <span *ngIf="isFormSubmitted && SchemeFormControls['description']?.errors?.['required']">Description is required</span>
+          </div>
+        </div>
+  
+        <!-- Middle Section -->
+        <div class="middle-section">
+          <div class="form-group">
+            <label for="eligibilityCriteria">Eligibility Criteria*</label>
+            <input id="eligibilityCriteria" type="text" formControlName="eligibilityCriteria" />
+            <span *ngIf="isFormSubmitted && SchemeFormControls['eligibilityCriteria']?.errors?.['required']">Eligibility Criteria is required</span>
+          </div>
+          <div class="form-group">
+            <label for="premium">Premium*</label>
+            <input id="premium" type="text" formControlName="premium" />
+            <span *ngIf="isFormSubmitted && SchemeFormControls['premium']?.errors?.['required']">Premium is required</span>
+          </div>
+          <div class="form-group">
+            <label for="maturityPeriod">Maturity Period*</label>
+            <input id="maturityPeriod" type="text" formControlName="maturityPeriod" />
+            <span *ngIf="isFormSubmitted && SchemeFormControls['maturityPeriod']?.errors?.['required']">Maturity Period is required</span>
+          </div>
+          <div class="form-group">
+            <label for="coverage">Coverage*</label>
+            <input id="coverage" type="text" formControlName="coverage" />
+            <span *ngIf="isFormSubmitted && SchemeFormControls['coverage']?.errors?.['required']">Coverage is required</span>
+          </div>
+        </div>
+  
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button type="button" (click)="onClose()">Cancel</button>
+          <button class="createschemebutton" (click)="handleSubmit()">Create Scheme</button>
+        </div>
+      </form>
+    </div>
+  </body>
+  

@@ -38,10 +38,14 @@ export class PlanDialogComponent {
       }
   
       this.httpService.postApiCall('/api/v1/plan', payload).subscribe({
-        next: (res) => {
+        next: (res:any) => {
+          console.log(res.plan._id);
+          
           console.log('Plan created successfully:', res);
         },
         error: (error) => {
+          console.log(error);
+          
           console.error('Error creating plan:', error);
         }
       });

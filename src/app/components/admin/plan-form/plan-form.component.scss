@@ -2,28 +2,32 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #121212; 
-    color: white; 
-
-    .dark-theme .add-plan-box{
+    background-color: black;
+    color: white;
+  
+    .dark-theme {
+      .add-plan-box,
+      .add-scheme-box {
         background-color: #1e1e1e;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
-
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+  
         span {
-            font-size: 24px;
+          font-size: 24px;
+          text-align: center;
         }
-
+  
         &:hover {
-            background-color: #292929;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
+          background-color: #292929;
         }
+      }
+  
+      .add-scheme-box {
+        margin-top: 10px;
+      }
     }
   }
   
-
-  
-
-
