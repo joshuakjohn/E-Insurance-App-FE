@@ -48,9 +48,10 @@ export class PolicyComponent {
     if (age >= 18 && age <= 60) {
       this.isEligible = true;
       this.eligibilityMessage = 'You are eligible for the plan!';
+      this.closeEligibilityOverlay();  // Close overlay if eligible
     } else {
       this.isEligible = false;
-      this.eligibilityMessage = "You're not eligible for the policy.";
+      this.eligibilityMessage = "You're not eligible for the policy."; // Show message inside overlay
     }
   }
 

@@ -181,12 +181,26 @@ body {
   color: #fff;
 }
 
-.buy-now-btn:disabled {
-  background-color: #ccc;
-}
-
 .buy-now-btn:hover {
   background: #388e3c;
+}
+
+.confirm-btn {
+  background: #2196f3;
+  color: #fff;
+}
+
+.confirm-btn:hover {
+  background: #1565c0;
+}
+
+.cancel-btn {
+  background: #f44336;
+  color: #fff;
+}
+
+.cancel-btn:hover {
+  background: #d32f2f;
 }
 
 .go-back-btn {
