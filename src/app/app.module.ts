@@ -22,7 +22,7 @@ import { PolicyComponent } from './components/policy/policy.component';
   declarations: [
     AppComponent,
     HomePageComponent,
-    LoginAndSignupComponent
+    LoginAndSignupComponent,
     PlanComponent,
     SchemeComponent,
     PolicyComponent,
