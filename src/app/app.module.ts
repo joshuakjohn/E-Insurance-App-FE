@@ -18,7 +18,6 @@ import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './components/admin/admin.component';
 import { PlanFormComponent } from './components/admin/plan-form/plan-form.component';
 import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.component';
-import { PlanDialogComponent } from './components/admin/plan-dialog/plan-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +29,6 @@ import { PlanDialogComponent } from './components/admin/plan-dialog/plan-dialog.
     AdminComponent,
     PlanFormComponent,
     SchemeFormComponent,
-    PlanDialogComponent,
   ],
   imports: [
     BrowserModule,

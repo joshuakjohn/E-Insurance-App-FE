@@ -4,7 +4,6 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { PlanComponent } from './components/plan/plan.component';
 import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
-import { PlanFormComponent } from './components/admin/plan-form/plan-form.component';
 
 const routes: Routes = [
   {

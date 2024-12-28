@@ -1,33 +1,87 @@
 body {
+    background-color: black; 
+    color: white; 
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: black;
-    color: white;
+    margin-top: 20px;
+}
   
-    .dark-theme {
-      .add-plan-box,
-      .add-scheme-box {
-        background-color: #1e1e1e;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6);
-        transition: background-color 0.3s ease;
-        cursor: pointer;
+.plan-form-container {
+    background-color: #1e1e1e; 
+    padding: 30px;
+    border-radius: 8px;
+    width: 400px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
   
-        span {
-          font-size: 24px;
-          text-align: center;
-        }
-  
-        &:hover {
-          background-color: #292929;
-        }
-      }
-  
-      .add-scheme-box {
-        margin-top: 10px;
-      }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: white;
+      font-size: 1.5rem;
     }
-  }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+  
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        
+            label {
+                font-size: 16px;
+                color: #e0e0e0;
+                margin-top: 15px;
+                margin-bottom: 5px;
+            }
+    
+            input, textarea {
+                padding: 10px;
+                background-color: #333;
+                border: 1px solid #555;
+                border-radius: 4px;
+                color: rgba(255, 255, 255, 0.715);
+                font-size: 14px;
+                transition: border-color 0.3s ease, background-color 0.3s ease;
+                
+                &:focus {
+                    border-color: #66bb6a;
+                    outline: none;
+                }
+            }
+    
+            textarea {
+                min-height: 100px;
+            }
+    
+            .error {
+                margin-top: 5px;
+                font-size: 12px;
+                color: #e57373;
+            }
+        }
+    
+        button {
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+
+            &.createplanbutton {
+                background-color: #3a9f3d;
+    
+                &:hover {
+                    background-color: #388439;
+                }
+            }
+        }
+    }
+   
+}
+  
+ 
   

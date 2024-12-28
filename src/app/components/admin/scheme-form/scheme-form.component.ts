@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http-service/http.service';
 
 @Component({
@@ -12,11 +13,12 @@ export class SchemeFormComponent {
   schemeForm!: FormGroup;
   isFormSubmitted = false;
 
-  constructor(private formBuilder: FormBuilder, private httpService: HttpService, private dialog: MatDialog) {}
+  constructor(private formBuilder: FormBuilder, private httpService: HttpService, private router: Router) {}
 
   ngOnInit(): void {
     this.schemeForm = this.formBuilder.group({
       schemeName: ['', Validators.required],
+      planId : ['', Validators.required],
       description: ['', Validators.required],
       eligibilityCriteria: ['', Validators.required],
       premium: ['', Validators.required],
@@ -35,9 +37,9 @@ export class SchemeFormComponent {
       const schemeData = this.schemeForm.value;
 
       this.httpService.postApiCall('/api/v1/scheme', schemeData).subscribe({
-        next: (response) => {
-          console.log('Scheme created successfully:', response);
-          this.dialog.closeAll();
+        next: (res) => {
+          console.log('Scheme created successfully:', res);
+          this.router.navigate(['/dashboard/plans'])
         },
         error: (error) => {
           console.error('Error creating scheme:', error);
@@ -47,6 +49,6 @@ export class SchemeFormComponent {
   }
 
   onClose(): void {
-    this.dialog.closeAll();
+    this.router.navigate(['/dashboard/plans']); 
   }
 }

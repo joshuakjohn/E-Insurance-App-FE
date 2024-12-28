@@ -10,6 +10,11 @@
             <span *ngIf="isFormSubmitted && SchemeFormControls['schemeName']?.errors?.['required']">Scheme Name is required</span>
           </div>
           <div class="form-group">
+            <label for="PlanId">Plan Id*</label>
+            <input id="planId" type="text" formControlName="planId" />
+            <span *ngIf="isFormSubmitted && SchemeFormControls['planId']?.errors?.['required']">Plan Id is required</span>
+          </div>
+          <div class="form-group">
             <label for="description">Description*</label>
             <textarea id="description" formControlName="description"></textarea>
             <span *ngIf="isFormSubmitted && SchemeFormControls['description']?.errors?.['required']">Description is required</span>
