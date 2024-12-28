@@ -11,7 +11,7 @@ export class HomePageComponent {
 
   constructor(public dialog: MatDialog){}
 
-  editNotesDialog(){
+  loginAndSignupDialog(){
     let dialogRef = this.dialog.open(LoginAndSignupComponent, {
       height: 'auto',
       width: 'auto',
