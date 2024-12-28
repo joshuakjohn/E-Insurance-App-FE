@@ -1,7 +1,7 @@
 ::ng-deep html, body {
     height: 100%;
     margin: 0;
-    background-color: black;
+    background-color: rgb(255, 255, 255);
     overflow: scroll;
     display: flex;
     justify-content: center;
@@ -24,7 +24,7 @@
         width: calc(100vw - 70px);
         height: 60px;
         border-radius: 30px;
-        background-color: black;
+        background-color: rgb(255, 255, 255);
         display: flex;
         justify-content: center;
         
@@ -45,8 +45,8 @@
         width: calc(100vw - 70px);
         height: 400px;
         border-radius: 30px;
-        background-color: black;
-        background-image: url(../../../assets/675518266729.jpg);
+        background-color: rgb(255, 255, 255);
+        background-image: url(../../../assets/675518266729.png);
         background-size: cover;
     }
 
@@ -54,7 +54,7 @@
         width: calc(100vw - 70px);
         height: 400px;
         border-radius: 30px;
-        background-color: black;
+        background-color: rgb(255, 255, 255);
     }
 }
 
@@ -62,17 +62,18 @@ button{
     height: 40px;
     width: 100px;
     border-radius: 30px;
-    background-color: black;
-    color: whitesmoke;
-    border: 1px solid lightblue;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    border: 1px solid #ff9582;
+
     margin-top: 10px;
 }
 
 button:hover{
     transition: background-color ease .5s;
-    background-color: lightblue;
+    background-color: #ff9582;
 }
 
 button:active{
-    border: 3px solid black;
+    border: 3px solid rgb(255, 255, 255);
 }

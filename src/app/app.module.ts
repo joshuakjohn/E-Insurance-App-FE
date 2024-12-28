@@ -1,19 +1,28 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatInputModule} from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginAndSignupComponent } from './components/login-and-signup/login-and-signup.component';
 import { PlanComponent } from './components/plan/plan.component';
-import { HttpClientModule } from '@angular/common/http';
 import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
+    LoginAndSignupComponent
     PlanComponent,
     SchemeComponent,
     PolicyComponent,
@@ -21,7 +30,15 @@ import { FormsModule } from '@angular/forms';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,FormsModule
+    MatDialogModule,
+    BrowserAnimationsModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
