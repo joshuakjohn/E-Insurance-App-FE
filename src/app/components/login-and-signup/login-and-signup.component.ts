@@ -1,7 +1,7 @@
 import { Component, Inject, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpLoginService } from '../../services/http-services/http-login.service';
+import { HttpLoginService } from '../../services/http-services/http.service';
 
 @Component({
   selector: 'app-login-and-signup',
