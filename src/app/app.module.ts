@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { HttpClientModule } from '@angular/common/http'; 
 import  {MatButtonModule } from '@angular/material/button';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { LoginAndSignupComponent } from './components/login-and-signup/login-and-signup.component';
 import { PlanComponent } from './components/plan/plan.component';
 import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
@@ -23,6 +27,7 @@ import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.
   declarations: [
     AppComponent,
     HomePageComponent,
+    LoginAndSignupComponent,
     PlanComponent,
     SchemeComponent,
     PolicyComponent,
@@ -33,14 +38,15 @@ import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,FormsModule,
-    MatFormFieldModule,
+    MatDialogModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule,
+    MatButtonToggleModule,
+    MatFormFieldModule,
+    MatSelectModule,
     MatInputModule,
-    HttpClientModule,
-    MatButtonModule,
-    MatDialogModule
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
