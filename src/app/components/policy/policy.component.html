@@ -85,14 +85,13 @@
       <form (ngSubmit)="checkEligibility()">
         <label for="age">Age:</label>
         <input
-          type="text"
-          id="age"
-          name="age"
-          [(ngModel)]="customerData.age"
-          pattern="^[0-9]*$"
-          required
-          (input)="validateAge()"
-        />
+        type="number"
+        id="age"
+        name="age"
+        [(ngModel)]="customerData.age"
+        required
+        (input)="validateAge()"
+      />
         <button type="submit">Check Eligibility</button>
       </form>
       <div *ngIf="eligibilityMessage" class="eligibility-message">

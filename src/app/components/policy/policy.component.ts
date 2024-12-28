@@ -32,10 +32,8 @@ export class PolicyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get planId and schemeId from route parameters
     this.planId = this.route.snapshot.paramMap.get('planId');
     this.schemeId = this.route.snapshot.paramMap.get('schemeId');
-
     this.fetchPlanDetails();
     this.fetchSchemeDetails();
   }
@@ -56,7 +54,6 @@ export class PolicyComponent implements OnInit {
   }
 
   fetchSchemeDetails(): void {
-    console.log(this.schemeId)
     if (this.schemeId) {
       this.httpService.getSchemeById(`/api/v1/scheme/${this.schemeId}`).subscribe({
         next: (res: any) => {
@@ -89,36 +86,75 @@ export class PolicyComponent implements OnInit {
       this.eligibilityMessage = '';
     }
   }
-
   checkEligibility() {
-    const age = parseInt(this.customerData.age, 10);
+    const criteria = this.schemeDetails?.eligibilityCriteria;
+  
+    if (!criteria) {
+      this.eligibilityMessage = 'Eligibility criteria not provided.';
+      return;
+    }
+  
+    const age = +this.customerData.age;
   
     if (isNaN(age)) {
       this.eligibilityMessage = 'Please enter a valid age.';
       return;
     }
   
-    if (this.schemeDetails?.eligibilityCriteria) {
-      // Parse eligibility criteria (e.g., "btw 40-60 years of age")
-      const regex = /btw\s(\d+)-(\d+)/i;
-      const match = regex.exec(this.schemeDetails.eligibilityCriteria);
-  
-      if (match) {
-        const minAge = parseInt(match[1], 10);
-        const maxAge = parseInt(match[2], 10);
-  
-        if (age >= minAge && age <= maxAge) {
-          this.isEligible = true;
-          this.eligibilityMessage = 'You are eligible for the plan!';
-          this.closeEligibilityOverlay();
-          return;
-        }
+    const rangeMatch = /(\d+)\s*(to|[-–])\s*(\d+)\s*(age|years)?\s*(people|pepole)?/i.exec(criteria);
+    if (rangeMatch) {
+      const [_, minAge, word, maxAge] = rangeMatch;
+      if (age >= +minAge && age <= +maxAge) {
+        this.eligibilityMessage = 'You are eligible!';
+        this.isEligible = true;
+        this.closeEligibilityOverlay();
+      } else {
+        this.eligibilityMessage = `Eligibility requires age between ${minAge} and ${maxAge}.`;
+        this.isEligible = false;
       }
+      return;
     }
   
+    const minAgeMatch = /min\s*(\d+)/i.exec(criteria);
+    if (minAgeMatch) {
+      const [, minAge] = minAgeMatch;
+      if (age >= +minAge) {
+        this.eligibilityMessage = 'You are eligible!';
+        this.isEligible = true;
+        this.closeEligibilityOverlay();
+      } else {
+        this.eligibilityMessage = `Eligibility requires a minimum age of ${minAge}.`;
+        this.isEligible = false;
+      }
+      return;
+    }
+  
+    const maxAgeMatch = /max\s*(\d+)/i.exec(criteria);
+    if (maxAgeMatch) {
+      const [, maxAge] = maxAgeMatch;
+      if (age <= +maxAge) {
+        this.eligibilityMessage = 'You are eligible!';
+        this.isEligible = true;
+        this.closeEligibilityOverlay();
+      } else {
+        this.eligibilityMessage = `Eligibility requires a maximum age of ${maxAge}.`;
+        this.isEligible = false;
+      }
+      return;
+    }
+  
+    const generalEligibility = /age\s*([^\d]+)/i.exec(criteria);
+    if (generalEligibility) {
+      const message = generalEligibility[1].trim();
+      this.eligibilityMessage = `Eligibility criteria: ${message}`;
+      this.isEligible = false;
+      return;
+    }
+  
+    this.eligibilityMessage = 'Unable to determine eligibility criteria.';
     this.isEligible = false;
-    this.eligibilityMessage = "You're not eligible for the policy.";
   }
+  
   
   onBuyNowClick() {
     if (this.isEligible) {
