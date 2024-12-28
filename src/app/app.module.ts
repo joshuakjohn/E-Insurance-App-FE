@@ -14,12 +14,18 @@ import { AppComponent } from './app.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginAndSignupComponent } from './components/login-and-signup/login-and-signup.component';
+import { PlanComponent } from './components/plan/plan.component';
+import { SchemeComponent } from './components/scheme/scheme.component';
+import { PolicyComponent } from './components/policy/policy.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
     LoginAndSignupComponent
+    PlanComponent,
+    SchemeComponent,
+    PolicyComponent,
   ],
   imports: [
     BrowserModule,
