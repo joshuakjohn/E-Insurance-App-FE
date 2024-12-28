@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common'; // Import Location service
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-policy',
@@ -7,31 +7,70 @@ import { Location } from '@angular/common'; // Import Location service
   styleUrls: ['./policy.component.scss']
 })
 export class PolicyComponent {
-  isBuyNowClicked = false; // Flag to track Buy Now button click state
-  isConfirmVisible = false; // Flag to track Confirm/Cancel button visibility
+  isBuyNowClicked = false;
+  isConfirmVisible = false;
+  isEligible = false;
+  isEligibilityOverlayVisible = false;
+  eligibilityMessage: string = '';
+  customerData = {
+    age: '',
+    income: 50000
+  };
 
   constructor(private location: Location) {}
 
-  // Handle Buy Now button click
-  onBuyNowClick() {
-    this.isBuyNowClicked = true; // Mark Buy Now button as clicked
-    this.isConfirmVisible = true; // Show Confirm/Cancel buttons
+  openEligibilityOverlay() {
+    this.isEligibilityOverlayVisible = true;
+    this.eligibilityMessage = '';
+    this.customerData.age = '';
   }
 
-  // Handle Confirm button click
+  closeEligibilityOverlay() {
+    this.isEligibilityOverlayVisible = false;
+  }
+
+  validateAge() {
+    const age = this.customerData.age;
+    if (age && isNaN(Number(age))) {
+      this.eligibilityMessage = 'Please enter a valid number for age.';
+    } else {
+      this.eligibilityMessage = '';
+    }
+  }
+
+  checkEligibility() {
+    const age = parseInt(this.customerData.age, 10);
+    if (isNaN(age)) {
+      this.eligibilityMessage = 'Please enter a valid age.';
+      return;
+    }
+    
+    if (age >= 18 && age <= 60) {
+      this.isEligible = true;
+      this.eligibilityMessage = 'You are eligible for the plan!';
+    } else {
+      this.isEligible = false;
+      this.eligibilityMessage = "You're not eligible for the policy.";
+    }
+  }
+
+  onBuyNowClick() {
+    if (this.isEligible) {
+      this.isBuyNowClicked = true;
+      this.isConfirmVisible = true;
+    }
+  }
+
   onConfirmClick() {
     alert('Purchase Confirmed!');
-    // Implement further confirmation logic as needed
   }
 
-  // Handle Cancel button click
   onCancelClick() {
-    this.isBuyNowClicked = false; // Hide Confirm/Cancel buttons
-    this.isConfirmVisible = false; // Hide Confirm/Cancel buttons
+    this.isBuyNowClicked = false;
+    this.isConfirmVisible = false;
   }
 
-  // Handle Go Back button click
   onGoBackClick() {
-    this.location.back(); 
+    this.location.back();
   }
 }

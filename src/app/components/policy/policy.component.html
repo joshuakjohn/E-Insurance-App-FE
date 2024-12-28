@@ -8,8 +8,11 @@
         <h1>Comprehensive Health Plan</h1>
         <span class="status">Active</span>
       </div>
+      <!-- Check Eligibility Button placed at the top-right -->
+      <button *ngIf="!isEligible" class="check-eligibility-btn" (click)="openEligibilityOverlay()">Check Eligibility</button>
     </div>
 
+    <!-- Always show the policy details -->
     <div class="policy-card-details">
       <div class="detail-card">
         <h2>₹10,00,000</h2>
@@ -34,14 +37,45 @@
       </ul>
     </div>
 
+    <!-- Disable Buy Now button if not eligible -->
     <div class="policy-card-actions">
-      <!-- Show Buy Now and Go Back buttons initially -->
-      <button *ngIf="!isBuyNowClicked" class="buy-now-btn" (click)="onBuyNowClick()">Buy Now</button>
+      <button
+        *ngIf="!isBuyNowClicked"
+        class="buy-now-btn"
+        (click)="onBuyNowClick()"
+        [disabled]="!isEligible"
+      >
+        Buy Now
+      </button>
       <button *ngIf="!isBuyNowClicked" class="go-back-btn" (click)="onGoBackClick()">Go Back</button>
 
-      <!-- Show Confirm and Cancel buttons after Buy Now is clicked -->
       <button *ngIf="isConfirmVisible" class="confirm-btn" (click)="onConfirmClick()">Confirm</button>
       <button *ngIf="isConfirmVisible" class="cancel-btn" (click)="onCancelClick()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Eligibility Overlay -->
+  <div *ngIf="isEligibilityOverlayVisible" class="overlay">
+    <div class="overlay-content">
+      <h2>Enter Your Age</h2>
+      <form (ngSubmit)="checkEligibility()">
+        <label for="age">Age:</label>
+        <input
+          type="text"
+          id="age"
+          name="age"
+          [(ngModel)]="customerData.age"
+          pattern="^[0-9]*$"   
+          required
+          (input)="validateAge()"
+        />
+        <button type="submit">Check Eligibility</button>
+      </form>
+      <div *ngIf="eligibilityMessage" class="eligibility-message">
+        <p>{{ eligibilityMessage }}</p>
+      </div>
+
+      <button class="close-overlay-btn" (click)="closeEligibilityOverlay()">Close</button>
     </div>
   </div>
 </div>
