@@ -10,7 +10,7 @@ import { HttpLoginService } from '../../services/http-services/http-login.servic
 })
 export class LoginAndSignupComponent {
 
-  role: string = ''
+  role: string = 'Customer'
 
   signinForm!: FormGroup;
   signupForm!: FormGroup
@@ -34,9 +34,9 @@ export class LoginAndSignupComponent {
         age: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
         region: ['', [Validators.required]],
         image: [''],
-        password: ['', [Validators.required]],
+        password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/)]],
         confirm: ['', [Validators.required]]
-      }, {updateOn: 'submit'})
+      })
     
 
     this.signinForm = this.formBuilder.group({
@@ -72,6 +72,7 @@ get signinFormControls() { return this.signinForm.controls; }
   }
 
   handleRegistration(){
+    if(this.signupForm.valid){
       const { signup_role, username, email, password, phno, age, region, image } = this.signupForm.value
       if(signup_role === 'Customer'){
         this.httpService.postApiCall(`/api/v1/customer/register`, {username, email, password, phno, age, region}).subscribe({
@@ -83,10 +84,12 @@ get signinFormControls() { return this.signinForm.controls; }
         }
       })
       }
+    }
   }
 
   handleSignin(){
     if(this.signinForm.valid){
+      console.log(this.signinForm.value)
       const { signin_role, email, password} = this.signinForm.value
       const role_lower = signin_role.toLowerCase()
       this.httpService.postApiCall(`/api/v1/${role_lower}`, {email, password}).subscribe({
