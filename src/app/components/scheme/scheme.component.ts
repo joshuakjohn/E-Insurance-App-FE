@@ -70,7 +70,7 @@ export class SchemeComponent implements OnInit {
     const lowerCaseCategory = this.planDetails.category.toLowerCase(); // Normalize the category
     switch (lowerCaseCategory) {
       case 'health':
-        return 'assets/health_scheme.jpeg';
+        return 'assets/health_scheme.jpg';
       case 'life':
         return 'assets/images/life_scheme.jpeg';
       case 'vehicle':
