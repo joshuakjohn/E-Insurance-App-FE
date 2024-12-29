@@ -23,4 +23,8 @@ getSchemeById(endpoint:string):Observable<any>{
 getCustomerById(endpoint:string,header:any):Observable<any>{
   return this.http.get('http://localhost:4000'+endpoint,header)
 }
+createPolicy(endpoint:string,data:any,headers:any):Observable<any>{
+  console.log(data)
+  return this.http.post('http://localhost:4000'+endpoint,data,headers)
+}
 }
