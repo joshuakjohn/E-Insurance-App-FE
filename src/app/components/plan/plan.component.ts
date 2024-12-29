@@ -35,7 +35,7 @@ export class PlanComponent implements OnInit {
 getImageUrl(category: string): string {
   switch (category) {
     case 'Health':
-      return 'assets/family-figure-shape-stethoscope-with-copy-space.jpg';  
+      return 'assets/istockphoto-1410693063-612x612.jpg';  
     case 'Life':
       return 'assets/life.jpeg';    // Replace with actual image URL for Life
     case 'Vehicle':

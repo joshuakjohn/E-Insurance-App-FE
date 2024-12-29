@@ -2,6 +2,7 @@ import { Component, Inject, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpLoginService } from '../../services/http-services/http.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-and-signup',
@@ -20,7 +21,8 @@ export class LoginAndSignupComponent {
     public formBuilder: FormBuilder,
     public cdr: ChangeDetectorRef,
     public dialogRef: MatDialogRef<LoginAndSignupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public router:Router
   ) {
 
   }
@@ -95,21 +97,32 @@ get signinFormControls() { return this.signinForm.controls; }
     }
   }
 
-  handleSignin(){
-    if(this.signinForm.valid){
-      const { signin_role, email, password} = this.signinForm.value
-      const role_lower = signin_role.toLowerCase()
-      this.httpService.postApiCall(`/api/v1/${role_lower}`, {email, password}).subscribe({
-        next: (res) => {
-          console.log(res)
+  handleSignin() {
+    if (this.signinForm.valid) {
+      const { signin_role, email, password } = this.signinForm.value;
+      const role_lower = signin_role.toLowerCase();
+  
+      this.httpService.postApiCall(`/api/v1/${role_lower}`, { email, password }).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          if (res.code === 200 && res.token) {
+            localStorage.setItem('authToken', res.token); 
+            this.dialogRef.close();
+            const redirectUrl = localStorage.getItem('redirectUrl') || '/dashboard/plans';
+            localStorage.removeItem('redirectUrl'); 
+            this.router.navigate([redirectUrl]);
+          } else {
+            console.log('Login failed', res.message);
+          }
         },
         error: (err) => {
-          console.log(err)
+          console.log(err);
         }
-      })
+      });
     }
   }
-
+  
+  
   onRoleChange(newRole: string) {
     console.log('Role changed to:', newRole);
     this.role = newRole;

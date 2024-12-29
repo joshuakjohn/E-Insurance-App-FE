@@ -1,47 +1,109 @@
 <div class="container">
   <div class="policy-card">
+    <!-- Header Section -->
     <div class="policy-card-header">
       <div class="icon">
         <img src="insurance-icon.png" alt="Policy Icon">
       </div>
       <div class="title">
-        <h1>Comprehensive Health Plan</h1>
+        <h1>{{ planDetails?.planName }}</h1>
         <span class="status">Active</span>
       </div>
+      <!-- Check Eligibility Button -->
+      <button *ngIf="!isEligible" class="check-eligibility-btn" (click)="openEligibilityOverlay()">Check Eligibility</button>
     </div>
-
     <div class="policy-card-details">
       <div class="detail-card">
-        <h2>₹10,00,000</h2>
+        <h2>₹{{ schemeDetails?.coverage }}</h2>
         <p>Total Coverage</p>
       </div>
       <div class="detail-card">
-        <h2>₹2,000</h2>
+        <h2>₹{{ schemeDetails?.premium }}</h2>
         <p>Monthly Premium</p>
       </div>
       <div class="detail-card">
-        <h2>24 months</h2>
+        <h2>{{ schemeDetails?.maturityPeriod }} years</h2>
         <p>Duration</p>
       </div>
     </div>
 
+    <!-- Benefits Section -->
     <div class="policy-card-benefits">
       <h2>Key Benefits</h2>
       <ul>
-        <li>✔ Free health check-ups</li>
-        <li>✔ Cashless hospital coverage</li>
+        <li>{{ schemeDetails?.description }}</li>
+        <li>{{ planDetails?.description }}</li>
         <li>✔ 24/7 customer support</li>
       </ul>
     </div>
 
-    <div class="policy-card-actions">
-      <!-- Show Buy Now and Go Back buttons initially -->
-      <button *ngIf="!isBuyNowClicked" class="buy-now-btn" (click)="onBuyNowClick()">Buy Now</button>
-      <button *ngIf="!isBuyNowClicked" class="go-back-btn" (click)="onGoBackClick()">Go Back</button>
+    <!-- Eligibility Criteria -->
+    <div class="policy-card-benefits">
+      <h2>Eligibility Criteria</h2>
+      <p>{{ schemeDetails?.eligibilityCriteria }}</p>
+    </div>
 
-      <!-- Show Confirm and Cancel buttons after Buy Now is clicked -->
-      <button *ngIf="isConfirmVisible" class="confirm-btn" (click)="onConfirmClick()">Confirm</button>
-      <button *ngIf="isConfirmVisible" class="cancel-btn" (click)="onCancelClick()">Cancel</button>
+    <!-- Action Buttons -->
+    <div class="policy-card-actions">
+      <button
+        *ngIf="!isBuyNowClicked"
+        class="buy-now-btn"
+        (click)="onBuyNowClick()"
+        [disabled]="!isEligible"
+      >
+        Buy Now
+      </button>
+      <button 
+        *ngIf="!isBuyNowClicked" 
+        class="go-back-btn" 
+        (click)="onGoBackClick()"
+      >
+        Go Back
+      </button>
+
+      <button 
+        *ngIf="isConfirmVisible" 
+        class="confirm-btn" 
+        (click)="onConfirmClick()"
+      >
+        Confirm
+      </button>
+      <button 
+        *ngIf="isConfirmVisible" 
+        class="cancel-btn" 
+        (click)="onCancelClick()"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- Eligibility Overlay -->
+  <div *ngIf="isEligibilityOverlayVisible" class="overlay">
+    <div class="overlay-content">
+      <h2>Enter Your Age</h2>
+      <form (ngSubmit)="checkEligibility()">
+        <label for="age">Age:</label>
+        <input
+        type="number"
+        id="age"
+        name="age"
+        [(ngModel)]="customerData.age"
+        required
+        (input)="validateAge()"
+      />
+        <button type="submit">Check Eligibility</button>
+      </form>
+      <div *ngIf="eligibilityMessage" class="eligibility-message">
+        <p>{{ eligibilityMessage }}</p>
+      </div>
+
+      <button 
+        class="close-overlay-btn" 
+        (click)="closeEligibilityOverlay()"
+      >
+        Close
+      </button>
     </div>
   </div>
 </div>

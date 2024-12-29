@@ -17,7 +17,7 @@ const routes: Routes = [
     children: [
       { path: 'plans', component: PlanComponent },
       { path: 'plans/:planId/scheme', component: SchemeComponent },
-      { path: 'plans/:planId/scheme/:schmeId/policy', component: PolicyComponent }
+      { path: 'plans/:planId/scheme/:schemeId/policy', component: PolicyComponent }
     ]
   }
 ];
