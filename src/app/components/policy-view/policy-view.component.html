@@ -1,13 +1,13 @@
 <div class="policy-container">
-    <div class="policy-card">
+    <div class="policy-card" *ngFor="let policy of policyDetails">
       <!-- Header Section -->
       <div class="policy-card-header">
         <div class="icon">
           <img src="path/to/icon.png" alt="Policy Icon" />
         </div>
         <div class="title">
-          <h2>Policy Name</h2>
-          <p class="status">Active</p>
+          <h2>{{ policy.policyName }}</h2>
+          <p class="status">{{ policy.status }}</p>
         </div>
       </div>
   
@@ -15,32 +15,30 @@
       <div class="policy-card-details">
         <div class="detail-card">
           <h3>Coverage</h3>
-          <p>Up to $500,000 in coverage</p>
+          <p>{{ policy.coverage }}</p>
         </div>
         <div class="detail-card">
           <h3>Duration</h3>
-          <p>1 Year</p>
+          <p>{{ policy.duration }} years</p>
         </div>
         <div class="detail-card">
           <h3>Premium</h3>
-          <p>$99/month</p>
+          <p>{{ policy.premiumAmount | currency }}</p>
         </div>
-      </div>
-  
-      <!-- Duration Section -->
-      <div class="policy-card-duration">
-        <h3>Policy Duration</h3>
-        <p>Valid for 12 months</p>
+        <div class="detail-card">
+          <h3>Premium Paid</h3>
+          <p>{{ policy.premiumPaid | currency }}</p>
+        </div>
+        <div class="detail-card">
+          <h3>Pending Premium</h3>
+          <p>{{ policy.pendingPremium | currency }}</p>
+        </div>
       </div>
   
       <!-- Benefits Section -->
       <div class="policy-card-benefits">
         <h3>Benefits</h3>
-        <ul>
-          <li>Free worldwide coverage</li>
-          <li>24/7 customer support</li>
-          <li>Comprehensive health coverage</li>
-        </ul>
+        <p>{{ policy.description }}</p>
       </div>
   
       <!-- Eligibility Section -->

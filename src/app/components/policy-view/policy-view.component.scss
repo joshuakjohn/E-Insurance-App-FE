@@ -1,176 +1,187 @@
-/* Main Container for Centering the Policy Card */
 .policy-container {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f4f8fb, #e3f2fd);
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
     align-items: flex-start;
     height: 100vh;
     margin: 0;
     color: #333;
+    gap: 5%;
 }
 
 .policy-card {
     width: 100%;
-    max-width: 450px;
-    margin-top:40px ;
+    max-width: 600px;
+    margin-top: 30px;
     background: #ffffff;
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    padding: 15px; /* Further reduced padding */
+    padding: 25px;
     transition: transform 0.3s, box-shadow 0.3s;
     border: 1px solid gray;
 }
 
 .policy-card:hover {
-    transform: translateY(-6px); /* Slightly reduced hover effect */
+    transform: translateY(-8px);
 }
 
-/* Header Section */
 .policy-card-header {
     display: flex;
     align-items: center;
-    margin-bottom: 8px; /* Further reduced margin */
+    margin-bottom: 12px;
 }
 
 .policy-card-header .icon img {
-    width: 40px; /* Further reduced size */
-    height: 40px; /* Further reduced size */
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
 }
 
 .policy-card-header .title {
-    margin-left: 8px; /* Further reduced space */
+    margin-left: 12px;
 }
 
 .policy-card-header h2 {
-    font-size: 20px; /* Further reduced font size */
+    font-size: 24px;
     font-weight: 700;
-    margin-bottom: 3px; /* Further reduced margin */
+    margin-bottom: 5px;
 }
 
 .policy-card-header .status {
-    font-size: 12px; /* Further reduced font size */
+    font-size: 14px;
     font-weight: 500;
     background-color: #ff9582;
-    padding: 3px 8px; /* Further reduced padding */
+    padding: 5px 10px;
     border-radius: 20px;
     color: white;
 }
 
-/* Details Section */
 .policy-card-details {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px; /* Further reduced gap */
-    margin-bottom: 8px; /* Further reduced margin */
+    gap: 15px;
+    margin-bottom: 15px;
     background-color: #e7f2f9;
-    padding: 10px; /* Further reduced padding */
+    padding: 15px;
     border-radius: 10px;
 }
 
 .policy-card-details .detail-card {
     background-color: #fafafa;
-    padding: 10px; /* Further reduced padding */
-    border-radius: 8px; /* Slightly reduced border radius */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.3s ease;
 }
 
 .policy-card-details .detail-card:hover {
-    transform: translateY(-6px); /* Slightly reduced hover effect */
+    transform: translateY(-8px);
 }
 
 .policy-card-details .detail-card h3 {
-    font-size: 18px; /* Further reduced font size */
+    font-size: 22px;
     font-weight: 600;
     color: #333;
 }
 
 .policy-card-details .detail-card p {
-    font-size: 11px; /* Further reduced font size */
+    font-size: 13px;
     color: #555;
-    margin-top: 4px; /* Reduced margin */
+    margin-top: 6px;
 }
 
-/* Duration Section */
 .policy-card-duration {
     text-align: center;
-    margin-bottom: 12px; /* Further reduced margin */
+    margin-bottom: 20px;
     background-color: #e2f3e1;
-    padding: 5px; /* Further reduced padding */
-    border-radius: 8px; /* Slightly reduced border radius */
+    padding: 8px;
+    border-radius: 10px;
 }
 
 .policy-card-duration h3 {
-    font-size: 18px; /* Further reduced font size */
+    font-size: 22px;
     font-weight: 600;
     color: #333;
 }
 
-/* Benefits Section */
 .policy-card-benefits {
-    margin-bottom: 12px; /* Further reduced margin */
+    margin-bottom: 20px;
     background-color: #f9f7e6;
-    padding: 8px; /* Further reduced padding */
-    border-radius: 8px; /* Slightly reduced border radius */
+    padding: 12px;
+    border-radius: 10px;
 }
 
 .policy-card-benefits h3 {
-    font-size: 20px; /* Further reduced font size */
+    font-size: 24px;
     font-weight: 700;
     color: #333;
-    margin-bottom: 8px; /* Further reduced margin */
+    margin-bottom: 12px;
 }
 
 .policy-card-benefits ul {
     list-style-type: disc;
-    padding-left: 18px; /* Further reduced padding */
-    margin-bottom: 10px; /* Further reduced margin */
+    padding-left: 22px;
+    margin-bottom: 12px;
 }
 
 .policy-card-benefits ul li {
-    font-size: 11px; /* Further reduced font size */
+    font-size: 14px;
     color: #555;
-    margin-bottom: 5px; /* Further reduced margin */
+    margin-bottom: 7px;
 }
 
-/* Eligibility Section */
 .policy-card-eligibility {
-    margin-bottom: 12px; /* Further reduced margin */
+    margin-bottom: 20px;
     background-color: #f4e0c1;
-    padding: 8px; /* Further reduced padding */
-    border-radius: 8px; /* Slightly reduced border radius */
+    padding: 12px;
+    border-radius: 10px;
 }
 
 .policy-card-eligibility h3 {
-    font-size: 20px; /* Further reduced font size */
+    font-size: 24px;
     font-weight: 700;
     color: #333;
-    margin-bottom: 8px; /* Further reduced margin */
+    margin-bottom: 12px;
 }
 
 .policy-card-eligibility p {
-    font-size: 11px; /* Further reduced font size */
+    font-size: 13px;
     color: #555;
 }
 
-/* Responsive Design */
+.policy-card-premium {
+    margin-bottom: 20px;
+    background-color: #e0f7fa;
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.policy-card-premium h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.policy-card-premium p {
+    font-size: 14px;
+    color: #555;
+}
+
 @media (max-width: 768px) {
     .policy-card {
         width: 95%;
-        padding: 12px; /* Further reduced padding */
+        padding: 18px;
     }
 
     .policy-card-details {
         grid-template-columns: 1fr 1fr;
     }
 
-    .policy-card-duration,
-    .policy-card-benefits,
-    .policy-card-eligibility {
-        margin-bottom: 8px; /* Further reduced margin */
+    .policy-card-premium {
+        margin-bottom: 12px;
     }
 }
