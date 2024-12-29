@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 import { HttpHeaders } from '@angular/common/http';
 
@@ -21,13 +21,15 @@ export class PolicyComponent implements OnInit {
 
   planDetails: any;
   schemeDetails: any;
+  policyDetails: any;
 
   headers: HttpHeaders;
 
   constructor(
     private location: Location,
     private route: ActivatedRoute,
-    private httpService: HttpService
+    private httpService: HttpService,
+    private router: Router
   ) {
     const authToken = localStorage.getItem('authToken');
     this.headers = authToken
@@ -188,7 +190,8 @@ export class PolicyComponent implements OnInit {
 
     this.httpService.createPolicy('/api/v1/policy', data, { headers: this.headers }).subscribe({
       next: (res) => {
-        console.log('Policy created successfully', res);
+       this.policyDetails=res.data
+       this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.schemeId}/policy/view`])
       },
       error: (err) => {
         console.error('Error creating policy', err);

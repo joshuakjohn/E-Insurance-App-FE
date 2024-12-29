@@ -4,6 +4,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
 import { PlanComponent } from './components/plan/plan.component';
 import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
+import { PolicyViewComponent } from './components/policy-view/policy-view.component';
 
 const routes: Routes = [
   {
@@ -17,7 +18,8 @@ const routes: Routes = [
     children: [
       { path: 'plans', component: PlanComponent },
       { path: 'plans/:planId/scheme', component: SchemeComponent },
-      { path: 'plans/:planId/scheme/:schemeId/policy', component: PolicyComponent }
+      { path: 'plans/:planId/scheme/:schemeId/policy', component: PolicyComponent },
+      { path: 'plans/:planId/scheme/:schemeId/policy/view', component: PolicyViewComponent },
     ]
   }
 ];
