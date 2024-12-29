@@ -20,4 +20,7 @@ getPlanById(endpoint:string):Observable<any>{
 getSchemeById(endpoint:string):Observable<any>{
   return this.http.get('http://localhost:4000'+endpoint)
 }
+getCustomerById(endpoint:string,header:any):Observable<any>{
+  return this.http.get('http://localhost:4000'+endpoint,header)
+}
 }

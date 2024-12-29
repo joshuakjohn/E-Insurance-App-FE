@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-policy',
@@ -14,11 +15,7 @@ export class PolicyComponent implements OnInit {
   isEligible = false;
   isEligibilityOverlayVisible = false;
   eligibilityMessage: string = '';
-  customerData = {
-    age: '',
-    income: 50000
-  };
-
+  customerData: any = {};  // Initialize customerData as an empty object
   planId!: string | null;
   schemeId!: string | null;
 
@@ -36,6 +33,7 @@ export class PolicyComponent implements OnInit {
     this.schemeId = this.route.snapshot.paramMap.get('schemeId');
     this.fetchPlanDetails();
     this.fetchSchemeDetails();
+    this.fetchCustomerDetails();  // Call to fetch customer data on init
   }
 
   fetchPlanDetails(): void {
@@ -68,10 +66,34 @@ export class PolicyComponent implements OnInit {
     }
   }
 
+  fetchCustomerDetails(): void {
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      console.error('Authorization token is missing');
+      return;
+    }
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${authToken}`
+    });
+    this.httpService.getCustomerById('/api/v1/customer/getcustomer', { headers }).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.customerData = res.data;
+        }
+      },
+      error: (err: any) => {
+        console.error('Error fetching customer details:', err);
+      }
+    });
+  }
+  
   openEligibilityOverlay() {
     this.isEligibilityOverlayVisible = true;
     this.eligibilityMessage = '';
-    this.customerData.age = '';
+    if (this.customerData) {
+      this.customerData.age = '';  
+    }
   }
 
   closeEligibilityOverlay() {
@@ -86,18 +108,21 @@ export class PolicyComponent implements OnInit {
       this.eligibilityMessage = '';
     }
   }
+
   checkEligibility() {
     const criteria = this.schemeDetails?.eligibilityCriteria;
   
     if (!criteria) {
       this.eligibilityMessage = 'Eligibility criteria not provided.';
+      this.isEligible = false;
       return;
     }
   
-    const age = +this.customerData.age;
+    const age = Number(this.customerData.age);
   
     if (isNaN(age)) {
       this.eligibilityMessage = 'Please enter a valid age.';
+      this.isEligible = false;
       return;
     }
   
@@ -154,7 +179,6 @@ export class PolicyComponent implements OnInit {
     this.eligibilityMessage = 'Unable to determine eligibility criteria.';
     this.isEligible = false;
   }
-  
   
   onBuyNowClick() {
     if (this.isEligible) {
