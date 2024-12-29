@@ -1,7 +1,7 @@
 .scheme-card {
   position: relative;
   display: flex;
-  flex-direction: row; /* Arrange content side by side */
+  flex-direction: row;
   width: 100%;
   max-width: 1400px;
   margin: 20px auto;
@@ -9,30 +9,37 @@
   overflow: hidden;
   font-family: 'Arial', sans-serif;
   height: 300px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: pink;
 }
 
 .scheme-details {
   position: relative;
   z-index: 1;
-  flex: 0 0 30%; /* Content area takes up 30% of the width */
+  flex: 0 0 30%;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.6); /* Dark overlay for content */
-  color: white;
-  border-radius: 10px 0 0 10px; /* Rounded corners for the left side */
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 8px 0 0 8px;
+  color: #333;
 }
 
-.scheme-details h2 {
-  font-size: 1.6rem;
-  color: #ffcc00;
-  margin: 0 0 10px;
-}
-
-.scheme-details p {
-  font-size: 1rem;
-  margin: 5px 0;
-  color: #ddd;
+.scheme-background {
+  flex: 1;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 0 10px 10px 0;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .view-details {
@@ -51,25 +58,13 @@
   background-color: #ff9900;
 }
 
-/* Background Image Section */
-.scheme-background {
-  flex: 1; 
-  height: 100%; 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 0 10px 10px 0;
-  opacity: 45%; 
-}
-
-/* Unique Overlay Styling */
 .unique-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(255, 255, 255, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -82,12 +77,13 @@
   flex-direction: column;
   width: 50%;
   max-height: 85%;
-  background: #222;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 20px;
+  border: 1px solid #bbb;
 }
 
 .overlay-content::-webkit-scrollbar {
@@ -102,26 +98,24 @@
   border-radius: 8px;
 }
 
-/* Details Section */
 .overlay-details {
   flex: 1;
-  color: #fff;
+  color: #333;
   font-family: 'Arial', sans-serif;
 }
 
 .overlay-details h2 {
   font-size: 1.8rem;
   margin-bottom: 10px;
-  color: #ffcc00;
+  color: #ff6600;
 }
 
 .overlay-details p {
   font-size: 1rem;
   margin-bottom: 8px;
-  color: #ddd;
+  color: #666;
 }
 
-/* Common Button Styles */
 .overlay-details button {
   width: 140px;
   height: 50px;
@@ -136,7 +130,6 @@
   margin: 0 10px;
 }
 
-/* Unique Buy Button */
 .overlay-details .buy {
   background-color: #28a745;
   color: #fff;
@@ -148,7 +141,6 @@
   transform: scale(1.02);
 }
 
-/* Unique Cancel Button */
 .overlay-details .close-btn {
   background-color: #ff0000;
   color: #fff;
@@ -156,12 +148,11 @@
 }
 
 .overlay-details .close-btn:hover {
-  background-color: #ff0000;
+  background-color: #ff4d4d;
   color: #fff;
   transform: scale(1.02);
 }
 
-/* Container for Buttons */
 .button-container {
   display: flex;
   justify-content: center;
