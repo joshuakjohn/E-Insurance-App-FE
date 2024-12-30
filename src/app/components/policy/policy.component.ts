@@ -172,6 +172,10 @@ export class PolicyComponent implements OnInit {
       this.isBuyNowClicked = true;
       this.isConfirmVisible = true;
     }
+    if (this.isEligible) {
+      this.isBuyNowClicked = true;
+      this.isConfirmVisible = true;
+    }
   }
 
   onConfirmClick() {
@@ -203,9 +207,12 @@ export class PolicyComponent implements OnInit {
   onCancelClick() {
     this.isBuyNowClicked = false;
     this.isConfirmVisible = false;
+    this.isBuyNowClicked = false;
+    this.isConfirmVisible = false;
   }
 
   onGoBackClick() {
+    this.location.back();
     this.location.back();
   }
 }

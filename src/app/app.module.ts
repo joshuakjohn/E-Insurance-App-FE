@@ -18,6 +18,7 @@ import { PlanComponent } from './components/plan/plan.component';
 import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
 import { PolicyViewComponent } from './components/policy-view/policy-view.component';
+import { AgentComponent } from './components/agent/agent.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { PolicyViewComponent } from './components/policy-view/policy-view.compon
     SchemeComponent,
     PolicyComponent,
     PolicyViewComponent,
+    AgentComponent,
   ],
   imports: [
     BrowserModule,

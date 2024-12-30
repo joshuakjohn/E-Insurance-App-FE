@@ -19,12 +19,12 @@ export class PlanComponent implements OnInit {
   fetchPlans(): void {
     this.httpService.getAllPlan('/api/v1/plan').subscribe({
       next: (res: any) => {
-        if (res.code === 200) {
-          this.plans = res.data.map((plan: any) => ({
-            ...plan,
-            imageUrl: this.getImageUrl(plan.category), // Assigning an image URL based on the category
-          }));
+        this.plans = res.data
+        this.plans.map((plan: any) => {
+          const title = plan.planName.replaceAll(' ', '-')
+          plan.backgroundImage = `../../../assets/${title}.jpg`
         }
+        )
       },
       error: (err: any) => {
         console.error('Error fetching plans:', err);
@@ -32,18 +32,6 @@ export class PlanComponent implements OnInit {
     });
   }
 
-getImageUrl(category: string): string {
-  switch (category) {
-    case 'Health':
-      return 'assets/istockphoto-1410693063-612x612.jpg';  
-    case 'Life':
-      return 'assets/life.jpeg';    // Replace with actual image URL for Life
-    case 'Vehicle':
-      return 'assets/vehicle.jpg'; // Replace with actual image URL for Vehicle
-    default:
-      return 'assets/default-image.jpg'; // Default image if no match
-  }
-}
 viewScheme(planId: string) {
   if (!planId) {
     console.error('Invalid planId:', planId);
@@ -53,3 +41,6 @@ viewScheme(planId: string) {
 }
 
 }
+
+
+
