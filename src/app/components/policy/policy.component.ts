@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 import { HttpHeaders } from '@angular/common/http';
 
@@ -15,25 +15,37 @@ export class PolicyComponent implements OnInit {
   isEligible = false;
   isEligibilityOverlayVisible = false;
   eligibilityMessage: string = '';
-  customerData: any = {};  // Initialize customerData as an empty object
+  customerData: any = {};
   planId!: string | null;
   schemeId!: string | null;
 
   planDetails: any;
   schemeDetails: any;
+  policyDetails: any;
+
+  headers: HttpHeaders;
 
   constructor(
     private location: Location,
     private route: ActivatedRoute,
-    public httpService: HttpService
-  ) {}
+    private httpService: HttpService,
+    private router: Router
+  ) {
+    const authToken = localStorage.getItem('authToken');
+    this.headers = authToken
+      ? new HttpHeaders().set('Authorization', `Bearer ${authToken}`)
+      : new HttpHeaders();
+    if (!authToken) {
+      console.error('Authorization token is missing');
+    }
+  }
 
   ngOnInit(): void {
     this.planId = this.route.snapshot.paramMap.get('planId');
     this.schemeId = this.route.snapshot.paramMap.get('schemeId');
     this.fetchPlanDetails();
     this.fetchSchemeDetails();
-    this.fetchCustomerDetails();  // Call to fetch customer data on init
+    this.fetchCustomerDetails();
   }
 
   fetchPlanDetails(): void {
@@ -46,7 +58,7 @@ export class PolicyComponent implements OnInit {
         },
         error: (err: any) => {
           console.error('Error fetching plan details:', err);
-        },
+        }
       });
     }
   }
@@ -61,22 +73,18 @@ export class PolicyComponent implements OnInit {
         },
         error: (err: any) => {
           console.error('Error fetching scheme details:', err);
-        },
+        }
       });
     }
   }
 
   fetchCustomerDetails(): void {
-    const authToken = localStorage.getItem('authToken');
-    if (!authToken) {
+    if (!this.headers.has('Authorization')) {
       console.error('Authorization token is missing');
       return;
     }
-  
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${authToken}`
-    });
-    this.httpService.getCustomerById('/api/v1/customer/getcustomer', { headers }).subscribe({
+
+    this.httpService.getCustomerById('/api/v1/customer/getcustomer', { headers: this.headers }).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
           this.customerData = res.data;
@@ -87,12 +95,12 @@ export class PolicyComponent implements OnInit {
       }
     });
   }
-  
+
   openEligibilityOverlay() {
     this.isEligibilityOverlayVisible = true;
     this.eligibilityMessage = '';
     if (this.customerData) {
-      this.customerData.age = '';  
+      this.customerData.age = '';
     }
   }
 
@@ -102,85 +110,68 @@ export class PolicyComponent implements OnInit {
 
   validateAge() {
     const age = this.customerData.age;
-    if (age && isNaN(Number(age))) {
-      this.eligibilityMessage = 'Please enter a valid number for age.';
-    } else {
-      this.eligibilityMessage = '';
-    }
+    this.eligibilityMessage = age && isNaN(Number(age)) ? 'Please enter a valid number for age.' : '';
   }
 
   checkEligibility() {
     const criteria = this.schemeDetails?.eligibilityCriteria;
-  
+
     if (!criteria) {
       this.eligibilityMessage = 'Eligibility criteria not provided.';
       this.isEligible = false;
       return;
     }
-  
+
     const age = Number(this.customerData.age);
-  
+
     if (isNaN(age)) {
       this.eligibilityMessage = 'Please enter a valid age.';
       this.isEligible = false;
       return;
     }
-  
-    const rangeMatch = /(\d+)\s*(to|[-–])\s*(\d+)\s*(age|years)?\s*(people|pepole)?/i.exec(criteria);
+
+    const rangeMatch = /(\d+)\s*(to|[-–])\s*(\d+)\s*(age|years)?/i.exec(criteria);
     if (rangeMatch) {
-      const [_, minAge, word, maxAge] = rangeMatch;
-      if (age >= +minAge && age <= +maxAge) {
-        this.eligibilityMessage = 'You are eligible!';
-        this.isEligible = true;
-        this.closeEligibilityOverlay();
-      } else {
-        this.eligibilityMessage = `Eligibility requires age between ${minAge} and ${maxAge}.`;
-        this.isEligible = false;
-      }
+      const [, minAge, , maxAge] = rangeMatch;
+      this.isEligible = age >= +minAge && age <= +maxAge;
+      this.eligibilityMessage = this.isEligible
+        ? 'You are eligible!'
+        : `Eligibility requires age between ${minAge} and ${maxAge}.`;
+      if (this.isEligible) this.closeEligibilityOverlay();
       return;
     }
-  
+
     const minAgeMatch = /min\s*(\d+)/i.exec(criteria);
     if (minAgeMatch) {
       const [, minAge] = minAgeMatch;
-      if (age >= +minAge) {
-        this.eligibilityMessage = 'You are eligible!';
-        this.isEligible = true;
-        this.closeEligibilityOverlay();
-      } else {
-        this.eligibilityMessage = `Eligibility requires a minimum age of ${minAge}.`;
-        this.isEligible = false;
-      }
+      this.isEligible = age >= +minAge;
+      this.eligibilityMessage = this.isEligible
+        ? 'You are eligible!'
+        : `Eligibility requires a minimum age of ${minAge}.`;
+      if (this.isEligible) this.closeEligibilityOverlay();
       return;
     }
-  
+
     const maxAgeMatch = /max\s*(\d+)/i.exec(criteria);
     if (maxAgeMatch) {
       const [, maxAge] = maxAgeMatch;
-      if (age <= +maxAge) {
-        this.eligibilityMessage = 'You are eligible!';
-        this.isEligible = true;
-        this.closeEligibilityOverlay();
-      } else {
-        this.eligibilityMessage = `Eligibility requires a maximum age of ${maxAge}.`;
-        this.isEligible = false;
-      }
+      this.isEligible = age <= +maxAge;
+      this.eligibilityMessage = this.isEligible
+        ? 'You are eligible!'
+        : `Eligibility requires a maximum age of ${maxAge}.`;
+      if (this.isEligible) this.closeEligibilityOverlay();
       return;
     }
-  
-    const generalEligibility = /age\s*([^\d]+)/i.exec(criteria);
-    if (generalEligibility) {
-      const message = generalEligibility[1].trim();
-      this.eligibilityMessage = `Eligibility criteria: ${message}`;
-      this.isEligible = false;
-      return;
-    }
-  
+
     this.eligibilityMessage = 'Unable to determine eligibility criteria.';
     this.isEligible = false;
   }
-  
+
   onBuyNowClick() {
+    if (this.isEligible) {
+      this.isBuyNowClicked = true;
+      this.isConfirmVisible = true;
+    }
     if (this.isEligible) {
       this.isBuyNowClicked = true;
       this.isConfirmVisible = true;
@@ -188,15 +179,40 @@ export class PolicyComponent implements OnInit {
   }
 
   onConfirmClick() {
-    alert('Purchase Confirmed!');
+    console.log(this.schemeDetails)
+    const data = {
+      planId: this.planId,
+      schemeId: this.schemeId,
+      customerId: this.customerData._id,
+      agentId: this.customerData.agentId,
+      policyName: this.schemeDetails.schemeName,
+      description: this.schemeDetails.description,
+      premiumAmount: this.schemeDetails.premium,
+      duration: this.schemeDetails.maturityPeriod,
+      coverage: this.schemeDetails.coverage
+    };
+
+    this.httpService.createPolicy('/api/v1/policy', data, { headers: this.headers }).subscribe({
+      next: (res) => {
+       this.policyDetails=res.data
+       this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.schemeId}/policy/view`])
+      },
+      error: (err) => {
+        console.error('Error creating policy', err);
+        console.error('Response body:', err.error);
+      }
+    });
   }
 
   onCancelClick() {
     this.isBuyNowClicked = false;
     this.isConfirmVisible = false;
+    this.isBuyNowClicked = false;
+    this.isConfirmVisible = false;
   }
 
   onGoBackClick() {
+    this.location.back();
     this.location.back();
   }
 }

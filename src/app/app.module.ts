@@ -22,6 +22,8 @@ import { FormsModule } from '@angular/forms';
 import { AdminComponent } from './components/admin/admin.component';
 import { PlanFormComponent } from './components/admin/plan-form/plan-form.component';
 import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.component';
+import { PolicyViewComponent } from './components/policy-view/policy-view.component';
+import { AgentComponent } from './components/agent/agent.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.
     AdminComponent,
     PlanFormComponent,
     SchemeFormComponent,
+    PolicyViewComponent,
+    AgentComponent,
   ],
   imports: [
     BrowserModule,
