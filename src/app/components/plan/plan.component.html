@@ -1,17 +1,16 @@
 <div class="plans">
-    <div *ngFor="let plan of plans" class="plan" 
-         [ngStyle]="{ 'background-image': 'url(' + plan.imageUrl + ')' }">
-      <h3 class="plan-title">{{ plan.planName }}</h3>
-      <p class="plan-description">{{ plan.description }}</p>
-  
-      <div class="text">
-        <pre class="plan-details">
-          <br>✔    {{ plan.category }} plan<br><br>
-        </pre>
-      </div>
-  
-      <button class="explore" (click)="viewScheme(plan._id)">View</button>
+  <div *ngFor="let plan of plans" class="plan" [ngStyle]="{ 'background-image': 'url(' + plan.backgroundImage + ')' }">
+    <h3 class="plan-title">{{ plan.planName }}</h3>
+    <p class="plan-category">{{ plan.category }}</p>
+
+    <div class="text">
+      <pre class="plan-details" *ngFor="let highlight of plan.highlight">
+        ✔    {{ highlight }}
+      </pre>
     </div>
-    <router-outlet></router-outlet>
+    <div class="explore">
+      <button  (click)="viewScheme(plan._id)">View</button>
+    </div>
   </div>
-  
+  <router-outlet></router-outlet>
+</div>
