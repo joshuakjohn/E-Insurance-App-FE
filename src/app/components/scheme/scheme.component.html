@@ -7,17 +7,13 @@
     <p>Premium: ₹{{ scheme.premium }}</p>
     <p>Maturity Period: {{ scheme.maturityPeriod }} months</p>
     <p>Coverage: ₹{{ scheme.coverage }}</p>
-    <!-- View Details Button -->
     <button class="view-details" (click)="openDetailOverlay(scheme)">
       View Details
     </button>
   </div>
-
-  <!-- Background Image Section -->
   <div class="scheme-background" [style.backgroundImage]="'url(' + getPlanImage() + ')'"></div>
 </div>
 
-<!-- Overlay Section -->
 <div class="unique-overlay" *ngIf="isOverlayVisible">
   <div class="overlay-content">
     <div class="overlay-image">
@@ -30,10 +26,7 @@
       <p>Premium: ₹{{ selectedScheme.premium }}</p>
       <p>Maturity Period: {{ selectedScheme.maturityPeriod }} months</p>
       <p>Coverage: ₹{{ selectedScheme.coverage }}</p>
-
-      <!-- Buttons -->
       <div class="button-container">
-        <!-- Use selectedScheme.id for navigation -->
         <button (click)="navigateToPolicy(selectedScheme._id)" class="buy-btn">Buy</button>
         <button class="close-btn" (click)="closeOverlay()">Cancel</button>
       </div>
