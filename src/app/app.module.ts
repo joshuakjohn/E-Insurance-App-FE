@@ -17,6 +17,7 @@ import { LoginAndSignupComponent } from './components/login-and-signup/login-and
 import { PlanComponent } from './components/plan/plan.component';
 import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
+import { PolicyViewComponent } from './components/policy-view/policy-view.component';
 import { AgentComponent } from './components/agent/agent.component';
 
 @NgModule({
@@ -27,6 +28,7 @@ import { AgentComponent } from './components/agent/agent.component';
     PlanComponent,
     SchemeComponent,
     PolicyComponent,
+    PolicyViewComponent,
     AgentComponent,
   ],
   imports: [
