@@ -6,6 +6,7 @@ import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
 import { PolicyViewComponent } from './components/policy-view/policy-view.component';
 import { AgentComponent } from './components/agent/agent.component';
+import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
 
 const routes: Routes = [
   {
@@ -14,13 +15,22 @@ const routes: Routes = [
     pathMatch: 'full', 
   },
   {
+    path: 'customerdashboard', 
+    component: CustomerDashboardComponent, 
+    children: [
+      {
+        path: 'policy',  
+        component: PolicyViewComponent
+      }
+    ]
+  },
+  {
     path: 'dashboard', 
     component: HomePageComponent,
     children: [
       { path: 'plans', component: PlanComponent },
       { path: 'plans/:planId/scheme', component: SchemeComponent },
       { path: 'plans/:planId/scheme/:schemeId/policy', component: PolicyComponent },
-      { path: 'plans/:planId/scheme/:schemeId/policy/view', component: PolicyViewComponent },
     ]
   },
   { path: 'agent', component: AgentComponent }

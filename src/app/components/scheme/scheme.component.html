@@ -1,4 +1,5 @@
 <!-- Scheme Card List -->
+ <div class="container">
 <div *ngFor="let scheme of schemes" class="scheme-card">
   <div class="scheme-details">
     <h2>{{ scheme.schemeName }}</h2>
@@ -12,6 +13,7 @@
     </button>
   </div>
   <div class="scheme-background" [style.backgroundImage]="'url(' + getPlanImage() + ')'"></div>
+</div>
 </div>
 
 <div class="unique-overlay" *ngIf="isOverlayVisible">
