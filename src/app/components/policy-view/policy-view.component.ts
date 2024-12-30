@@ -16,6 +16,8 @@ export class PolicyViewComponent implements OnInit {
   authToken: string | null = '';
   headers: HttpHeaders;
   activeTab: string = 'active';
+  isOverlayVisible: boolean = false; 
+  selectedPolicy: any = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,10 +46,8 @@ export class PolicyViewComponent implements OnInit {
     }
     this.httpService.getPolicyCustomer('/api/v1/policy', { headers: this.headers }).subscribe({
       next: (res: any) => {
-        console.log('API Response:', res); // Debugging: Log the API response
         if (res.code === 200) {
-          this.policyDetails = res.data; // Ensure the structure matches
-          console.log('Policy Details:', this.policyDetails); // Debugging: Log the parsed data
+          this.policyDetails = res.data; 
         } else {
           this.errorMessage = 'Unable to fetch policy details.';
         }
@@ -58,7 +58,6 @@ export class PolicyViewComponent implements OnInit {
       }
     });
   }
-  
 
   onGoBack(): void {
     this.location.back();
@@ -75,4 +74,33 @@ export class PolicyViewComponent implements OnInit {
   switchTab(tab: string) {
     this.activeTab = tab;
   }
+
+  isPremiumDue(createdAt: Date): boolean {
+    const currentDate = new Date();
+    const createdDate = new Date(createdAt);
+  
+    // Calculate the difference in time
+    const timeDifference = currentDate.getTime() - createdDate.getTime();
+  
+    // Convert the time difference to days
+    const dayDifference = timeDifference / (1000 * 3600 * 24);
+  
+    // Check if the difference is exactly 25 days
+    return dayDifference >= 0;
+  }
+
+  showOverlay(policy: any): void {
+    this.selectedPolicy = policy; 
+    this.isOverlayVisible = true;
+  }
+
+  closeOverlay(): void {
+    this.isOverlayVisible = false; 
+  }
+
+  payPremium(policy: any): void {
+    console.log(`Paying premium for policy: ${policy.policyName}`);
+   
+    this.closeOverlay(); 
+  }  
 }
