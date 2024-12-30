@@ -52,9 +52,17 @@
 
     .plans{
         width: calc(100vw - 70px);
-        height: 400px;
+        // height: 400px;
         border-radius: 30px;
         background-color: rgb(255, 255, 255);
+
+        app-admin {
+            margin-top: 25px; /* Ensure no extra spacing */
+            display: flex;
+            flex-direction: column; /* Keep its children structured as needed */
+            align-items: flex-start; /* Align content to the left */
+        }
+    
     }
 }
 

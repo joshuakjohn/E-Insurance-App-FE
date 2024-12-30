@@ -1,23 +1,25 @@
 body {
-    background-color: black; 
-    color: white; 
+    background-color: white; 
+    color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
-}
+  }
   
-.plan-form-container {
-    background-color: #1e1e1e; 
+  .plan-form-container {
+    background-color: white; 
     padding: 30px;
     border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
     width: 400px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
   
     h2 {
       text-align: center;
       margin-bottom: 20px;
-      color: white;
+      color: #333;
       font-size: 1.5rem;
     }
   
@@ -26,62 +28,70 @@ body {
       flex-direction: column;
       gap: 20px;
   
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        
-            label {
-                font-size: 16px;
-                color: #e0e0e0;
-                margin-top: 15px;
-                margin-bottom: 5px;
-            }
-    
-            input, textarea {
-                padding: 10px;
-                background-color: #333;
-                border: 1px solid #555;
-                border-radius: 4px;
-                color: rgba(255, 255, 255, 0.715);
-                font-size: 14px;
-                transition: border-color 0.3s ease, background-color 0.3s ease;
-                
-                &:focus {
-                    border-color: #66bb6a;
-                    outline: none;
-                }
-            }
-    
-            textarea {
-                min-height: 100px;
-            }
-    
-            .error {
-                margin-top: 5px;
-                font-size: 12px;
-                color: #e57373;
-            }
-        }
-    
-        button {
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 16px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-
-            &.createplanbutton {
-                background-color: #3a9f3d;
-    
-                &:hover {
-                    background-color: #388439;
-                }
-            }
-        }
-    }
-   
-}
+      .form-group {
+        display: flex;
+        flex-direction: column;
   
- 
+        label {
+          font-size: 16px;
+          color: #555;
+          margin-bottom: 5px;
+          margin-top: 10px;
+        }
+  
+        input,
+        textarea {
+          padding: 10px;
+          background-color: #f9f9f9;
+          border: 1px solid #ccc; 
+          border-radius: 4px;
+          color: #333; 
+          font-size: 14px;
+          transition: border-color 0.3s ease;
+  
+          &:focus {
+            border-color: #007bff; 
+            outline: none;
+          }
+        }
+  
+        textarea {
+          min-height: 100px;
+        }
+  
+        .error {
+          margin-top: 5px;
+          font-size: 12px;
+          color: #d9534f;
+        }
+      }
+  
+      button {
+        padding: 10px 15px;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+  
+        &.createplanbutton {
+          background-color: #007bff;
+          color: #fff;
+  
+          &:hover {
+            background-color: #0056b3; 
+          }
+        }
+
+        &.cancelbutton {
+            background-color: #e0e0e0; 
+            color: 555; 
+
+            &:hover {
+                background-color: #d6d6d6; 
+            }
+        }
+      }
+    }
+  }
   

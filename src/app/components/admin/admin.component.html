@@ -1,5 +1,5 @@
-<body>
-    <div class="dark-theme">
+<!-- <body>
+    <div class="light-theme">
       <div class="add-plan-box" routerLink="/dashboard/admin/add-plan">
         <span>Add New Plan</span>
       </div>
@@ -7,4 +7,15 @@
         <span>Add Scheme</span>
       </div>
     </div>
+</body> -->
+
+<body>
+  <div class="light-theme">
+    <div class="nav-item" routerLink="/dashboard/admin/add-plan" [class.active]="currentRoute === '/dashboard/admin/add-plan'">
+      <span>ADD NEW PLAN</span>
+    </div>
+    <div class="nav-item" routerLink="/dashboard/admin/add-scheme" [class.active]="currentRoute === '/dashboard/admin/add-scheme'">
+      <span>ADD SCHEME</span>
+    </div>
+  </div>
 </body>
