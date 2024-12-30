@@ -7,7 +7,9 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,6 +21,7 @@ import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
 import { PolicyViewComponent } from './components/policy-view/policy-view.component';
 import { AgentComponent } from './components/agent/agent.component';
+import { CustomerpolicyComponent } from './components/agent/customerpolicy/customerpolicy.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,7 @@ import { AgentComponent } from './components/agent/agent.component';
     PolicyComponent,
     PolicyViewComponent,
     AgentComponent,
+    CustomerpolicyComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,10 @@ import { AgentComponent } from './components/agent/agent.component';
     MatInputModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]
