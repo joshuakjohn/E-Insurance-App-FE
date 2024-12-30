@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http-service/http.service';
 
@@ -11,6 +11,7 @@ import { HttpService } from 'src/app/services/http-service/http.service';
 export class PlanFormComponent {
   planForm!: FormGroup;
   isFormSubmitted = false;
+  highlights: string[] = [];
   
   constructor(private formBuilder: FormBuilder, private httpService: HttpService, private router: Router) { }
 
@@ -20,18 +21,35 @@ export class PlanFormComponent {
       description: [''],
       category: ['', Validators.required]
     });
+    this.addHighlight();
   }
 
   get planFormControls() {
     return this.planForm.controls;
   }
 
+  addHighlight(): void {
+    if (this.highlights.length < 5) {
+      const highlightControlName = `highlight${this.highlights.length}`;
+      this.planForm.addControl(highlightControlName, new FormControl(''));
+      this.highlights.push(highlightControlName);
+    }
+  }
+
+  removeHighlight(index: number): void {
+    const highlightControlName = this.highlights[index];
+    this.planForm.removeControl(highlightControlName);
+    this.highlights.splice(index, 1);
+  }
+
+
   handleSubmit() {
     this.isFormSubmitted = true;
     if (this.planForm.valid) {
       const { planName, description, category } = this.planForm.value;
-    
-      const payload: { planName: string; category: string; description?: string } = {planName, category};
+      const highlights = this.highlights.map(h => this.planForm.get(h)?.value).filter(h => h);
+
+      const payload: { planName: string; category: string; description?: string; highlights?: string[] } = {planName, category, highlights};
     
       // Add description if it's not empty
       if (description) {
