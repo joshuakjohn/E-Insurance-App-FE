@@ -1,15 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpLoginService {
+export class HttpService {
 
   constructor(public http: HttpClient) { }
 
-  postApiCall<T>(endpoint: string, data: any){
-    return this.http.post<T>('http://localhost:4000'+endpoint, data)
+  postApiCall(endpoint: string, data: any){
+    return this.http.post('http://localhost:4000'+endpoint, data)
+  }
+
+  getApiCall(endpoint: string, headers: HttpHeaders){
+    return this.http.get('http://localhost:4000'+endpoint, { headers })
   }
 }

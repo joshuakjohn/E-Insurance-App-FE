@@ -1,7 +1,7 @@
 import { Component, Inject, ChangeDetectorRef } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpLoginService } from '../../services/http-services/http.service';
+import { HttpService } from '../../services/http-services/http.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,7 +17,7 @@ export class LoginAndSignupComponent {
   signupForm!: FormGroup
 
   constructor(
-    public httpService: HttpLoginService,
+    public httpService: HttpService,
     public formBuilder: FormBuilder,
     public cdr: ChangeDetectorRef,
     public dialogRef: MatDialogRef<LoginAndSignupComponent>,
