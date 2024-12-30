@@ -49,7 +49,7 @@ export class PlanFormComponent {
       const { planName, description, category } = this.planForm.value;
       const highlights = this.highlights.map(h => this.planForm.get(h)?.value).filter(h => h);
 
-      const payload: { planName: string; category: string; description?: string; highlights?: string[] } = {planName, category, highlights};
+      const payload: { planName: string; category: string; description?: string} = {planName, category,};
     
       // Add description if it's not empty
       if (description) {

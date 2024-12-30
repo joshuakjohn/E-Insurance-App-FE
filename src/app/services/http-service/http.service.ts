@@ -11,4 +11,9 @@ export class HttpService {
   postApiCall(endpoint: string, data: any, headers?: HttpHeaders) {
     return this.http.post('http://localhost:4000' + endpoint, data, { headers });
   }
+
+  getAllPlan(endpoint: string, headers?: HttpHeaders){
+    return this.http.get('http://localhost:4000'+ endpoint, { headers })
+  }
+
 }
