@@ -1,5 +1,20 @@
-<div class="policy-container">
-    <div class="policy-card" *ngFor="let policy of policyDetails">
+<div class="navbar">
+    <div 
+      class="nav-item" 
+      [class.active]="activeTab === 'active'" 
+      (click)="switchTab('active')">
+      Active
+    </div>
+    <div 
+      class="nav-item" 
+      [class.active]="activeTab === 'pending'" 
+      (click)="switchTab('pending')">
+      Pending
+    </div>
+  </div>
+  
+  <div class="policy-container">
+    <div *ngFor="let policy of filteredPolicies" class="policy-card">
       <!-- Header Section -->
       <div class="policy-card-header">
         <div class="icon">
