@@ -183,7 +183,7 @@
 }
   /* Top Navigation Bar */
   .navbar {
-    position: fixed;
+   position: relative! important;
     font-family: 'Poppins', sans-serif;
     display: flex;
     justify-content: space-around;
