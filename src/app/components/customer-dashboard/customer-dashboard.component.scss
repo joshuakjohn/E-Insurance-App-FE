@@ -3,13 +3,13 @@
     font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
-    height: 100vh; /* Full height initially and consistently */
+    height: 100vh; 
     background-color: #f5f5f5;
     color: #333;
-    width: 100%; /* Ensure it spans full width */
+    width: 100vw;
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Prevent scrolling until content is ready */
+    overflow: hidden;
 }
 
 /* Top Navigation Bar */
@@ -54,10 +54,10 @@
     background-color: #ffffff;
     color: #333;
     position: fixed;
-    top: 60px; /* Adjust this value based on the header's height */
+    top: 60px; 
     left: -250px;
     transition: left 0.3s ease;
-    height: calc(100% - 60px); /* Adjust height to exclude header height */
+    height: calc(100% - 60px); 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     z-index: 1000;
 }
@@ -98,8 +98,14 @@
     flex-grow: 1;
     margin-left: 0;
     padding: 20px;
-    margin-top: 60px; /* Push main content below the header */
     transition: margin-left 0.3s ease;
+    -webkit-overflow-scrolling: touch; 
+    overflow: auto; 
+}
+
+/* Hides the scrollbar */
+.dashboard-main-content::-webkit-scrollbar {
+    display: none; 
 }
 
 .dashboard-main-content.open {
@@ -110,10 +116,10 @@
 @media (max-width: 768px) {
     .dashboard-sidebar {
         position: fixed;
-        top: 60px; /* Maintain below-header position */
+        top: 60px; 
         left: -250px;
         width: 250px;
-        height: calc(100% - 60px); /* Adjust height for small screens */
+        height: calc(100% - 60px); 
         z-index: 1000;
     }
 
@@ -125,7 +131,8 @@
         left: 0;
     }
 }
-/* Profile Button in Dashboard */
+
+
 .profile-button {
     background-color: #007bff;
     color: #ffffff;
@@ -142,4 +149,3 @@
 .profile-button:hover {
     background-color: #0056b3;
 }
-
