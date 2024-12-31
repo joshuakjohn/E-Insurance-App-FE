@@ -8,12 +8,28 @@ import { PlanFormComponent } from './components/admin/plan-form/plan-form.compon
 import { SchemeFormComponent } from './components/admin/scheme-form/scheme-form.component';
 import { PolicyViewComponent } from './components/policy-view/policy-view.component';
 import { AgentComponent } from './components/agent/agent.component';
+import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: '/dashboard/plans',
     pathMatch: 'full', 
+  },
+  {
+    path: 'customerdashboard', 
+    component: CustomerDashboardComponent, 
+    children: [
+      {
+        path: 'policy',  
+        component: PolicyViewComponent
+      },
+      {path:'profile',
+        component:ProfileComponent
+      }
+
+    ]
   },
   {
     path: 'dashboard', 

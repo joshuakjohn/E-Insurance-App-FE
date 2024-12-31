@@ -195,7 +195,8 @@ export class PolicyComponent implements OnInit {
     this.httpService.createPolicy('/api/v1/policy', data, { headers: this.headers }).subscribe({
       next: (res) => {
        this.policyDetails=res.data
-       this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.schemeId}/policy/view`])
+       alert('Your policy has been approved successfully!');
+       this.location.back(); 
       },
       error: (err) => {
         console.error('Error creating policy', err);
