@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +14,16 @@ export class PlanFormComponent {
   isFormSubmitted = false;
   highlights: string[] = [];
   
-  constructor(private formBuilder: FormBuilder, private httpService: HttpService, private router: Router) { }
+  header: HttpHeaders;
+  constructor(private formBuilder: FormBuilder, private httpService: HttpService, private router: Router) {
+    const authToken = localStorage.getItem('authToken');
+    this.header = authToken
+      ? new HttpHeaders().set('Authorization', `Bearer ${authToken}`)
+      : new HttpHeaders();
+    if (!authToken) {
+      console.error('Authorization token is missing');
+    }
+  }
 
   ngOnInit(): void {
     this.planForm = this.formBuilder.group({
@@ -49,13 +59,14 @@ export class PlanFormComponent {
       const { planName, description, category } = this.planForm.value;
       const highlights = this.highlights.map(h => this.planForm.get(h)?.value).filter(h => h);
 
-      const payload: { planName: string; category: string; description?: string} = {planName, category,};
+      const payload: { planName: string; category: string; description?: string, highlight?: string[] } = {planName, category, highlight: highlights};
     
       // Add description if it's not empty
       if (description) {
         payload.description = description;
       }
-      this.httpService.postApiCall('/api/v1/plan', payload).subscribe({
+      console.log('-------')
+      this.httpService.postApiCall('/api/v1/plan', payload, this.header).subscribe({
         next: (res) => {
           console.log('Plan created successfully:', res);
           this.router.navigate(['/dashboard/plans']); 

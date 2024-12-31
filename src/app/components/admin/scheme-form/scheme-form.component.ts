@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,7 +14,16 @@ export class SchemeFormComponent {
   isFormSubmitted = false;
   plans: any[] = [];
 
-  constructor(private formBuilder: FormBuilder, private httpService: HttpService, private router: Router) {}
+  header: HttpHeaders;
+  constructor(private formBuilder: FormBuilder, private httpService: HttpService, private router: Router) {
+    const authToken = localStorage.getItem('authToken');
+        this.header = authToken
+          ? new HttpHeaders().set('Authorization', `Bearer ${authToken}`)
+          : new HttpHeaders();
+        if (!authToken) {
+          console.error('Authorization token is missing');
+        }
+  }
 
   ngOnInit(): void {
     this.schemeForm = this.formBuilder.group({
@@ -50,7 +60,7 @@ export class SchemeFormComponent {
       const schemeData = this.schemeForm.value;
       const selectedPlanId = schemeData.planId;
 
-      this.httpService.postApiCall('/api/v1/scheme', schemeData).subscribe({
+      this.httpService.postApiCall('/api/v1/scheme', schemeData, this.header).subscribe({
         next: (res) => {
           console.log('Scheme created successfully:', res);
           this.router.navigate([`/dashboard/plans/${selectedPlanId}/scheme`]);
