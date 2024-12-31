@@ -108,14 +108,10 @@ get signinFormControls() { return this.signinForm.controls; }
       this.httpService.postApiCall(`/api/v1/${role_lower}`, { email, password }).subscribe({
         next: (res: any) => {
           console.log(res);
-          if (res.code === 200 && res.token) {
-            localStorage.setItem('authToken', res.token);
-            localStorage.setItem('username', res.username);
-            localStorage.setItem('role', role_lower);   
-            this.dialogRef.close();
-          } else {
-            console.log('Login failed', res.message);
-          }
+          localStorage.setItem('authToken', res.token);
+          localStorage.setItem('username', res.username);
+          localStorage.setItem('role', role_lower);   
+          this.dialogRef.close();
         },
         error: (err) => {
           console.log(err);

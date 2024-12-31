@@ -23,13 +23,12 @@ export class HomePageComponent {
       console.log('The dialog was closed');
     });
   }
-  goToCustomerPolicies() {
-    this.router.navigate(['/customerdashboard/policy']).then((success) => {
-      if (success) {
-        console.log('Navigation to customer policies was successful!');
-      } else {
-        console.error('Navigation to customer policies failed!');
-      }
-    });
+  goToDashboard() {
+    const role = localStorage.getItem('role')
+    if(role === 'customer')
+      this.router.navigate(['/customerdashboard/policy'])
+    else if(role === 'agent')
+      this.router.navigate(['/agent'])
+
   }
 }
