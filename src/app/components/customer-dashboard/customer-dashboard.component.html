@@ -9,17 +9,18 @@
     <aside class="dashboard-sidebar" [class.open]="isSidebarOpen">
       <nav>
         <ul>
-          <li><a routerLink="/dashboard/overview" routerLinkActive="active-link">Overview</a></li>
-          <li><a routerLink="/dashboard/policies" routerLinkActive="active-link">Policies</a></li>
-          <li><a routerLink="/dashboard/payments" routerLinkActive="active-link">Payments</a></li>
-          <li><a routerLink="/dashboard/support" routerLinkActive="active-link">Support</a></li>
+          <li><a routerLink="/dashboard/overview" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Overview</a></li>
+          <li><a routerLink="/customerdashboard/policy" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Policies</a></li>
+          <li><a routerLink="/dashboard/payments" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Payments</a></li>
+          <li><a routerLink="/dashboard/support" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Support</a></li>
+          <li><a routerLink="/customerdashboard/profile" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" class="profile-button">Profile</a></li> <!-- Profile Link -->
         </ul>
       </nav>
     </aside>
   
     <!-- Main Content Section -->
     <main class="dashboard-main-content">
-      <router-outlet></router-outlet>
+      <router-outlet></router-outlet> <!-- Angular will load the routed components here -->
     </main>
   </div>
   

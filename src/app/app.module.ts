@@ -20,6 +20,7 @@ import { PolicyComponent } from './components/policy/policy.component';
 import { PolicyViewComponent } from './components/policy-view/policy-view.component';
 import { AgentComponent } from './components/agent/agent.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CustomerDashboardComponent } from './components/customer-dashboard/cust
     PolicyComponent,
     PolicyViewComponent,
     AgentComponent,
-    CustomerDashboardComponent
+    CustomerDashboardComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
