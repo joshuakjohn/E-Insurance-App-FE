@@ -96,4 +96,9 @@ export class AgentComponent {
     this.router.navigate([`/dashboard/plans`]);
   }
 
+  logout(){
+    localStorage.clear()
+    this.router.navigate([`/dashboard/plans`]);
+  }
+
 }

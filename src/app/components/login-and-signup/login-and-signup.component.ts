@@ -111,7 +111,7 @@ get signinFormControls() { return this.signinForm.controls; }
           localStorage.setItem('authToken', res.token);
           localStorage.setItem('username', res.username);
           localStorage.setItem('role', role_lower);   
-          this.dialogRef.close();
+          this.dialogRef.close(role_lower);
         },
         error: (err) => {
           console.log(err);

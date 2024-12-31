@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent {
 
+  role = localStorage.getItem('role')
+
   constructor(public dialog: MatDialog,public router:Router){}
 
   loginAndSignupDialog(){
@@ -21,14 +23,16 @@ export class HomePageComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      if(result)
+        this.role = result
     });
   }
   goToDashboard() {
-    const role = localStorage.getItem('role')
-    if(role === 'customer')
+    if(this.role === 'customer')
       this.router.navigate(['/customerdashboard/policy'])
-    else if(role === 'agent')
+    else if(this.role === 'agent')
       this.router.navigate(['/agent'])
-
+    else if(!this.role)
+      this.loginAndSignupDialog()
   }
 }
