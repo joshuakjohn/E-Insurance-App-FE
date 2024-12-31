@@ -82,7 +82,7 @@ export class AgentComponent {
   }
 
   forwardButton(policyId: string){
-    this.httpService.patchApiCall(`/api/v1/policy/${policyId}`).subscribe({
+    this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Waiting for approval'}).subscribe({
       next: (res: any) => {
         console.log(res)
       },
