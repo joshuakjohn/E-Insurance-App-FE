@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class LoginAndSignupComponent {
 
   role: string = 'Customer'
+  passValid: boolean = true
 
   signinForm!: FormGroup;
   signupForm!: FormGroup
@@ -89,6 +90,8 @@ get signinFormControls() { return this.signinForm.controls; }
         this.httpService.postApiCall(`/api/v1/${role_lower}/register`, data).subscribe({
         next: (res) => {
           console.log(res)
+          this.dialogRef.close();
+          window.alert('Registration successfull');
         },
         error: (err) => {
           console.log(err)
@@ -106,17 +109,17 @@ get signinFormControls() { return this.signinForm.controls; }
         next: (res: any) => {
           console.log(res);
           if (res.code === 200 && res.token) {
-            localStorage.setItem('authToken', res.token); 
+            localStorage.setItem('authToken', res.token);
+            localStorage.setItem('username', res.username);
+            localStorage.setItem('role', role_lower);   
             this.dialogRef.close();
-            const redirectUrl = localStorage.getItem('redirectUrl') || '/dashboard/plans';
-            localStorage.removeItem('redirectUrl'); 
-            this.router.navigate([redirectUrl]);
           } else {
             console.log('Login failed', res.message);
           }
         },
         error: (err) => {
           console.log(err);
+          this.passValid = false
         }
       });
     }
