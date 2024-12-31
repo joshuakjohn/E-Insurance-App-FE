@@ -1,5 +1,25 @@
-<!-- Customer Dashboard Content -->
 <div class="customer-dashboard">
-    <router-outlet></router-outlet>
+    <!-- Header with Menu Button -->
+    <header class="dashboard-header">
+      <button class="menu-button" (click)="toggleSidebar()">☰ Menu</button>
+      <h1>Customer Dashboard</h1>
+    </header>
+  
+    <!-- Sidebar Section -->
+    <aside class="dashboard-sidebar" [class.open]="isSidebarOpen">
+      <nav>
+        <ul>
+          <li><a routerLink="/dashboard/overview" routerLinkActive="active-link">Overview</a></li>
+          <li><a routerLink="/dashboard/policies" routerLinkActive="active-link">Policies</a></li>
+          <li><a routerLink="/dashboard/payments" routerLinkActive="active-link">Payments</a></li>
+          <li><a routerLink="/dashboard/support" routerLinkActive="active-link">Support</a></li>
+        </ul>
+      </nav>
+    </aside>
+  
+    <!-- Main Content Section -->
+    <main class="dashboard-main-content">
+      <router-outlet></router-outlet>
+    </main>
   </div>
   

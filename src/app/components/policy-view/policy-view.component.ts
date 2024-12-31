@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 import { Location } from '@angular/common';
@@ -11,18 +11,19 @@ import { Location } from '@angular/common';
 })
 export class PolicyViewComponent implements OnInit {
   policyId!: string | null;
-  policyDetails: any[] = []; // Initialize as an array
+  policyDetails: any[] = []; // Consider typing this more specifically, e.g., Policy[]
   errorMessage: string = '';
   authToken: string | null = '';
   headers: HttpHeaders;
   activeTab: string = 'active';
-  isOverlayVisible: boolean = false; 
+  isOverlayVisible: boolean = false;
   selectedPolicy: any = null;
+  customerData: any;
 
   constructor(
     private route: ActivatedRoute,
     private httpService: HttpService,
-    private location: Location
+    private location: Location, private cdr: ChangeDetectorRef
   ) {
     // Retrieve token from localStorage and set it in the headers
     this.authToken = localStorage.getItem('authToken');
@@ -37,6 +38,7 @@ export class PolicyViewComponent implements OnInit {
     } else {
       this.errorMessage = 'Authorization token is missing.';
     }
+    this.fetchCustomerDetails();
   }
 
   fetchPolicyDetails(): void {
@@ -47,7 +49,7 @@ export class PolicyViewComponent implements OnInit {
     this.httpService.getPolicyCustomer('/api/v1/policy', { headers: this.headers }).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          this.policyDetails = res.data; 
+          this.policyDetails = res.data; // Assuming 'data' is the array of policies
         } else {
           this.errorMessage = 'Unable to fetch policy details.';
         }
@@ -55,6 +57,24 @@ export class PolicyViewComponent implements OnInit {
       error: (err: any) => {
         this.errorMessage = 'An error occurred while fetching policy details.';
         console.error('Error fetching policy:', err);
+      }
+    });
+  }
+
+  fetchCustomerDetails(): void {
+    if (!this.headers.has('Authorization')) {
+      console.error('Authorization token is missing');
+      return;
+    }
+
+    this.httpService.getCustomerById('/api/v1/customer/getcustomer', { headers: this.headers }).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.customerData = res.data;
+        }
+      },
+      error: (err: any) => {
+        console.error('Error fetching customer details:', err);
       }
     });
   }
@@ -78,29 +98,57 @@ export class PolicyViewComponent implements OnInit {
   isPremiumDue(createdAt: Date): boolean {
     const currentDate = new Date();
     const createdDate = new Date(createdAt);
-  
+
     // Calculate the difference in time
     const timeDifference = currentDate.getTime() - createdDate.getTime();
-  
+
     // Convert the time difference to days
     const dayDifference = timeDifference / (1000 * 3600 * 24);
-  
-    // Check if the difference is exactly 25 days
+
+    // Check if the difference is greater than or equal to 25 days
     return dayDifference >= 0;
   }
 
   showOverlay(policy: any): void {
-    this.selectedPolicy = policy; 
+    this.selectedPolicy = policy;
     this.isOverlayVisible = true;
   }
 
   closeOverlay(): void {
-    this.isOverlayVisible = false; 
+    this.isOverlayVisible = false;
   }
 
   payPremium(policy: any): void {
     console.log(`Paying premium for policy: ${policy.policyName}`);
-   
-    this.closeOverlay(); 
-  }  
+  
+    const data = {
+      policyId: policy._id,
+      agentId: this.customerData.agentId,
+      paymentAmount: policy.premiumAmount
+    };
+  
+    this.httpService.payPremium('/api/v1/customer/paypremium/', data, { headers: this.headers }).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          console.log('Payment successful:', res.message);
+  
+          // Refresh policies to get the latest state from the database
+          this.fetchPolicyDetails();
+  
+          // Trigger change detection if necessary
+          setTimeout(() => this.cdr.detectChanges(), 0);
+  
+          // Close the overlay after refreshing
+          this.closeOverlay();
+        } else {
+          console.error('Payment failed:', res.message);
+        }
+      },
+      error: (err: any) => {
+        console.error('Error making payment:', err);
+      }
+    });
+  }
+  
+  
 }
