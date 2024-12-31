@@ -2,49 +2,21 @@
     <!-- Header -->
     <header class="profile-header">
         <h1>Customer Profile</h1>
-        <button class="edit-profile-btn">Edit Profile</button>
     </header>
-
-    <!-- Profile Picture and Info -->
     <section class="profile-section">
         <div class="profile-picture">
-            <img src="https://via.placeholder.com/150" alt="Profile Picture">
+            <!-- Dynamically show the profile picture -->
+            <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
+            <p *ngIf="!profilePicUrl">No profile picture available</p>
         </div>
         <div class="profile-info">
-            <h2>Santhosh</h2>
-            <p>Email: samuraisanthosh234@gmail.com</p>
-            <p>Phone: +91 8667664490</p>
-            <p>Address: s31/78 dharma raja kovil street arni palayam, Tamil Nadu</p>
+            <h2>{{ customerData?.username || 'Customer Name' }}</h2>
+            <p>Email: {{ customerData?.email || 'No email provided' }}</p>
+            <p>Phone: {{ customerData?.phno || 'No phone number provided' }}</p>
+            <p>Address: {{ customerData?.address || 'No address provided' }}</p>
         </div>
     </section>
-
-    <!-- Actions -->
     <section class="profile-actions">
-        <button class="action-btn">Update Password</button>
         <button class="action-btn">Logout</button>
-    </section>
-
-  <!-- Filler Space Section (Policies) -->
-    <section class="space-filler">
-        <div class="filler-card">
-            <img src="https://via.placeholder.com/80" alt="Policy Icon">
-            <h4>Privacy Policy</h4>
-            <p>Our privacy policy describes how we handle your personal data securely.</p>
-        </div>
-        <div class="filler-card">
-            <img src="https://via.placeholder.com/80" alt="Policy Icon">
-            <h4>Terms of Service</h4>
-            <p>Read our terms of service before using our platform to understand your rights and obligations.</p>
-        </div>
-        <div class="filler-card">
-            <img src="https://via.placeholder.com/80" alt="Policy Icon">
-            <h4>Cookie Policy</h4>
-            <p>We use cookies to improve your experience. Learn more about how we use cookies.</p>
-        </div>
-        <div class="filler-card">
-            <img src="https://via.placeholder.com/80" alt="Policy Icon">
-            <h4>Refund Policy</h4>
-            <p>Our refund policy ensures that you receive fair treatment in case of cancellation or refund requests.</p>
-        </div>
     </section>
 </div>
