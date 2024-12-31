@@ -1,0 +1,145 @@
+/* Main Dashboard Container */
+.customer-dashboard {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full height initially and consistently */
+    background-color: #f5f5f5;
+    color: #333;
+    width: 100%; /* Ensure it spans full width */
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrolling until content is ready */
+}
+
+/* Top Navigation Bar */
+.dashboard-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.dashboard-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Menu Button */
+.menu-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.menu-button:hover {
+    background-color: #0056b3;
+}
+
+/* Sidebar (Drawer) */
+.dashboard-sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    color: #333;
+    position: fixed;
+    top: 60px; /* Adjust this value based on the header's height */
+    left: -250px;
+    transition: left 0.3s ease;
+    height: calc(100% - 60px); /* Adjust height to exclude header height */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dashboard-sidebar.open {
+    left: 0;
+}
+
+.dashboard-sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.dashboard-sidebar nav ul li {
+    margin: 10px 0;
+}
+
+.dashboard-sidebar nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dashboard-sidebar nav ul li a:hover,
+.dashboard-sidebar nav ul li a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Main Content Area */
+.dashboard-main-content {
+    flex-grow: 1;
+    margin-left: 0;
+    padding: 20px;
+    margin-top: 60px; /* Push main content below the header */
+    transition: margin-left 0.3s ease;
+}
+
+.dashboard-main-content.open {
+    margin-left: 250px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-sidebar {
+        position: fixed;
+        top: 60px; /* Maintain below-header position */
+        left: -250px;
+        width: 250px;
+        height: calc(100% - 60px); /* Adjust height for small screens */
+        z-index: 1000;
+    }
+
+    .dashboard-main-content {
+        margin-left: 0;
+    }
+
+    .dashboard-sidebar.open {
+        left: 0;
+    }
+}
+/* Profile Button in Dashboard */
+.profile-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-button:hover {
+    background-color: #0056b3;
+}
+
