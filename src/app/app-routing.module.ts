@@ -36,6 +36,7 @@ const routes: Routes = [
       { path: 'plans', component: PlanComponent },
       { path: 'plans/:planId/scheme', component: SchemeComponent },
       { path: 'plans/:planId/scheme/:schemeId/policy', component: PolicyComponent },
+      { path: 'plans/:planId/scheme/:schemeId/policy/view', component: PolicyViewComponent },
     ]
   },
   { path: 'agent', component: AgentComponent }
