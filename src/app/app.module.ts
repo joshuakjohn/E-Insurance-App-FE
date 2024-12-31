@@ -21,6 +21,8 @@ import { SchemeComponent } from './components/scheme/scheme.component';
 import { PolicyComponent } from './components/policy/policy.component';
 import { PolicyViewComponent } from './components/policy-view/policy-view.component';
 import { AgentComponent } from './components/agent/agent.component';
+import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { CustomerpolicyComponent } from './components/agent/customerpolicy/customerpolicy.component';
 
 @NgModule({
@@ -33,7 +35,9 @@ import { CustomerpolicyComponent } from './components/agent/customerpolicy/custo
     PolicyComponent,
     PolicyViewComponent,
     AgentComponent,
-    CustomerpolicyComponent,
+    CustomerDashboardComponent,
+    ProfileComponent,
+    CustomerpolicyComponent
   ],
   imports: [
     BrowserModule,

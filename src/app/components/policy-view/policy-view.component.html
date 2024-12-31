@@ -1,16 +1,6 @@
 <div class="navbar">
-    <div 
-      class="nav-item" 
-      [class.active]="activeTab === 'active'" 
-      (click)="switchTab('active')">
-      Active
-    </div>
-    <div 
-      class="nav-item" 
-      [class.active]="activeTab === 'pending'" 
-      (click)="switchTab('pending')">
-      Pending
-    </div>
+    <div class="nav-item" [class.active]="activeTab === 'active'" (click)="switchTab('active')">Active</div>
+    <div class="nav-item" [class.active]="activeTab === 'pending'" (click)="switchTab('pending')">Pending</div>
   </div>
   
   <div class="policy-container">
@@ -60,6 +50,25 @@
       <div class="policy-card-eligibility">
         <h3>Eligibility</h3>
         <p>Open to all individuals aged 18-65</p>
+      </div>
+  
+      <div *ngIf="isPremiumDue(policy.createdAt)" class="pay-button">
+        <button (click)="showOverlay(policy)">Pay Premium</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Pay Premium Overlay -->
+  <div *ngIf="isOverlayVisible" class="overlay">
+    <div class="overlay-content">
+      <h2>Pay Premium</h2>
+      <div>
+        <h3>Policy Name: {{ selectedPolicy?.policyName }}</h3>
+        <p>Premium Amount: {{ selectedPolicy?.premiumAmount | currency }}</p>
+      </div>
+      <div class="overlay-actions">
+        <button (click)="closeOverlay()">Close</button>
+        <button (click)="payPremium(selectedPolicy)">Pay Now</button>
       </div>
     </div>
   </div>
