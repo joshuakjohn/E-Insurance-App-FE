@@ -107,6 +107,8 @@ get signinFormControls() { return this.signinForm.controls; }
           console.log(res);
           if (res.code === 200 && res.token) {
             localStorage.setItem('authToken', res.token); 
+            localStorage.setItem('email', res.email);
+            localStorage.setItem('username', res.username);
             this.dialogRef.close();
             const redirectUrl = localStorage.getItem('redirectUrl') || '/dashboard/plans';
             localStorage.removeItem('redirectUrl'); 

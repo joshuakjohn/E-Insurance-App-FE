@@ -10,6 +10,7 @@ import { PolicyViewComponent } from './components/policy-view/policy-view.compon
 import { AgentComponent } from './components/agent/agent.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,14 @@ const routes: Routes = [
       { path: 'plans/:planId/scheme/:schemeId/policy/view', component: PolicyViewComponent },
       { path: 'admin/add-plan', component: PlanFormComponent }, // Route for adding a new plan
       { path: 'admin/add-scheme', component: SchemeFormComponent }, // Route for adding a new scheme
+    ]
+  },
+  {
+    path: 'admin',
+    component: AdminDashboardComponent,
+    children: [
+      { path: '', redirectTo: 'dashboard/plans', pathMatch: 'full' },
+      { path: 'dashboard', component: AdminDashboardComponent },
     ]
   },
   { path: 'agent', component: AgentComponent }
