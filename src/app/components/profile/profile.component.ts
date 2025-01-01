@@ -57,13 +57,11 @@ export class ProfileComponent implements OnInit {
   }
 
   createImageFromBuffer(buffer: any): void {
-    // Check if buffer is a valid object and contains the image data
     if (!buffer || !Array.isArray(buffer.data)) {
       this.errorMessage = 'Invalid buffer data';
       return;
     }
   
-    // Convert the buffer data to a base64 string
     const base64String = this.bufferToBase64(buffer.data);
   
     // Ensure that the base64 string has the proper prefix for image type (e.g., PNG or JPEG)
@@ -72,7 +70,7 @@ export class ProfileComponent implements OnInit {
     try {
       const imageBlob = this.base64ToBlob(base64String);  // Convert the base64 part to a Blob
       const imageUrl = URL.createObjectURL(imageBlob);  // Generate an object URL for the image
-      this.profilePicUrl = imageUrl;  // Display image in the UI
+      this.profilePicUrl = imageUrl;  
     } catch (error) {
       this.errorMessage = 'Error converting buffer to image.';
       console.error('Error in createImageFromBuffer:', error);
