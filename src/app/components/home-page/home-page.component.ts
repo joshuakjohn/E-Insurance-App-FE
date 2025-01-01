@@ -35,4 +35,13 @@ export class HomePageComponent {
     else if(!this.role)
       this.loginAndSignupDialog()
   }
+
+  explore(){
+    window.scrollTo({
+      top: 475, // scroll down 500px
+      left: 0,  // keep horizontal scroll at 0
+      behavior: 'smooth' // smoothly scroll to the position
+    });
+  }
+  
 }
