@@ -17,7 +17,7 @@ export class HttpService {
     return this.http.get('http://localhost:4000'+endpoint, { headers })
   }
 
-  patchApiCall(endpoint: string){
-    return this.http.patch('http://localhost:4000'+endpoint, {})
+  patchApiCall(endpoint: string, data: any){
+    return this.http.patch('http://localhost:4000'+endpoint, data)
   }
 }

@@ -1,73 +1,79 @@
-<div class="container">
-  <!-- Loading Indicator -->
-  <div *ngIf="!planDetails || !schemeDetails || !customerData" class="loading">
-    <p>Loading...</p>
-  </div>
+<div class="main" id="policy-form">
+  <div class="policy-form">
+    <h1>Policy Application</h1>
+    <h3>Applicant details</h3>
+    <mat-form-field appearance="outline">
+      <mat-label>Full name</mat-label>
+      <input matInput id="fullName">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Address</mat-label>
+      <input matInput id="address">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput id="dob">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Gender</mat-label>
+      <input matInput id="gender">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Annual Income</mat-label>
+      <input matInput id="income">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Educational Qualification</mat-label>
+      <input matInput id="education">
+    </mat-form-field>
 
-  <!-- Display Policy Card if data is available -->
-  <div *ngIf="planDetails && schemeDetails && customerData" class="policy-card">
-    <!-- Header Section -->
-    <div class="policy-card-header">
-      <img src="insurance-icon.png" alt="Policy Icon">
-    </div>
+    <h3>Nominee details</h3>
+    <mat-form-field appearance="outline">
+      <mat-label>Nominee name</mat-label>
+      <input matInput id="nomineename">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Nominee Realation</mat-label>
+      <input matInput id="nomineerel">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Nominee Address</mat-label>
+      <input matInput id="nomineeadd">
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Nominee contact number</mat-label>
+      <input matInput id="nomineecon">
+    </mat-form-field>
 
-    <div class="title">
-      <h1>{{ planDetails?.planName }}</h1>
-      <span class="status">Active</span>
-    </div>
+    <h3>Documents</h3>
+    <h4>Photograph</h4>
+    <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'photograph')">
 
-    <!-- Eligibility Message Section -->
-    <div class="eligibility-message">
-      <p>{{ eligibilityMessage }}</p>
-    </div>
+    <h4>Identity proof</h4>
+    <mat-form-field appearance="outline">
+      <mat-label>Document type</mat-label>
+      <input matInput id="idproof">
+    </mat-form-field>
+    <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'idproof')">
 
-    <!-- Policy Card Details -->
-    <div class="policy-card-details">
-      <div class="detail-card">
-        <h2>₹{{ schemeDetails?.coverage }}</h2>
-        <p>Total Coverage</p>
-      </div>
-      <div class="detail-card">
-        <h2>₹{{ schemeDetails?.premium }}</h2>
-        <p>Monthly Premium</p>
-      </div>
-      <div class="detail-card">
-        <h2>{{ schemeDetails?.maturityPeriod }} Months</h2>
-        <p>Duration</p>
-      </div>
-    </div>
+    <h4>Age proof</h4>
+    <mat-form-field appearance="outline">
+      <mat-label>Document type</mat-label>
+      <input matInput id="ageproof">
+    </mat-form-field>
+    <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'ageproof')">
 
-    <!-- Benefits Section -->
-    <div class="policy-card-benefits">
-      <h2>Key Benefits</h2>
-      <ul>
-        <li>{{ schemeDetails?.description }}</li>
-        <li>{{ planDetails?.description }}</li>
-        <li>✔ 24/7 customer support</li>
-      </ul>
-    </div>
+    <h4>Income proof</h4>
+    <mat-form-field appearance="outline">
+      <mat-label>Document type</mat-label>
+      <input matInput id="incomeproof">
+    </mat-form-field>
+    <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'incomeproof')">
 
-    <!-- Eligibility Criteria -->
-    <div class="policy-card-benefits">
-      <h2>Eligibility Criteria</h2>
-      <p>{{ schemeDetails?.eligibilityCriteria }}</p>
-    </div>
+    <span>Your application will be sent to your agent for verification and further processing.</span>
 
-    <!-- File Upload Section -->
-    <div class="file-upload-section">
-      <label for="profilePhoto">Profile Photo (Max 5MB)</label>
-      <input type="file" id="profilePhoto" (change)="onFileSelect($event, 'profilePhoto')" accept="image/*">
-
-      <label for="uploadedDocuments">Upload Documents (Max 10 files, 5MB each)</label>
-      <input type="file" id="uploadedDocuments" (change)="onFileSelect($event, 'uploadedDocuments')" accept="application/pdf, image/*" multiple>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="policy-card-actions">
-      <button *ngIf="isEligible && !isBuyNowClicked" class="buy-now-btn" (click)="onBuyNowClick()">Buy Now</button>
-      <button *ngIf="!isBuyNowClicked" class="go-back-btn" (click)="onGoBackClick()">Go Back</button>
-      <button *ngIf="isConfirmVisible" class="confirm-btn" (click)="onConfirmClick()">Confirm</button>
-      <button *ngIf="isConfirmVisible" class="cancel-btn" (click)="onCancelClick()">Cancel</button>
+    <div style="display: flex; justify-content: center; margin-top: 10px;">
+      <button (click)="onSubmitClick()">Submit</button>
     </div>
   </div>
 </div>

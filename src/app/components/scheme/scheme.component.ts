@@ -1,8 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginAndSignupComponent } from '../login-and-signup/login-and-signup.component';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DROPDOWN_ICON } from 'src/assets/svg-icons';
+import { PolicyComponent } from '../policy/policy.component';
 
 @Component({
   selector: 'app-scheme',
@@ -10,6 +14,7 @@ import { LoginAndSignupComponent } from '../login-and-signup/login-and-signup.co
   styleUrls: ['./scheme.component.scss']
 })
 export class SchemeComponent implements OnInit {
+  extend: string = 'none'
   schemes: any[] = [];
   planId: string | null = null;
   planDetails: any = {}; 
@@ -17,12 +22,15 @@ export class SchemeComponent implements OnInit {
   selectedScheme: any = {};
   selectedSchemeId: string | null = null;  // To store the schemeId temporarily for after login
 
-  constructor(
+  constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer,
     private httpService: HttpService,
     public router: Router,
     private route: ActivatedRoute,
-    public dialog: MatDialog // Inject MatDialog to show the login dialog
-  ) {}
+    public dialog: MatDialog,
+    private cdr: ChangeDetectorRef
+  ) {
+      iconRegistry.addSvgIconLiteral('dropdown-icon', sanitizer.bypassSecurityTrustHtml(DROPDOWN_ICON));
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -34,6 +42,18 @@ export class SchemeComponent implements OnInit {
         console.error('Plan ID is missing.');
       }
     });
+
+  }
+  
+  ngAfterViewInit(){
+    setTimeout(() => {
+      window.scrollTo({
+        top: 475,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }, 50);
+
   }
 
   fetchPlanDetails(): void {
@@ -86,9 +106,14 @@ export class SchemeComponent implements OnInit {
     }
   }
 
-  openDetailOverlay(scheme: any): void {
-    this.selectedScheme = scheme;
-    this.isOverlayVisible = true;
+  buyScheme(schemeId: any): void { 
+    this.selectedSchemeId = schemeId;         
+    if(localStorage.getItem('role') === 'customer'){
+      this.policyDialog()
+      // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${schemeId}/policy`]);
+    } else {
+      this.openLoginDialog();
+    }
   }
 
   navigateToPolicy(schemeId: string): void {
@@ -102,6 +127,7 @@ export class SchemeComponent implements OnInit {
     } else {
       // If user is not logged in, store the selected scheme ID and open the login/signup dialog
       this.selectedSchemeId = schemeId;
+      console.log(this.selectedSchemeId)
       this.openLoginDialog();
     }
   }
@@ -126,14 +152,37 @@ export class SchemeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (this.isLoggedIn()) {
-        // After login, navigate to the policy page for the selected scheme
-        if (this.selectedSchemeId) {
-          this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
-        }
+      if (localStorage.getItem('role') === 'customer') {
+        this.policyDialog()
+
+        // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
       } else {
         console.log('User did not log in');
       }
     });
   }
+
+  extendedCard: number | null = null;
+
+  extendToggle(id: number): void {
+    this.extendedCard = this.extendedCard === id ? null : id;
+  }
+
+  policyDialog(): void {
+    const dialogRef = this.dialog.open(PolicyComponent, {
+      height: '600px',
+      width: '1200px',
+      data: {planId: this.planId, schemeId: this.selectedSchemeId}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // if (localStorage.getItem('role') === 'customer') {
+      //   this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
+      // } else {
+      //   console.log('User did not log in');
+      // }
+    });
+  }
+
+
 }
