@@ -30,6 +30,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { CustomerpolicyComponent } from './components/agent/customerpolicy/customerpolicy.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AgentPolicyComponent } from './components/admin-dashboard/agentpolicy/agentpolicy.component';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { AgentPolicyComponent } from './components/admin-dashboard/agentpolicy/a
     ProfileComponent,
     CustomerpolicyComponent,
     AdminDashboardComponent,
-    AgentPolicyComponent
+    AgentPolicyComponent,
+    AdminLoginComponent
   ],
   imports: [
     BrowserModule,

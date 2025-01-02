@@ -15,12 +15,15 @@ import { Router } from '@angular/router';
 })
 export class AdminDashboardComponent {
 
-  tab: string = 'agent';
+  tab: string = 'plans';
   agents: any[] = [];
   pendingPolicies: any[] = [];
 
   adminEmail: string = '';
   adminUsername: string = '';
+
+  showPlanForm: boolean = false;
+  showSchemeForm: boolean = false;
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router) {
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
@@ -32,11 +35,48 @@ export class AdminDashboardComponent {
     this.loadAdminDetails();
   }
 
+  tabSwitch(input: string) {
+    this.tab = input;
+    
+    // Reset the form visibility when switching tabs
+    if (input === 'plan') {
+      this.showPlanForm = true;
+      this.showSchemeForm = false;
+    }
+    else if (input === 'allPlans') {
+      this.showPlanForm = false;
+      this.showSchemeForm = false;
+      this.router.navigate(['/admin/dashboard/plans/admin'])
+    } 
+    else if (input === 'scheme') {
+      this.showSchemeForm = true;
+      this.showPlanForm = false;
+    } else {
+      this.showPlanForm = false;
+      this.showSchemeForm = false;
+      if (input === 'policy') {
+        this.fetchPendingPolicies();
+      } else if (input === 'agent') {
+        this.fetchAgents();
+      }
+    }
+  }
+
   loadAdminDetails(): void {
     this.adminEmail = localStorage.getItem('email') || 'admin@example.com';
     this.adminUsername = localStorage.getItem('username') || 'Admin';
   }
 
+  navigateToAddPlan() {
+    this.showPlanForm = true;
+    this.showSchemeForm = false;
+  }
+
+  navigateToAddScheme() {
+    this.showSchemeForm = true;
+    this.showPlanForm = false;
+  }
+  
   fetchAgents(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/agent', header).subscribe({
@@ -47,15 +87,6 @@ export class AdminDashboardComponent {
         console.error('Error fetching agents:', err);
       },
     });
-  }
-
-  tabSwitch(input: string) {
-    if (input === 'agent')
-      this.tab = 'agent';
-    else if (input === 'policy'){
-      this.tab = 'policy';
-      this.fetchPendingPolicies();
-    }
   }
 
   fetchPendingPolicies(): void {
@@ -70,7 +101,6 @@ export class AdminDashboardComponent {
     });
   }
   
-
   viewAgentPolicies(agentId: string) {
     const dialogRef = this.dialog.open(AgentPolicyComponent, {
       height: '600px',
@@ -83,7 +113,6 @@ export class AdminDashboardComponent {
     });
   }
   
-
   approvePolicy(policyId: string) {
     this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Approved'}).subscribe({
       next: (res: any) => {
