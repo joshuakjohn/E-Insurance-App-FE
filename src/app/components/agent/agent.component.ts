@@ -58,7 +58,8 @@ export class AgentComponent {
             return true
           return false
         })
-        console
+        console.log(this.pendingPolices);
+        
       },
       error: (err: any) => {
         console.error('Error fetching plans:', err);
@@ -99,6 +100,31 @@ export class AgentComponent {
   logout(){
     localStorage.clear()
     this.router.navigate([`/dashboard/plans`]);
+  }
+
+  downloadPdf(pdf: ArrayBuffer) {
+    console.log(pdf)
+
+    const arrayBuffer = new Uint8Array(pdf).buffer;
+
+    // Convert ArrayBuffer to Blob
+    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+
+    // Create a downloadable URL
+    const url = window.URL.createObjectURL(blob);
+
+    // Create an anchor element
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'policy.pdf'; // Set the desired file name
+    document.body.appendChild(a);
+
+    // Trigger the download
+    a.click();
+
+    // Clean up
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
   }
 
 }

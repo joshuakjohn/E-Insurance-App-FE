@@ -37,17 +37,27 @@
         </div>
         <ng-template #pending>
             <div class="customer" *ngFor="let policy of pendingPolices" style="display: flex;
-            justify-content: space-between;
-            align-items: center;">
-                <div>
-                    <p>Policy name: {{policy.policyName}}</p>
-                    <p>Desciption: {{policy.desciption}}</p>
-                    <p>Premium amount: {{policy.premiumAmount}}</p>
-                    <p>Policy duration: {{policy.duration}}</p>
-                    <p>Policy coverage: {{policy.coverage}}</p>
+            flex-direction: column;">
+                <div style="display: flex;
+                justify-content: space-between;
+                align-items: center;">
+                    <div>
+                        <p>Policy name: {{policy.policyName}}</p>
+                        <p>Desciption: {{policy.desciption}}</p>
+                        <p>Premium amount: {{policy.premiumAmount}}</p>
+                        <p>Policy duration: {{policy.duration}}</p>
+                        <p>Policy coverage: {{policy.coverage}}</p>
+                    </div>
+                    <div>
+                        <button mat-raised-button (click)="forwardButton(policy._id)">Forward to admin</button>
+                    </div>
                 </div>
-                <div>
-                    <button mat-raised-button (click)="forwardButton(policy._id)">Forward to admin</button>
+                <div style="display: flex;
+                gap: 10px;">
+                    <button (click)="downloadPdf(policy.policyApplication.data)">View Application</button>
+                    <button (click)="downloadPdf(policy.incomeProof.data)">Income Proof</button>
+                    <button (click)="downloadPdf(policy.ageProof.data)">Age Proof</button>
+                    <button (click)="downloadPdf(policy.idProof.data)">Identity Proof</button>
                 </div>
             </div>
         </ng-template>
