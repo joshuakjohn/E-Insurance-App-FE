@@ -106,12 +106,12 @@ export class SchemeComponent implements OnInit {
     }
   }
 
-  buyScheme(schemeId: any): void {
+  buyScheme(schemeId: any): void { 
+    this.selectedSchemeId = schemeId;         
     if(localStorage.getItem('role') === 'customer'){
       this.policyDialog()
       // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${schemeId}/policy`]);
     } else {
-      this.selectedSchemeId = schemeId;
       this.openLoginDialog();
     }
   }
@@ -172,6 +172,7 @@ export class SchemeComponent implements OnInit {
     const dialogRef = this.dialog.open(PolicyComponent, {
       height: '600px',
       width: '1200px',
+      data: {planId: this.planId, schemeId: this.selectedSchemeId}
     });
 
     dialogRef.afterClosed().subscribe(result => {

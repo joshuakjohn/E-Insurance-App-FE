@@ -1,233 +1,33 @@
-/* Container Layout */
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #f4f8fb, #e3f2fd);
+.main{
+  width: 100%;
+  height: auto;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  height: 100vh;
-  margin: 0;
-  color: #333;
 }
 
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  max-width: 1400px;
-  width: 100%;
+.policy-form{
+  box-sizing: border-box;
+  width: 95%;
+  background-color: aliceblue;
+  margin: 20px 0;
   padding: 20px;
-  position: relative;
-}
-
-/* Policy Card Styles */
-.policy-card {
-  width: 100%;
-  max-width: 800px;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  padding: 25px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  border: 1px solid gray;
-}
-
-.policy-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-}
-
-/* Header Section */
-.policy-card-header {
+  height: auto;
   display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
+  flex-direction: column;
 }
 
-.policy-card-header img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-}
+button{
+  height: 40px;
+  width: 100px;
+  border-radius: 30px;
+  background-color: transparent;
+  color: rgb(0, 0, 0);
+  border: 1px solid #214c87;
 
-.title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title h1 {
-  font-size: 1.8rem;
-  color: #2196f3;
-}
-
-.status {
-  background-color: #4caf50;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-}
-
-/* Eligibility Message */
-.eligibility-message {
-  margin-top: 15px;
-  font-size: 1.1rem;
-  color: #555;
-}
-
-/* Policy Card Details */
-.policy-card-details {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.detail-card {
-  background: #e3f2fd;
-  border-radius: 12px;
-  padding: 15px;
-  text-align: center;
-  flex: 1;
-  margin: 0 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.detail-card h2 {
-  font-size: 1.6rem;
-  color: #0d47a1;
-}
-
-.detail-card p {
   margin-top: 10px;
-  color: #666;
 }
 
-/* Benefits Section */
-.policy-card-benefits {
-  margin-top: 25px;
-}
-
-.policy-card-benefits h2 {
-  font-size: 1.4rem;
-  color: #2196f3;
-}
-
-.policy-card-benefits ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.policy-card-benefits ul li {
-  font-size: 1rem;
-  color: #555;
-  margin: 8px 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-/* File Upload Section */
-.file-upload-section {
-  margin-top: 25px;
-}
-
-.file-upload-section label {
-  display: block;
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 8px;
-}
-
-.file-upload-section input[type="file"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-/* Action Buttons */
-.policy-card-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 30px;
-}
-
-.policy-card-actions button {
-  flex: 1;
-  padding: 12px 20px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background 0.3s, transform 0.3s ease;
-  margin: 0 5px;
-}
-
-.policy-card-actions button:hover {
-  transform: translateY(-3px);
-}
-
-.buy-now-btn {
-  background-color: #4caf50;
-  color: white;
-}
-
-.buy-now-btn:hover {
-  background-color: #388e3c;
-}
-
-.go-back-btn {
-  background-color: #9e9e9e;
-  color: white;
-}
-
-.go-back-btn:hover {
-  background-color: #616161;
-}
-
-.confirm-btn {
-  background-color: #2196f3;
-  color: white;
-}
-
-.confirm-btn:hover {
-  background-color: #1565c0;
-}
-
-.cancel-btn {
-  background-color: #f44336;
-  color: white;
-}
-
-.cancel-btn:hover {
-  background-color: #d32f2f;
-}
-
-/* Media Query for Mobile Devices */
-@media (max-width: 768px) {
-  .policy-card {
-    padding: 20px;
-  }
-
-  .policy-card-details {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .detail-card {
-    margin-bottom: 15px;
-    flex: 0 0 100%;
-  }
-
-  .policy-card-actions {
-    flex-direction: column;
-  }
-
-  .policy-card-actions button {
-    margin-bottom: 10px;
-  }
+button:hover{
+  transition: background-color ease .5s;
+  background-color: #557fba;
 }
