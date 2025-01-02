@@ -62,7 +62,7 @@ export class AdminDashboardComponent {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/policy/admin', header).subscribe({
       next: (res: any) => {
-        this.pendingPolicies = res.data.filter((policy: any) => policy.status === 'submitted');
+        this.pendingPolicies = res.data.filter((policy: any) => policy.status === 'Waiting for approval');
       },
       error: (err: any) => {
         console.error('Error fetching pending policies:', err);
@@ -85,10 +85,10 @@ export class AdminDashboardComponent {
   
 
   approvePolicy(policyId: string) {
-    this.httpService.patchApiCall(`/api/v1/policy/${policyId}`).subscribe({
+    this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Approved'}).subscribe({
       next: (res: any) => {
         console.log(res);
-        this.fetchPendingPolicies(); // Refresh the list after approval
+        this.pendingPolicies = this.pendingPolicies.filter((policy) => policy._id !== policyId);
       },
       error: (err: any) => {
         console.error('Error approving policy:', err);
