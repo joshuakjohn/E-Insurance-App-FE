@@ -64,16 +64,18 @@
               <div class="horizontal">
                 <mat-form-field appearance="outline">
                   <mat-label>Password</mat-label>
-                  <input matInput formControlName="password">
+                  <input type="password" matInput formControlName="password">
                   <mat-error *ngIf="signupFormControls['password']['errors']?.['required']">This field is required</mat-error>
                   <mat-error *ngIf="signupFormControls['password']['errors']?.['pattern']">Example: Example&#64;123</mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline">
                   <mat-label>Confirm password</mat-label>
-                  <input matInput formControlName="confirm">
+                  <input type="password" matInput formControlName="confirm">
                   <mat-error *ngIf="signupFormControls['confirm']['errors']?.['required']">This field is required</mat-error>
                 </mat-form-field>
               </div>
+              <span [ngStyle]="{ 'visibility': false ? 'hidden' : 'visible' }">*Incorrect email or password</span>
+
             </div>
             <button style="margin-top: 10px;" type="submit" (click)="handleRegistration()">Sign Up</button>
           </form>
@@ -99,9 +101,10 @@
             </mat-form-field>
             <mat-form-field appearance="outline" style="width: 90%;">
                 <mat-label>Password</mat-label>
-                <input matInput formControlName="password">
+                <input type="password" matInput formControlName="password">
                 <mat-error *ngIf="signinFormControls['password']['errors']?.['required']">This field is required</mat-error>
             </mat-form-field>
+            <span [ngStyle]="{ 'visibility': passValid ? 'hidden' : 'visible' }">*Incorrect email or password</span>
             <a href="#">Forgot your password?</a>
             <button type="submit" (click)="handleSignin()">Sign In</button>
           </form>

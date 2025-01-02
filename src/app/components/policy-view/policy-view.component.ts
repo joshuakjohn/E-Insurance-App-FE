@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
 })
 export class PolicyViewComponent implements OnInit {
   policyId!: string | null;
-  policyDetails: any[] = []; // Consider typing this more specifically, e.g., Policy[]
+  policyDetails: any[] = []; 
   errorMessage: string = '';
   authToken: string | null = '';
   headers: HttpHeaders;

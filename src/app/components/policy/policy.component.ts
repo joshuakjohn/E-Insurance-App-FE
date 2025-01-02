@@ -1,35 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 import { HttpHeaders } from '@angular/common/http';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-policy',
   templateUrl: './policy.component.html',
   styleUrls: ['./policy.component.scss']
 })
-export class PolicyComponent implements OnInit {
-  isBuyNowClicked = false;
-  isConfirmVisible = false;
-  isEligible = false;
-  isEligibilityOverlayVisible = false;
-  eligibilityMessage: string = '';
-  customerData: any = {};
+export class PolicyComponent {
+
   planId!: string | null;
   schemeId!: string | null;
-
+  headers: HttpHeaders;
   planDetails: any;
   schemeDetails: any;
-  policyDetails: any;
-
-  headers: HttpHeaders;
+  customerData: any;
+  files: { [key: string]: File | null } = {
+    photograph: null,
+    idproof: null,
+    ageproof: null,
+    incomeproof: null
+  };
 
   constructor(
     private location: Location,
     private route: ActivatedRoute,
     private httpService: HttpService,
-    private router: Router
+    private router: Router,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     const authToken = localStorage.getItem('authToken');
     this.headers = authToken
@@ -41,8 +44,8 @@ export class PolicyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.planId = this.route.snapshot.paramMap.get('planId');
-    this.schemeId = this.route.snapshot.paramMap.get('schemeId');
+    this.planId = this.data.planId    
+    this.schemeId = this.data.schemeId
     this.fetchPlanDetails();
     this.fetchSchemeDetails();
     this.fetchCustomerDetails();
@@ -96,124 +99,91 @@ export class PolicyComponent implements OnInit {
     });
   }
 
-  openEligibilityOverlay() {
-    this.isEligibilityOverlayVisible = true;
-    this.eligibilityMessage = '';
-    if (this.customerData) {
-      this.customerData.age = '';
-    }
-  }
+  onSubmitClick(): void {
+    const application = this.generatePDF() 
 
-  closeEligibilityOverlay() {
-    this.isEligibilityOverlayVisible = false;
-  }
+    const formData = new FormData();
+    formData.append('policyName', this.schemeDetails.schemeName);
+    formData.append('description', this.schemeDetails.description);
+    formData.append('premiumAmount', this.schemeDetails.premium.toString());
+    formData.append('coverage', this.schemeDetails.coverage.toString());
+    formData.append('duration', this.schemeDetails.maturityPeriod.toString());
+    formData.append('planId', this.planId!);
+    formData.append('schemeId', this.schemeId!);
+    formData.append('customerId', this.customerData._id);
+    formData.append('agentId', this.customerData.agentId);
+    formData.append('policyApplication', application, 'PolicyApplication.pdf');
 
-  validateAge() {
-    const age = this.customerData.age;
-    this.eligibilityMessage = age && isNaN(Number(age)) ? 'Please enter a valid number for age.' : '';
-  }
 
-  checkEligibility() {
-    const criteria = this.schemeDetails?.eligibilityCriteria;
-
-    if (!criteria) {
-      this.eligibilityMessage = 'Eligibility criteria not provided.';
-      this.isEligible = false;
-      return;
+    for (const proofType in this.files) {    
+      const file = this.files[proofType];
+      if (file) {
+        formData.append(proofType, file, file.name);
+      }
     }
 
-    const age = Number(this.customerData.age);
-
-    if (isNaN(age)) {
-      this.eligibilityMessage = 'Please enter a valid age.';
-      this.isEligible = false;
-      return;
-    }
-
-    const rangeMatch = /(\d+)\s*(to|[-–])\s*(\d+)\s*(age|years)?/i.exec(criteria);
-    if (rangeMatch) {
-      const [, minAge, , maxAge] = rangeMatch;
-      this.isEligible = age >= +minAge && age <= +maxAge;
-      this.eligibilityMessage = this.isEligible
-        ? 'You are eligible!'
-        : `Eligibility requires age between ${minAge} and ${maxAge}.`;
-      if (this.isEligible) this.closeEligibilityOverlay();
-      return;
-    }
-
-    const minAgeMatch = /min\s*(\d+)/i.exec(criteria);
-    if (minAgeMatch) {
-      const [, minAge] = minAgeMatch;
-      this.isEligible = age >= +minAge;
-      this.eligibilityMessage = this.isEligible
-        ? 'You are eligible!'
-        : `Eligibility requires a minimum age of ${minAge}.`;
-      if (this.isEligible) this.closeEligibilityOverlay();
-      return;
-    }
-
-    const maxAgeMatch = /max\s*(\d+)/i.exec(criteria);
-    if (maxAgeMatch) {
-      const [, maxAge] = maxAgeMatch;
-      this.isEligible = age <= +maxAge;
-      this.eligibilityMessage = this.isEligible
-        ? 'You are eligible!'
-        : `Eligibility requires a maximum age of ${maxAge}.`;
-      if (this.isEligible) this.closeEligibilityOverlay();
-      return;
-    }
-
-    this.eligibilityMessage = 'Unable to determine eligibility criteria.';
-    this.isEligible = false;
-  }
-
-  onBuyNowClick() {
-    if (this.isEligible) {
-      this.isBuyNowClicked = true;
-      this.isConfirmVisible = true;
-    }
-    if (this.isEligible) {
-      this.isBuyNowClicked = true;
-      this.isConfirmVisible = true;
-    }
-  }
-
-  onConfirmClick() {
-    console.log(this.schemeDetails)
-    const data = {
-      planId: this.planId,
-      schemeId: this.schemeId,
-      customerId: this.customerData._id,
-      agentId: this.customerData.agentId,
-      policyName: this.schemeDetails.schemeName,
-      description: this.schemeDetails.description,
-      premiumAmount: this.schemeDetails.premium,
-      duration: this.schemeDetails.maturityPeriod,
-      coverage: this.schemeDetails.coverage
-    };
-
-    this.httpService.createPolicy('/api/v1/policy', data, { headers: this.headers }).subscribe({
+    this.httpService.createPolicy('/api/v1/policy', formData, { headers: this.headers }).subscribe({
       next: (res) => {
-       this.policyDetails=res.data
-       alert('Your policy has been approved successfully!');
-       this.location.back(); 
+        alert('Your policy has been approved successfully!');
+        this.location.back();
       },
       error: (err) => {
         console.error('Error creating policy', err);
-        console.error('Response body:', err.error);
       }
     });
   }
 
-  onCancelClick() {
-    this.isBuyNowClicked = false;
-    this.isConfirmVisible = false;
-    this.isBuyNowClicked = false;
-    this.isConfirmVisible = false;
-  }
+  generatePDF(): any {
+    // Create a new jsPDF instance
+    const pdf = new jsPDF();
 
-  onGoBackClick() {
-    this.location.back();
-    this.location.back();
+    // Extract form values
+    const fullName = (document.getElementById('fullName') as HTMLInputElement).value;
+    const address = (document.getElementById('address') as HTMLInputElement).value;
+    const dob = (document.getElementById('dob') as HTMLInputElement).value;
+    const gender = (document.getElementById('gender') as HTMLInputElement).value;
+    const income = (document.getElementById('income') as HTMLInputElement).value;
+    const education = (document.getElementById('education') as HTMLInputElement).value;
+    const nomineeName = (document.getElementById('nomineename') as HTMLInputElement).value;
+    const nomineeRelation = (document.getElementById('nomineerel') as HTMLInputElement).value;
+    const nomineeAddress = (document.getElementById('nomineeadd') as HTMLInputElement).value;
+    const nomineeContact = (document.getElementById('nomineecon') as HTMLInputElement).value;
+    const idProof = (document.getElementById('idproof') as HTMLInputElement).value;
+    const ageProof = (document.getElementById('ageproof') as HTMLInputElement).value;
+    const incomeProof = (document.getElementById('incomeproof') as HTMLInputElement).value;
+
+
+    // Add content to the PDF
+    pdf.text('Policy Application', 80, 20);
+    pdf.text('Applicant Details', 10, 35);
+    pdf.line(10, 36, 52, 36);
+    pdf.text(`Name: ${fullName}`, 10, 50);
+    pdf.text(`Address: ${address}`, 10, 60);
+    pdf.text(`Date of Birth: ${dob}`, 10, 70);
+    pdf.text(`Gender: ${gender}`, 10, 80);
+    pdf.text(`Annual Income: ${income}`, 10, 90);
+    pdf.text(`Educational Qualification: ${education}`, 10, 100);
+    pdf.text('Nominee Details', 10, 115);
+    pdf.line(10, 116, 52, 116);
+    pdf.text(`Nominee Name: ${nomineeName}`, 10, 130);
+    pdf.text(`Nominee Relation: ${nomineeRelation}`, 10, 140);
+    pdf.text(`Nominee Address: ${nomineeAddress}`, 10, 150);
+    pdf.text(`Nominee Contact: ${nomineeContact}`, 10, 160);
+    pdf.text('Uploaded Document Details', 10, 175);
+    pdf.line(10, 176, 81, 176);
+    pdf.text(`Id Proof: ${idProof}`, 10, 190);
+    pdf.text(`Age Proof: ${ageProof}`, 10, 200);
+    pdf.text(`Income Proof: ${incomeProof}`, 10, 210);
+
+    // pdf.save('Application.pdf')
+    // Save the PDF
+    return pdf.output('blob');  }
+
+  // Capture file on input change
+  onFileChange(event: any, proofType: string): void {
+    const selectedFile = event.target.files[0]; // Single file
+    this.files[proofType] = selectedFile || null;
+    console.log(this.files[proofType]);
+    
   }
 }
