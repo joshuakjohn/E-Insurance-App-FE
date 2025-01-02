@@ -1,9 +1,8 @@
 <div class="container">
   <div 
     class="scheme" 
-    *ngFor="let scheme of schemes" 
-    (click)="extendToggle(scheme._id)">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
+    *ngFor="let scheme of schemes">
+    <div style="display: flex; align-items: center; justify-content: space-between;" (click)="extendToggle(scheme._id)">
       <div>
         <h1>{{ scheme.schemeName }}</h1>
         <p class="description">{{ scheme.description }}</p>
@@ -17,7 +16,7 @@
     <div
       class="details"
       [ngStyle]="{ 
-        'height': extendedCard === scheme._id ? '190px' : '0', 
+        'height': extendedCard === scheme._id ? height : '0', 
         'margin-top': extendedCard === scheme._id ? '10px' : '0' 
       }">
       <p>Eligibility Criteria: {{ scheme.eligibilityCriteria }}</p>
@@ -25,9 +24,12 @@
       <p>Maturity Period: {{ scheme.maturityPeriod }} months</p>
       <p>Coverage: ₹{{ scheme.coverage }}</p>
       <div style="width: calc(100% - 20px);
-      display: flex;
-      justify-content: center;">
-        <button (click)="buyScheme(scheme._id); $event.stopPropagation();">Buy now</button>
+      justify-content: center;" 
+      [ngStyle]="{display: policyApplication ? 'none': 'flex'}">
+        <button (click)="buyScheme(scheme); $event.stopPropagation();">Buy now</button>
+      </div>
+      <div [ngStyle]="{display: policyApplication ? 'block': 'none'}">
+        <app-policy (policyApplication)="applicationToggle($event)" [data]="{planId: this.planId, schemeDetails: this.selectedScheme, planDetails: this.planDetails}"></app-policy>
       </div>
     </div>
   </div>

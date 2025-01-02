@@ -1,7 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { HttpService } from 'src/app/services/http-services/http.service';
-import { CustomerpolicyComponent } from './customerpolicy/customerpolicy.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -16,9 +15,14 @@ import { Router } from '@angular/router';
 })
 export class AgentComponent {
 
+  extendedCard: number | null = null;
   tab: string = 'customer';
   customers: any[] = [];
-  pendingPolices: any[] = [];
+  agentPolices: any[] = [];
+  customerPolicies: any[] = [];
+  pendingPolicies: any[] = []
+  height: string = ''
+
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router
   ){
@@ -27,7 +31,7 @@ export class AgentComponent {
 
   ngOnInit(): void {
     this.fetchCustomers();
-    this.fetchPendingPolicy()
+    this.fetchAgentPolicies()
   }
 
   fetchCustomers(): void {
@@ -47,19 +51,18 @@ export class AgentComponent {
       this.tab = 'customer'
     else if(input === 'policy')
       this.tab = 'policy'
+      this.pendingPolicies = this.agentPolices.filter((policy: any) => {
+      if(policy.status === 'submitted')
+        return true
+      return false
+    })
   }
 
-  fetchPendingPolicy(): void {    
+  fetchAgentPolicies(): void {    
     const header = new HttpHeaders().set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY5NWJkOGRmMzdjZjE3ZDBjY2VhNDIiLCJlbWFpbCI6ImF2aUBnbWFpbC5jb20iLCJpYXQiOjE3MzU1NzM1MjYsImV4cCI6MTczNjE3ODMyNn0.j-dES4y5s04ZoTI-F6LuNfSpqfl8Cv-JQ9Sb3-ZkGm4`);     
     this.httpService.getApiCall(`/api/v1/policy/agent`, header).subscribe({
       next: (res: any) => {
-        this.pendingPolices = res.data.filter((policy: any) => {
-          if(policy.status === 'submitted')
-            return true
-          return false
-        })
-        console.log(this.pendingPolices);
-        
+        this.agentPolices = res.data        
       },
       error: (err: any) => {
         console.error('Error fetching plans:', err);
@@ -67,19 +70,17 @@ export class AgentComponent {
     });
   }
 
-  viewCustomerPolicies(customerId: string){
-    
-
-    let dialogRef = this.dialog.open(CustomerpolicyComponent, {
-      height: '600px',
-      width: '1000px',
-      data: {customerId}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-
+  viewCustomerPolicies(id: number){
+      this.customerPolicies = this.agentPolices.filter((policy: any) => {        
+        if(policy.customerId === id)
+          return true
+        return false
+      })
+      if(this.customerPolicies.length === 0)
+        this.height = 50+'px'
+      else
+      this.height = this.customerPolicies.length*370+'px'      
+      this.extendedCard = this.extendedCard === id ? null : id; 
   }
 
   forwardButton(policyId: string){

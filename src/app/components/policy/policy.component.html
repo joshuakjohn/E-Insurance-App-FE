@@ -72,7 +72,8 @@
 
     <span>Your application will be sent to your agent for verification and further processing.</span>
 
-    <div style="display: flex; justify-content: center; margin-top: 10px;">
+    <div style="display: flex; justify-content: center; margin-top: 10px; gap: 30px">
+      <button (click)="policyApplication.emit('close')">Cancel</button>
       <button (click)="onSubmitClick()">Submit</button>
     </div>
   </div>
