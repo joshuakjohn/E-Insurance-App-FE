@@ -71,16 +71,17 @@ export class AdminDashboardComponent {
   }
 
   viewAgentPolicies(agentId: string) {
-    let dialogRef = this.dialog.open(AgentPolicyComponent, {
+    const dialogRef = this.dialog.open(AgentPolicyComponent, {
       height: '600px',
       width: '1000px',
-      data: { agentId }
+      data: { agentId: agentId },
     });
-
-    dialogRef.afterClosed().subscribe(result => {
+  
+    dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
   }
+  
 
   approvePolicy(policyId: string) {
     this.httpService.patchApiCall(`/api/v1/policy/${policyId}`).subscribe({
