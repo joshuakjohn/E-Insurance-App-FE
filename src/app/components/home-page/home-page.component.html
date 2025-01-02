@@ -2,10 +2,10 @@
     <div class="header">
         <div class="outer_menu">
             <div class="menu">
-                <button>Home</button>
+                <button (click)="this.router.navigate(['/dashboard/plans'])">Home</button>
                 <button>About us</button>
                 <button>Contact us</button>
-                <button (click)=" goToCustomerPolicies()">Dashboard</button>
+                <button (click)="goToDashboard()">Dashboard</button>
             </div>
             
             <button (click)="loginAndSignupDialog()">Login</button>
@@ -29,7 +29,7 @@
             margin-top: 50px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">We are committed to providing you with the protection and security you deserve with our comprehensive insurance solutions that are designed to give you peace of mind</p>
         
-            <button>Explore</button>
+            <button (click)="explore()">Explore</button>
         </div>
     </div>
 
@@ -38,6 +38,7 @@
         margin: 10px 0px 10px 27px;
         font-size: 40px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;">Discover the Perfect Plan for You</h1>
+        <app-admin *ngIf="role === 'admin'"></app-admin>
          <router-outlet></router-outlet>
     </div>
 

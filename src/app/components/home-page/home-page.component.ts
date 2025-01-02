@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class HomePageComponent {
 
+  role = localStorage.getItem('role')
+
   constructor(public dialog: MatDialog,public router:Router){}
 
   loginAndSignupDialog(){
@@ -21,15 +23,25 @@ export class HomePageComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      if(result)
+        this.role = result
     });
   }
-  goToCustomerPolicies() {
-    this.router.navigate(['/customerdashboard/policy']).then((success) => {
-      if (success) {
-        console.log('Navigation to customer policies was successful!');
-      } else {
-        console.error('Navigation to customer policies failed!');
-      }
+  goToDashboard() {
+    if(this.role === 'customer')
+      this.router.navigate(['/customerdashboard/policy'])
+    else if(this.role === 'agent')
+      this.router.navigate(['/agent'])
+    else if(!this.role)
+      this.loginAndSignupDialog()
+  }
+
+  explore(){
+    window.scrollTo({
+      top: 475, // scroll down 500px
+      left: 0,  // keep horizontal scroll at 0
+      behavior: 'smooth' // smoothly scroll to the position
     });
   }
+  
 }
