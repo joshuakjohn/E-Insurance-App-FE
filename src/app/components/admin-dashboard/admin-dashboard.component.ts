@@ -52,23 +52,24 @@ export class AdminDashboardComponent {
   tabSwitch(input: string) {
     if (input === 'agent')
       this.tab = 'agent';
-    else if (input === 'policy')
+    else if (input === 'policy'){
       this.tab = 'policy';
+      this.fetchPendingPolicies();
+    }
   }
 
   fetchPendingPolicies(): void {
-    const header = new HttpHeaders().set('Authorization', `Bearer${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall(`/api/v1/policy/admin`, header).subscribe({
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    this.httpService.getApiCall('/api/v1/policy/admin', header).subscribe({
       next: (res: any) => {
-        this.pendingPolicies = res.data.filter((policy: any) => {
-          return policy.status === 'submitted';
-        });
+        this.pendingPolicies = res.data.filter((policy: any) => policy.status === 'submitted');
       },
       error: (err: any) => {
         console.error('Error fetching pending policies:', err);
       },
     });
   }
+  
 
   viewAgentPolicies(agentId: string) {
     const dialogRef = this.dialog.open(AgentPolicyComponent, {
