@@ -1,4 +1,4 @@
-import {  Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,7 +7,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DROPDOWN_ICON } from 'src/assets/svg-icons';
 import { PolicyComponent } from '../policy/policy.component';
-import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-scheme',
@@ -22,11 +21,6 @@ export class SchemeComponent implements OnInit {
   isOverlayVisible: boolean = false;
   selectedScheme: any = {};
   selectedSchemeId: string | null = null;  // To store the schemeId temporarily for after login
-  searchQuery: string = ''; 
-  isLoading: boolean = false;
-  currentPage: number = 1; 
-  itemsPerPage: number = 10; 
-  totalResults: number = 0;
   policyApplication: boolean = false;
   height: string = '190px'
 
@@ -35,6 +29,7 @@ export class SchemeComponent implements OnInit {
     public router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
+    private cdr: ChangeDetectorRef
   ) {
       iconRegistry.addSvgIconLiteral('dropdown-icon', sanitizer.bypassSecurityTrustHtml(DROPDOWN_ICON));
   }
@@ -190,38 +185,8 @@ export class SchemeComponent implements OnInit {
       // }
     });
   }
-  onSearch(): void {
-    this.isLoading = true;
-  
-    const query = this.searchQuery.trim();
-    if (query) {
-      const params = {
-        search: query,
-        page: this.currentPage,
-        limit: this.itemsPerPage,
-      };
-      const httpParams = new HttpParams({ fromObject: params });
-  
-      this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
-        next: (res: any) => {
-          // Update the schemes array with the data from the API response
-          this.schemes = res.data.results || []; // Make sure the property path matches the response structure
-          this.totalResults = this.schemes.length; // Update total results
-          this.isLoading = false;
-        },
-        error: (err: any) => {
-          console.error('Error fetching schemes:', err);
-          this.schemes = [];
-          this.isLoading = false;
-        }
-      });
-    } else {
-      this.schemes = []; 
-      this.fetchSchemes()
-      this.isLoading = false;
-    }
-  }
-      applicationToggle(event: string){
+
+  applicationToggle(event: string){
     if(event === 'close'){
       this.policyApplication = false
       this.height = '190px'
