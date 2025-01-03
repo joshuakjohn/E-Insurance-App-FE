@@ -1,9 +1,9 @@
 <div class="container">
-  <div>
+  <div class="scheme-header">
     <input type="search" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search schemes" class="search-bar">
+    <mat-icon (click)="filter() " class="filter-icon">filter_list</mat-icon>
   </div>
 
-  <!-- Spinner - shown while loading -->
   <div *ngIf="isLoading" class="spinner-container">
     <mat-spinner diameter="50"></mat-spinner>
   </div>

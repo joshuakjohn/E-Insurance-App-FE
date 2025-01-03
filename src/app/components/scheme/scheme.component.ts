@@ -29,6 +29,7 @@ export class SchemeComponent implements OnInit {
   totalResults: number = 0;
   policyApplication: boolean = false;
   height: string = '190px'
+  totalPages!:number;
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer,
     private httpService: HttpService,
@@ -228,5 +229,30 @@ export class SchemeComponent implements OnInit {
     }
 
   }
+  filter() {
+    this.isLoading = true; // Show loading indicator while fetching data
+    
+    this.httpService.getFilterScheme('/api/v1/scheme/filter').subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          // Assign the filtered schemes to the schemes array
+          this.schemes = res.data || [];
+          
+          // Optionally handle pagination
+          this.totalResults = res.total || 0; // Total available results
+          this.currentPage = res.page || 1; // Current page
+          this.totalPages = res.totalPages || 1;
+          
+          this.isLoading = false; // Hide loading indicator
+        }
+      },
+      error: (err: any) => {
+        console.error('Error fetching filtered schemes:', err);
+        this.schemes = []; // Clear schemes on error
+        this.isLoading = false; // Hide loading indicator
+      }
+    });
+  }
+  
 
 }
