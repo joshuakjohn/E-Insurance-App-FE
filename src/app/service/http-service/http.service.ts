@@ -37,4 +37,7 @@ payPremium(endpoint:string,data:any,header:any):Observable<any>{
 getSearchScheme(endpoint:string,params:any):Observable<any>{
   return this.http.get('http://localhost:4000'+endpoint,params)
 }
+getRefreshToken(endpoint:string):Observable<any>{
+  return this.http.get('http://localhost:4000'+endpoint);
+}
 }
