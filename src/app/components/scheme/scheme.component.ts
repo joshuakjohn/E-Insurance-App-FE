@@ -21,6 +21,8 @@ export class SchemeComponent implements OnInit {
   isOverlayVisible: boolean = false;
   selectedScheme: any = {};
   selectedSchemeId: string | null = null;  // To store the schemeId temporarily for after login
+  policyApplication: boolean = false;
+  height: string = '190px'
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer,
     private httpService: HttpService,
@@ -76,7 +78,7 @@ export class SchemeComponent implements OnInit {
       this.httpService.getAllScheme(`/api/v1/scheme/${this.planId}/getall`).subscribe({
         next: (res: any) => {
           if (res.code === 200) {
-            this.schemes = res.data;
+            this.schemes = res.data;            
           }
         },
         error: (err: any) => {
@@ -106,11 +108,11 @@ export class SchemeComponent implements OnInit {
     }
   }
 
-  buyScheme(schemeId: any): void { 
-    this.selectedSchemeId = schemeId;         
+  buyScheme(scheme: any): void { 
+    this.height = 1800+'px'
+    this.selectedScheme = scheme;         
     if(localStorage.getItem('role') === 'customer'){
-      this.policyDialog()
-      // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${schemeId}/policy`]);
+      this.policyApplication = true
     } else {
       this.openLoginDialog();
     }
@@ -128,7 +130,6 @@ export class SchemeComponent implements OnInit {
       // If user is not logged in, store the selected scheme ID and open the login/signup dialog
       this.selectedSchemeId = schemeId;
       console.log(this.selectedSchemeId)
-      this.openLoginDialog();
     }
   }
 
@@ -153,7 +154,7 @@ export class SchemeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (localStorage.getItem('role') === 'customer') {
-        this.policyDialog()
+        this.policyApplication = true
 
         // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
       } else {
@@ -165,6 +166,7 @@ export class SchemeComponent implements OnInit {
   extendedCard: number | null = null;
 
   extendToggle(id: number): void {
+    this.applicationToggle('close')
     this.extendedCard = this.extendedCard === id ? null : id;
   }
 
@@ -184,5 +186,12 @@ export class SchemeComponent implements OnInit {
     });
   }
 
+  applicationToggle(event: string){
+    if(event === 'close'){
+      this.policyApplication = false
+      this.height = '190px'
+    }
+
+  }
 
 }

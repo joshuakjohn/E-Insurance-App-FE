@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginAndSignupComponent } from '../login-and-signup/login-and-signup.component';
 import { Router } from '@angular/router';
+import { AgentRegistrationComponent } from '../login-and-signup/agent-registration/agent-registration.component';
 
 @Component({
   selector: 'app-home-page',
@@ -13,6 +14,20 @@ export class HomePageComponent {
   role = localStorage.getItem('role')
 
   constructor(public dialog: MatDialog,public router:Router){}
+
+  agentRegisterDialog(){
+    let dialogRef = this.dialog.open(AgentRegistrationComponent, {
+      height: 'auto',
+      width: 'auto',
+    }
+  );
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if(result)
+        this.role = result
+    });
+  }
 
   loginAndSignupDialog(){
     let dialogRef = this.dialog.open(LoginAndSignupComponent, {
