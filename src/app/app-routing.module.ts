@@ -10,6 +10,8 @@ import { PolicyViewComponent } from './components/policy-view/policy-view.compon
 import { AgentComponent } from './components/agent/agent.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
+import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 
 const routes: Routes = [
   {
@@ -39,8 +41,23 @@ const routes: Routes = [
       { path: 'plans/:planId/scheme', component: SchemeComponent },
       { path: 'plans/:planId/scheme/:schemeId/policy', component: PolicyComponent },
       { path: 'plans/:planId/scheme/:schemeId/policy/view', component: PolicyViewComponent },
-      { path: 'admin/add-plan', component: PlanFormComponent }, // Route for adding a new plan
-      { path: 'admin/add-scheme', component: SchemeFormComponent }, // Route for adding a new scheme
+    ]
+  },
+  {
+    path: 'admin',
+    children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'login', component: AdminLoginComponent },
+      { 
+        path: 'dashboard', 
+        component: AdminDashboardComponent,
+        children: [
+          { path: 'add-plan', component: PlanFormComponent },
+          { path: 'add-scheme', component: SchemeFormComponent },
+          { path: 'plans', component: PlanComponent },
+          { path: 'plans/:planId/scheme', component: SchemeComponent },
+        ]
+      },
     ]
   },
   { path: 'agent', component: AgentComponent }

@@ -1,0 +1,26 @@
+<body>
+    <div class="container">
+        <h1>Admin Login</h1>
+        <form [formGroup] = "loginForm">
+            <mat-form-field appearance="outline">
+                <mat-label>Email or phone</mat-label>
+                <input matInput formControlName = "email">
+                <mat-error *ngIf="loginFormControls['email']['errors']?.['required']">Email is required</mat-error>
+                <mat-error *ngIf="loginFormControls['email']['errors']?.['email']">Incorrect Email Format</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput formControlName = "password" type="password">
+                <mat-error *ngIf="loginFormControls['password']['errors']?.['required']">Password is required</mat-error>
+                <mat-error *ngIf="loginFormControls['password']['errors']?.['minlength']">Password must be at least 6 characters</mat-error>
+            </mat-form-field>
+            <div class="links">
+                <a mat-button href="#">Forgot password</a>
+            </div>
+            <div class = "links">
+                <a mat-button href="/signup">Create account</a>
+                <button mat-raised-button color="primary" (click) = "handleLogin()">Login</button>
+            </div>
+        </form>
+    </div>
+</body>

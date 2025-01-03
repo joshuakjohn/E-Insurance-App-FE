@@ -69,7 +69,7 @@ export class PlanFormComponent {
       this.httpService.postApiCall('/api/v1/plan', payload, this.header).subscribe({
         next: (res) => {
           console.log('Plan created successfully:', res);
-          this.router.navigate(['/dashboard/plans']); 
+          this.router.navigate(['admin/dashboard/plans']); 
         },
         error: (error) => {
           console.error('Error creating plan:', error);
@@ -79,6 +79,6 @@ export class PlanFormComponent {
   }
 
   onClose(): void {
-    this.router.navigate(['/dashboard/plans']); 
+    this.router.navigate(['/admin/dashboard/plans']); 
   }
 }

@@ -63,7 +63,7 @@ export class SchemeFormComponent {
       this.httpService.postApiCall('/api/v1/scheme', schemeData, this.header).subscribe({
         next: (res) => {
           console.log('Scheme created successfully:', res);
-          this.router.navigate([`/dashboard/plans/${selectedPlanId}/scheme`]);
+          this.router.navigate([`/admin/dashboard/plans/${selectedPlanId}/scheme`]);
         },
         error: (error) => {
           console.error('Error creating scheme:', error);
@@ -73,6 +73,6 @@ export class SchemeFormComponent {
   }
 
   onClose(): void {
-    this.router.navigate(['/dashboard/plans']);
+    this.router.navigate(['/admin/dashboard']);
   }
 }
