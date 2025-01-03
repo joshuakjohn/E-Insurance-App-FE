@@ -19,6 +19,10 @@ export class PolicyViewComponent implements OnInit {
   isOverlayVisible: boolean = false;
   selectedPolicy: any = null;
   customerData: any;
+  tabs = [
+    { key: 'active', label: 'Active' },
+    { key: 'pending', label: 'Pending' }
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -149,6 +153,9 @@ export class PolicyViewComponent implements OnInit {
       }
     });
   }
-  
+  setActiveTab(tabKey: string): void {
+    this.activeTab = tabKey;
+  }
+
   
 }

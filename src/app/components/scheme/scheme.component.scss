@@ -47,3 +47,31 @@ button:hover{
   transition: background-color ease .5s;
   background-color: #557fba;
 }
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+.search-bar {
+  width: 100%;
+  max-width: 500px; /* Optional: set a max width */
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: 1px solid #214c87;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.search-bar:focus {
+  border-color: #557fba;
+  box-shadow: 0 0 10px rgba(85, 127, 186, 0.5);
+}
+
+.search-bar::placeholder {
+  color: #b0b0b0;
+  font-style: italic;
+}
+
