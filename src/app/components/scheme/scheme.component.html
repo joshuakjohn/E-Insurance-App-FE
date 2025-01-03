@@ -1,7 +1,11 @@
 <div class="container">
   <div class="scheme-header">
     <input type="search" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search schemes" class="search-bar">
-    <mat-icon (click)="filter() " class="filter-icon">filter_list</mat-icon>
+    <mat-icon [matMenuTriggerFor]="filterMenu" class="filter-icon">filter_list</mat-icon>
+    <mat-menu #filterMenu="matMenu">
+    <button class="filter-button" (click)="filter('asc')">Low-High</button>
+    <button class="filter-button" (click)="filter('desc')">High-Low</button>
+    </mat-menu>
   </div>
 
   <div *ngIf="isLoading" class="spinner-container">

@@ -31,6 +31,7 @@ export class SchemeComponent implements OnInit {
   height: string = '190px'
   totalPages!:number;
 
+
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer,
     private httpService: HttpService,
     public router: Router,
@@ -205,9 +206,8 @@ export class SchemeComponent implements OnInit {
   
       this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
         next: (res: any) => {
-          // Update the schemes array with the data from the API response
-          this.schemes = res.data.results || []; // Make sure the property path matches the response structure
-          this.totalResults = this.schemes.length; // Update total results
+          this.schemes = res.data.results || []; 
+          this.totalResults = this.schemes.length; 
           this.isLoading = false;
         },
         error: (err: any) => {
@@ -229,30 +229,27 @@ export class SchemeComponent implements OnInit {
     }
 
   }
-  filter() {
-    this.isLoading = true; // Show loading indicator while fetching data
-    
-    this.httpService.getFilterScheme('/api/v1/scheme/filter').subscribe({
+  filter(sortOrder: 'asc' | 'desc' = 'asc') {
+    this.isLoading = true;   
+    this.httpService.getFilterScheme(`/api/v1/scheme/filter?sortOrder=${sortOrder}`).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          // Assign the filtered schemes to the schemes array
           this.schemes = res.data || [];
-          
-          // Optionally handle pagination
-          this.totalResults = res.total || 0; // Total available results
-          this.currentPage = res.page || 1; // Current page
+          this.totalResults = res.total || 0;
+          this.currentPage = res.page || 1;
           this.totalPages = res.totalPages || 1;
-          
-          this.isLoading = false; // Hide loading indicator
+        } else {
+          console.warn('Unexpected response:', res);
+          this.schemes = []; 
         }
+  
+        this.isLoading = false; 
       },
       error: (err: any) => {
         console.error('Error fetching filtered schemes:', err);
-        this.schemes = []; // Clear schemes on error
-        this.isLoading = false; // Hide loading indicator
+        this.schemes = []; 
+        this.isLoading = false; 
       }
     });
-  }
-  
-
+  }  
 }
