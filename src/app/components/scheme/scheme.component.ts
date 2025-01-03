@@ -130,7 +130,6 @@ export class SchemeComponent implements OnInit {
       // If user is not logged in, store the selected scheme ID and open the login/signup dialog
       this.selectedSchemeId = schemeId;
       console.log(this.selectedSchemeId)
-      
     }
   }
 
@@ -194,6 +193,5 @@ export class SchemeComponent implements OnInit {
     }
 
   }
-
 
 }
