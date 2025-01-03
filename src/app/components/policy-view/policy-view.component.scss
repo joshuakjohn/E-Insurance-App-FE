@@ -9,18 +9,20 @@
     color: #333;
     gap: 5%;
     padding-left: 50px;
+    margin-top: 60px;
+    background-color: rgb(223, 223, 223); /* Background color */
 }
 
 .policy-card {
     width: 100%;
     max-width: 600px;
     margin-top: 30px;
-    background: #ffffff;
+    background: #ffffff; /* Light card background */
     border-radius: 20px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     padding: 25px;
     transition: transform 0.3s, box-shadow 0.3s;
-    border: 1px solid gray;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Subtle border to match background */
 }
 
 .policy-card-header {
@@ -44,12 +46,13 @@
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 5px;
+    color: #333; /* Dark color for titles */
 }
 
 .policy-card-header .status {
     font-size: 14px;
     font-weight: 500;
-    background-color: #ff9582;
+    background-color: #8fa3b7; /* Muted tone to match background */
     padding: 5px 10px;
     border-radius: 20px;
     color: white;
@@ -60,13 +63,13 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
     margin-bottom: 15px;
-    background-color: #e7f2f9;
+    background-color: #e1e6ec; /* Light gray background for details */
     padding: 15px;
     border-radius: 10px;
 }
 
 .policy-card-details .detail-card {
-    background-color: #fafafa;
+    background-color: #f4f7fa; /* Slightly darker gray for individual cards */
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -86,14 +89,14 @@
 
 .policy-card-details .detail-card p {
     font-size: 13px;
-    color: #555;
+    color: #777; /* Softer color for descriptions */
     margin-top: 6px;
 }
 
 .policy-card-duration {
     text-align: center;
     margin-bottom: 20px;
-    background-color: #e2f3e1;
+    background-color: #cde1f3; /* Light blue accent for duration */
     padding: 8px;
     border-radius: 10px;
 }
@@ -106,7 +109,7 @@
 
 .policy-card-benefits {
     margin-bottom: 20px;
-    background-color: #f9f7e6;
+    background-color: #f0f7e1; /* Soft yellow-green background for benefits */
     padding: 12px;
     border-radius: 10px;
 }
@@ -132,7 +135,7 @@
 
 .policy-card-eligibility {
     margin-bottom: 20px;
-    background-color: #f4e0c1;
+    background-color: #f9e1c1; /* Soft peach background for eligibility */
     padding: 12px;
     border-radius: 10px;
 }
@@ -151,7 +154,7 @@
 
 .policy-card-premium {
     margin-bottom: 20px;
-    background-color: #e0f7fa;
+    background-color: #e2f5fb; /* Light turquoise for premium section */
     padding: 12px;
     border-radius: 10px;
 }
@@ -182,9 +185,10 @@
         margin-bottom: 12px;
     }
 }
-  /* Top Navigation Bar */
-  .navbar {
-   position: relative! important;
+
+/* Top Navigation Bar */
+.navbar {
+    position: relative !important;
     font-family: 'Poppins', sans-serif;
     display: flex;
     justify-content: space-around;
@@ -195,9 +199,10 @@
     background-color: #ffffff; 
     color: #333; 
     padding: 5px 0; 
-    // box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  .navbar .nav-item {
+    background-color: rgb(223, 223, 223);
+}
+
+.navbar .nav-item {
     font-size: 16px;
     font-weight: 600;
     padding: 8px 15px; 
@@ -206,15 +211,17 @@
     position: relative;
     cursor: pointer;
     transition: color 0.3s ease, background-color 0.3s ease;
-  }
-  .navbar .nav-item:hover {
+}
+
+.navbar .nav-item:hover {
     color: #555; 
-  }
-  .navbar .nav-item.active {
+}
+
+.navbar .nav-item.active {
     color: #4CAF50;
-  }
-  
-  .navbar .nav-item.active::after {
+}
+
+.navbar .nav-item.active::after {
     content: '';
     position: absolute;
     left: 0;
@@ -223,36 +230,37 @@
     height: 3px;
     background-color: #4CAF50;
     animation: slide-in 0.3s ease-in-out;
-  }
-  .pay-button {
+}
+
+.pay-button {
     margin-top: 10px;
-  
+
     button {
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-  
-      &:hover {
-        background-color: #0056b3;
-      }
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
-  }
-  
-  
-  /* Underline Animation */
-  @keyframes slide-in {
+
+    &:hover {
+        background-color: #0056b3;
+    }
+}
+
+/* Underline Animation */
+@keyframes slide-in {
     from {
-      width: 0;
+        width: 0;
     }
     to {
-      width: 100%;
+        width: 100%;
     }
-  }
-  /* Overlay Styles */
+}
+
+/* Overlay Styles */
 .overlay {
     position: fixed;
     top: 0;
@@ -264,18 +272,18 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
-  }
-  
-  .overlay-content {
+}
+
+.overlay-content {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     text-align: center;
     width: 300px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .overlay-actions button {
+}
+
+.overlay-actions button {
     padding: 10px 20px;
     border: none;
     border-radius: 50px;
@@ -284,43 +292,43 @@
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     gap: 10%;
-  }
-  
-  .overlay-actions button:hover {
+}
+
+.overlay-actions button:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Close Button */
-  .overlay-actions button:first-child {
+}
+
+/* Close Button */
+.overlay-actions button:first-child {
     background-color: #dc3545;
     color: white;
     margin-right: 10px;
-  }
-  
-  .overlay-actions button:first-child:hover {
+}
+
+.overlay-actions button:first-child:hover {
     background-color: #c82333;
-  }
-  
-  /* Pay Now Button */
-  .overlay-actions button:last-child {
+}
+
+/* Pay Now Button */
+.overlay-actions button:last-child {
     background-color: #007bff;
     color: white;
     margin-left: 10px;
-  }
-  
-  .overlay-actions button:last-child:hover {
+}
+
+.overlay-actions button:last-child:hover {
     background-color: #0056b3;
-  }
-  
-  .overlay-actions button:focus {
+}
+
+.overlay-actions button:focus {
     outline: none;
     box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.5); /* Focus effect for Pay Now */
-  }
-  
-  /* Optional: Adding an active state for buttons */
-  .overlay-actions button:active,
-  .pay-button button:active {
+}
+
+/* Optional: Adding an active state for buttons */
+.overlay-actions button:active,
+.pay-button button:active {
     transform: scale(0.98);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  }
+}
