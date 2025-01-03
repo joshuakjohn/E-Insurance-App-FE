@@ -1,26 +1,72 @@
 <div class="customer-dashboard">
-    <!-- Header with Menu Button -->
-    <header class="dashboard-header">
-      <button class="menu-button" (click)="toggleSidebar()">☰ Menu</button>
-      <h1>Customer Dashboard</h1>
-    </header>
+    <!-- Navigation Bar -->
+    <div class="header">
+      <div class="navbar">
+        <button mat-button (click)="goToDashboard()">Home</button>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="Collaborator button"
+          matTooltip="Collaborator"
+          class="small-icon-button"
+        >
+          <mat-icon style="transform: scale(2);">account_circle</mat-icon>
+        </button>
+      </div>
+    </div>
   
-    <!-- Sidebar Section -->
-    <aside class="dashboard-sidebar" [class.open]="isSidebarOpen">
-      <nav>
-        <ul>
-          <li><a routerLink="/dashboard/overview" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Overview</a></li>
-          <li><a routerLink="/customerdashboard/policy" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Policies</a></li>
-          <li><a routerLink="/dashboard/payments" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Payments</a></li>
-          <li><a routerLink="/dashboard/support" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}">Support</a></li>
-          <li><a routerLink="/customerdashboard/profile" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact: true}" class="profile-button">Profile</a></li> <!-- Profile Link -->
-        </ul>
-      </nav>
-    </aside>
+    <!-- User Menu -->
+    <mat-menu #menu="matMenu">
+      <div class="account-menu">
+        <span>{{ userEmail }}</span>
+        <img src="../../../assets/pngegg.png" width="100px" height="100px" style="padding: 20px;" />
+        <button mat-raised-button color="warn" style="margin: 20px;" (click)="logout()">Logout</button>
+      </div>
+    </mat-menu>
   
-    <!-- Main Content Section -->
-    <main class="dashboard-main-content">
-      <router-outlet></router-outlet> <!-- Angular will load the routed components here -->
-    </main>
+    <mat-button-toggle-group
+      name="fontStyle"
+      aria-label="Font Style"
+      class="tabs"
+      [value]="activeTab"
+      (change)="setActiveTab($event.value)"
+    >
+      <mat-button-toggle *ngFor="let tab of tabs" [value]="tab.key" class="toggle">
+        {{ tab.label }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  
+    <!-- Dashboard Content -->
+    <div class="dashboard-content">
+      <ng-container [ngSwitch]="activeTab">
+        <div *ngSwitchCase="'overview'">
+          <h2>Welcome, {{ userName }}!</h2>
+          <p>This is your dashboard overview.</p>
+        </div>
+  
+        <!-- Profile Tab -->
+        <div *ngSwitchCase="'profile'">
+          <router-outlet></router-outlet>
+        </div>
+  
+        <!-- Policies Tab -->
+        <div *ngSwitchCase="'policies'">
+          <h2>Policy Details</h2>
+          <router-outlet></router-outlet>
+        </div>
+  
+        <!-- Reports Tab -->
+        <div *ngSwitchCase="'reports'">
+          <h2>Reports</h2>
+          <p>Reports and analytics will be available soon.</p>
+        </div>
+  
+        <!-- Default Case -->
+        <div *ngSwitchDefault>
+          <h2>Tab not found</h2>
+          <p>Please select a valid tab.</p>
+        </div>
+      </ng-container>
+    </div>
   </div>
   
