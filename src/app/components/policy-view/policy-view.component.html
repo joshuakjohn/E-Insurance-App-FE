@@ -65,7 +65,7 @@
         <p>Open to all individuals aged 18-65</p>
       </div>
   
-      <div *ngIf="isPremiumDue(policy.createdAt)" class="pay-button">
+      <div *ngIf="isPremiumDue(policy.createdAt, policy.lastPaymentDate)" class="pay-button">
         <button (click)="showOverlay(policy)">Pay Premium</button>
       </div>
     </div>
