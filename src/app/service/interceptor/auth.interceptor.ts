@@ -59,7 +59,7 @@ export class AuthInterceptor implements HttpInterceptor {
       const userId = decodedToken.userId;
 
       if (userId) {
-        return this.httpService.getRefreshToken(`/api/v1/customer/${userId}/refresh-token`).pipe(
+        return this.httpService.getRefreshToken(`/api/v1/customer/${userId}/refreshtoken`).pipe(
           switchMap((res: any) => {
             localStorage.setItem('authToken', res.token);
             return of(res.newAccessToken);
