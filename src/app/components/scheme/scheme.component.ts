@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import {  Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,6 +7,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DROPDOWN_ICON } from 'src/assets/svg-icons';
 import { PolicyComponent } from '../policy/policy.component';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-scheme',
@@ -21,13 +22,19 @@ export class SchemeComponent implements OnInit {
   isOverlayVisible: boolean = false;
   selectedScheme: any = {};
   selectedSchemeId: string | null = null;  // To store the schemeId temporarily for after login
+  searchQuery: string = ''; 
+  isLoading: boolean = false;
+  currentPage: number = 1; 
+  itemsPerPage: number = 10; 
+  totalResults: number = 0;
+  policyApplication: boolean = false;
+  height: string = '190px'
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer,
     private httpService: HttpService,
     public router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
-    private cdr: ChangeDetectorRef
   ) {
       iconRegistry.addSvgIconLiteral('dropdown-icon', sanitizer.bypassSecurityTrustHtml(DROPDOWN_ICON));
   }
@@ -76,7 +83,7 @@ export class SchemeComponent implements OnInit {
       this.httpService.getAllScheme(`/api/v1/scheme/${this.planId}/getall`).subscribe({
         next: (res: any) => {
           if (res.code === 200) {
-            this.schemes = res.data;
+            this.schemes = res.data;            
           }
         },
         error: (err: any) => {
@@ -106,11 +113,11 @@ export class SchemeComponent implements OnInit {
     }
   }
 
-  buyScheme(schemeId: any): void { 
-    this.selectedSchemeId = schemeId;         
+  buyScheme(scheme: any): void { 
+    this.height = 1800+'px'
+    this.selectedScheme = scheme;         
     if(localStorage.getItem('role') === 'customer'){
-      this.policyDialog()
-      // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${schemeId}/policy`]);
+      this.policyApplication = true
     } else {
       this.openLoginDialog();
     }
@@ -128,7 +135,6 @@ export class SchemeComponent implements OnInit {
       // If user is not logged in, store the selected scheme ID and open the login/signup dialog
       this.selectedSchemeId = schemeId;
       console.log(this.selectedSchemeId)
-      this.openLoginDialog();
     }
   }
 
@@ -153,7 +159,7 @@ export class SchemeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (localStorage.getItem('role') === 'customer') {
-        this.policyDialog()
+        this.policyApplication = true
 
         // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
       } else {
@@ -165,6 +171,7 @@ export class SchemeComponent implements OnInit {
   extendedCard: number | null = null;
 
   extendToggle(id: number): void {
+    this.applicationToggle('close')
     this.extendedCard = this.extendedCard === id ? null : id;
   }
 
@@ -183,6 +190,43 @@ export class SchemeComponent implements OnInit {
       // }
     });
   }
+  onSearch(): void {
+    this.isLoading = true;
+  
+    const query = this.searchQuery.trim();
+    if (query) {
+      const params = {
+        search: query,
+        page: this.currentPage,
+        limit: this.itemsPerPage,
+      };
+      const httpParams = new HttpParams({ fromObject: params });
+  
+      this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
+        next: (res: any) => {
+          // Update the schemes array with the data from the API response
+          this.schemes = res.data.results || []; // Make sure the property path matches the response structure
+          this.totalResults = this.schemes.length; // Update total results
+          this.isLoading = false;
+        },
+        error: (err: any) => {
+          console.error('Error fetching schemes:', err);
+          this.schemes = [];
+          this.isLoading = false;
+        }
+      });
+    } else {
+      this.schemes = []; 
+      this.fetchSchemes()
+      this.isLoading = false;
+    }
+  }
+      applicationToggle(event: string){
+    if(event === 'close'){
+      this.policyApplication = false
+      this.height = '190px'
+    }
 
+  }
 
 }

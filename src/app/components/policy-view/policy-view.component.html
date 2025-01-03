@@ -1,7 +1,20 @@
 <div class="navbar">
-    <div class="nav-item" [class.active]="activeTab === 'active'" (click)="switchTab('active')">Active</div>
-    <div class="nav-item" [class.active]="activeTab === 'pending'" (click)="switchTab('pending')">Pending</div>
-  </div>
+    <mat-button-toggle-group
+  name="policyStatus"
+  aria-label="Policy Status"
+  class="tabs"
+>
+  <mat-button-toggle
+    *ngFor="let tab of tabs"
+    [value]="tab.key"
+    [checked]="activeTab === tab.key"
+    (change)="setActiveTab(tab.key)"
+    class="toggle"
+  >
+    {{ tab.label }}
+  </mat-button-toggle>
+</mat-button-toggle-group>
+ </div>
   
   <div class="policy-container">
     <div *ngFor="let policy of filteredPolicies" class="policy-card">

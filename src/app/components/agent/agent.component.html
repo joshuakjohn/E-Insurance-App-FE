@@ -33,21 +33,72 @@
                 <p>Region : {{customer.region}}</p>
                 <p>Phone number : {{customer.phno}}</p>
                 <button mat-raised-button (click)="viewCustomerPolicies(customer._id)">View policies</button>
+
+                <div class="details"
+                [ngStyle]="{ 
+                  'height': extendedCard === customer._id ? height : '0', 
+                }">
+                    <div *ngIf="customerPolicies.length !== 0; else noPolicy" class="customer">
+                        <div *ngFor="let policy of customerPolicies" style="display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        background-color: rgb(175, 175, 175);
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 5px;">
+                            <div class="policy">
+                                <p>Policy name: {{policy.policyName}}</p>
+                                <p>Desciption: {{policy.desciption}}</p>
+                                <p>Premium amount: {{policy.premiumAmount}}</p>
+                                <p>Policy duration: {{policy.duration}}</p>
+                                <p>Policy coverage: {{policy.coverage}}</p>
+                                <p>Premium paid: {{policy.premiumPaid}}</p>
+                                <p>Policy start date: {{policy.policyStartDate | date: 'yyyy-MM-dd'}}</p>
+                                <p>Policy status: {{policy.status}}</p>
+                                <p>Pending Premium: {{policy.pendingPremium}}</p>
+                            </div>
+                            <div style="display: flex;
+                            gap: 10px;
+                            margin-top: 5px;">
+                                <button (click)="downloadPdf(policy.policyApplication.data)">View Application</button>
+                                <button (click)="downloadPdf(policy.incomeProof.data)">Income Proof</button>
+                                <button (click)="downloadPdf(policy.ageProof.data)">Age Proof</button>
+                                <button (click)="downloadPdf(policy.idProof.data)">Identity Proof</button>
+                            </div>
+                        </div>
+                    </div>                 
+                    <ng-template #noPolicy>
+                        <div style="display: flex;
+                        justify-content: center;">
+                            <h2 style="margin-top: 20px;">No policy found</h2>
+                        </div>
+                    </ng-template>
+                </div>
             </div>
         </div>
         <ng-template #pending>
-            <div class="customer" *ngFor="let policy of pendingPolices" style="display: flex;
-            justify-content: space-between;
-            align-items: center;">
-                <div>
-                    <p>Policy name: {{policy.policyName}}</p>
-                    <p>Desciption: {{policy.desciption}}</p>
-                    <p>Premium amount: {{policy.premiumAmount}}</p>
-                    <p>Policy duration: {{policy.duration}}</p>
-                    <p>Policy coverage: {{policy.coverage}}</p>
+            <div class="customer" *ngFor="let policy of pendingPolicies" style="display: flex;
+            flex-direction: column;">
+                <div style="display: flex;
+                justify-content: space-between;
+                align-items: center;">
+                    <div>
+                        <p>Policy name: {{policy.policyName}}</p>
+                        <p>Desciption: {{policy.desciption}}</p>
+                        <p>Premium amount: {{policy.premiumAmount}}</p>
+                        <p>Policy duration: {{policy.duration}}</p>
+                        <p>Policy coverage: {{policy.coverage}}</p>
+                    </div>
+                    <div>
+                        <button mat-raised-button (click)="forwardButton(policy._id)">Forward to admin</button>
+                    </div>
                 </div>
-                <div>
-                    <button mat-raised-button (click)="forwardButton(policy._id)">Forward to admin</button>
+                <div style="display: flex;
+                gap: 10px;">
+                    <button (click)="downloadPdf(policy.policyApplication.data)">View Application</button>
+                    <button (click)="downloadPdf(policy.incomeProof.data)">Income Proof</button>
+                    <button (click)="downloadPdf(policy.ageProof.data)">Age Proof</button>
+                    <button (click)="downloadPdf(policy.idProof.data)">Identity Proof</button>
                 </div>
             </div>
         </ng-template>

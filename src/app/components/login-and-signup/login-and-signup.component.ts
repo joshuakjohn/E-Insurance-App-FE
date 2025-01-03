@@ -30,7 +30,6 @@ export class LoginAndSignupComponent {
 
   ngOnInit() {
       this.signupForm = this.formBuilder.group({
-        signup_role: ['', [Validators.required]],
         username: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         phno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
