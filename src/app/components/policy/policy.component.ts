@@ -33,6 +33,7 @@ export class PolicyComponent {
 
   constructor(
     private httpService: HttpService,
+
   ) {
     const authToken = localStorage.getItem('authToken');
     this.headers = authToken
@@ -66,7 +67,6 @@ export class PolicyComponent {
     
 
     const application = this.generatePDF() 
-
     const formData = new FormData();
     formData.append('policyName', this.schemeDetails.schemeName);
     formData.append('description', this.schemeDetails.description);
@@ -78,7 +78,6 @@ export class PolicyComponent {
     formData.append('customerId', this.customerData._id);
     formData.append('agentId', this.customerData.agentId);
     formData.append('policyApplication', application, 'PolicyApplication.pdf');
-
 
     for (const proofType in this.files) {    
       const file = this.files[proofType];

@@ -1,4 +1,14 @@
 <div class="container">
+  <div>
+    <input type="search" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search schemes" class="search-bar">
+  </div>
+
+  <!-- Spinner - shown while loading -->
+  <div *ngIf="isLoading" class="spinner-container">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- Scheme list -->
   <div 
     class="scheme" 
     *ngFor="let scheme of schemes">
@@ -7,13 +17,17 @@
         <h1>{{ scheme.schemeName }}</h1>
         <p class="description">{{ scheme.description }}</p>
       </div>
+
       <div style="padding: 0 10px 0 30px;">
-        <mat-icon style="transform: scale(2); transition: transform 0.5s ease;" svgIcon="dropdown-icon"
-        [ngStyle]="{ 'transform': extendedCard === scheme._id ? 'rotate(180deg)' : 'rotate(0deg)' }"
-        ></mat-icon>
+        <mat-icon 
+          style="transform: scale(2); transition: transform 0.5s ease;" 
+          svgIcon="dropdown-icon"
+          [ngStyle]="{ 'transform': extendedCard === scheme._id ? 'rotate(180deg)' : 'rotate(0deg)' }">
+        </mat-icon>
       </div>
     </div>
-    <div
+
+    <div 
       class="details"
       [ngStyle]="{ 
         'height': extendedCard === scheme._id ? height : '0', 
