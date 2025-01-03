@@ -17,6 +17,7 @@ export class AdminDashboardComponent {
 
   tab: string = 'plans';
   agents: any[] = [];
+  plans: any[] = [];
   pendingPolicies: any[] = [];
 
   adminEmail: string = '';
@@ -33,32 +34,18 @@ export class AdminDashboardComponent {
     this.fetchAgents();
     this.fetchPendingPolicies();
     this.loadAdminDetails();
+    this.tabSwitch('allPlans');
   }
 
   tabSwitch(input: string) {
     this.tab = input;
     
-    // Reset the form visibility when switching tabs
-    if (input === 'plan') {
+    if (input === 'allPlans') {
+      this.fetchAllPlans();
+    } else if (input === 'plan') {
       this.showPlanForm = true;
-      this.showSchemeForm = false;
-    }
-    else if (input === 'allPlans') {
-      this.showPlanForm = false;
-      this.showSchemeForm = false;
-      this.router.navigate(['/admin/dashboard/plans/admin'])
-    } 
-    else if (input === 'scheme') {
+    } else if (input === 'scheme') {
       this.showSchemeForm = true;
-      this.showPlanForm = false;
-    } else {
-      this.showPlanForm = false;
-      this.showSchemeForm = false;
-      if (input === 'policy') {
-        this.fetchPendingPolicies();
-      } else if (input === 'agent') {
-        this.fetchAgents();
-      }
     }
   }
 
@@ -77,6 +64,35 @@ export class AdminDashboardComponent {
     this.showPlanForm = false;
   }
   
+  fetchAllPlans(): void {
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    this.httpService.getApiCall('/api/v1/plan', header).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        
+        this.plans = res.data;
+      },
+      error: (err: any) => {
+        console.error('Error fetching plans:', err);
+      },
+    });
+  }
+
+  viewSchemes(planId: string): void {
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    this.httpService.getApiCall(`/api/v1/scheme/${planId}/getall`, header).subscribe({
+      next: (res: any) => {
+        const index = this.plans.findIndex(plan => plan._id === planId);
+        if (index !== -1) {
+          this.plans[index].schemes = res.data; // Attach schemes to the specific plan
+        }
+      },
+      error: (err: any) => {
+        console.error('Error fetching schemes:', err);
+      },
+    });
+  }
+
   fetchAgents(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/agent', header).subscribe({

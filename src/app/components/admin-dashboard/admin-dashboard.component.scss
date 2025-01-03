@@ -41,7 +41,7 @@
         }
     }
 
-    .agent, .policy{
+    .agent, .policy, .plan{
         width: calc(100% - 20px);
         height: auto;
         background-color: rgb(238, 238, 238);
@@ -50,4 +50,5 @@
         margin: 10px;
         padding: 20px;
     }
+
 }
