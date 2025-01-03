@@ -7,13 +7,40 @@ import { Router } from '@angular/router';
   styleUrls: ['./customer-dashboard.component.scss']
 })
 export class CustomerDashboardComponent {
-  isSidebarOpen = false;
+  tabs = [
+    { key: 'overview', label: 'Overview' },
+    { key: 'profile', label: 'Profile' },
+    { key: 'policies', label: 'Policies' },
+    { key: 'reports', label: 'Reports' },
+  ];
 
-  constructor(private router:Router){}
-  toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen;
+  // State
+  activeTab: string = 'overview'; // Default tab
+  userName: string = 'John Doe';
+  userEmail: string = 'john.doe@example.com';
+  constructor(private router: Router) {}
+
+  // Methods
+  setActiveTab(tab: string): void {
+    this.activeTab = tab;
+    if (tab === 'profile') {
+      this.goToProfile();
+    }
+    else if(tab==='policies')
+      this.router.navigate(['/customerdashboard/policy'])
   }
-   navigateToProfile() {
-    this.router.navigate(['/customerdashboard/profile'])
-}
+
+ 
+
+  logout(): void {
+    localStorage.clear()
+    this.router.navigate([`/dashboard/plans`]);
+  }
+
+  goToProfile(): void {
+    this.router.navigate(['/customerdashboard/profile']);
+  }
+  goToDashboard(){
+    this.router.navigate([`/dashboard/plans`]);
+  }
 }

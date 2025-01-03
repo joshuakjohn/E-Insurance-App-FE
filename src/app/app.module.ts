@@ -8,9 +8,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,10 +28,11 @@ import { PolicyViewComponent } from './components/policy-view/policy-view.compon
 import { AgentComponent } from './components/agent/agent.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { CustomerpolicyComponent } from './components/agent/customerpolicy/customerpolicy.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AgentPolicyComponent } from './components/admin-dashboard/agentpolicy/agentpolicy.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { AgentRegistrationComponent } from './components/login-and-signup/agent-registration/agent-registration.component';
+import { AuthInterceptor } from './service/interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -47,10 +49,10 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
     AgentComponent,
     CustomerDashboardComponent,
     ProfileComponent,
-    CustomerpolicyComponent,
     AdminDashboardComponent,
     AgentPolicyComponent,
     AdminLoginComponent
+    AgentRegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -66,9 +68,14 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
     HttpClientModule,
     MatButtonModule,
     MatIconModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

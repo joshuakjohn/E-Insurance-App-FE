@@ -2,17 +2,7 @@
     <div class="container" id="container">
         <div class="form-container sign-up-container">
           <form action="#" class="signup-form" [formGroup]="signupForm">
-            <h1>Create Account</h1>
-              <mat-form-field appearance="outline" style="width: 100%;">
-                <mat-label>Role</mat-label>
-                <mat-select formControlName="signup_role" [(ngModel)]="role" (selectionChange)="onRoleChange($event.value)">
-                  <mat-option value="Customer">Customer</mat-option>
-                  <mat-option value="Agent">Agent</mat-option>
-                  <mat-option value="Employee">Employee</mat-option>
-                  <mat-option value="Admin">Admin</mat-option>
-                </mat-select>
-                <mat-error *ngIf="signupFormControls['signup_role']['errors']?.['required']">This field is required</mat-error>
-              </mat-form-field>
+            <h1>Create customer account</h1>
             <div>
               <div class="horizontal">
                 <mat-form-field appearance="outline">
@@ -88,8 +78,6 @@
               <mat-select formControlName="signin_role">
                 <mat-option value="Customer">Customer</mat-option>
                 <mat-option value="Agent">Agent</mat-option>
-                <mat-option value="Employee">Employee</mat-option>
-                <mat-option value="Admin">Admin</mat-option>
               </mat-select>
               <mat-error *ngIf="signinFormControls['signin_role']['errors']?.['required']">This field is required</mat-error>
             </mat-form-field>

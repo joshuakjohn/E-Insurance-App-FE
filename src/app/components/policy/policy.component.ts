@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
@@ -6,6 +6,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-policy',
@@ -14,10 +15,13 @@ import jsPDF from 'jspdf';
 })
 export class PolicyComponent {
 
+  @Output() policyApplication = new EventEmitter()
+
+  @Input() data: any
+
   planId!: string | null;
   schemeId!: string | null;
   headers: HttpHeaders;
-  planDetails: any;
   schemeDetails: any;
   customerData: any;
   files: { [key: string]: File | null } = {
@@ -28,11 +32,8 @@ export class PolicyComponent {
   };
 
   constructor(
-    private location: Location,
-    private route: ActivatedRoute,
     private httpService: HttpService,
-    private router: Router,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+
   ) {
     const authToken = localStorage.getItem('authToken');
     this.headers = authToken
@@ -43,65 +44,29 @@ export class PolicyComponent {
     }
   }
 
-  ngOnInit(): void {
-    this.planId = this.data.planId    
-    this.schemeId = this.data.schemeId
-    this.fetchPlanDetails();
-    this.fetchSchemeDetails();
-    this.fetchCustomerDetails();
-  }
-
-  fetchPlanDetails(): void {
-    if (this.planId) {
-      this.httpService.getPlanById(`/api/v1/plan/${this.planId}`).subscribe({
-        next: (res: any) => {
-          if (res.code === 200) {
-            this.planDetails = res.plan;
-          }
-        },
-        error: (err: any) => {
-          console.error('Error fetching plan details:', err);
-        }
-      });
-    }
-  }
-
-  fetchSchemeDetails(): void {
-    if (this.schemeId) {
-      this.httpService.getSchemeById(`/api/v1/scheme/${this.schemeId}`).subscribe({
-        next: (res: any) => {
-          if (res.code === 200) {
-            this.schemeDetails = res.scheme;
-          }
-        },
-        error: (err: any) => {
-          console.error('Error fetching scheme details:', err);
-        }
-      });
-    }
-  }
-
-  fetchCustomerDetails(): void {
-    if (!this.headers.has('Authorization')) {
-      console.error('Authorization token is missing');
-      return;
-    }
-
-    this.httpService.getCustomerById('/api/v1/customer/getcustomer', { headers: this.headers }).subscribe({
-      next: (res: any) => {
-        if (res.code === 200) {
-          this.customerData = res.data;
-        }
-      },
-      error: (err: any) => {
-        console.error('Error fetching customer details:', err);
+  async fetchCustomerDetails(): Promise<void> {
+    try {
+      const response: any = await lastValueFrom(
+        this.httpService.getCustomerById('/api/v1/customer/getcustomer', {
+          headers: this.headers,
+        })
+      );
+  
+      if (response.code === 200) {
+        this.customerData = response.data;
       }
-    });
+    } catch (error) {
+      console.error('Error fetching customer details:', error);
+    }
   }
 
-  onSubmitClick(): void {
-    const application = this.generatePDF() 
+  async onSubmitClick(): Promise<void> {
+    await this.fetchCustomerDetails();
+    this.planId = this.data.planId    
+    this.schemeDetails = this.data.schemeDetails
+    
 
+    const application = this.generatePDF() 
     const formData = new FormData();
     formData.append('policyName', this.schemeDetails.schemeName);
     formData.append('description', this.schemeDetails.description);
@@ -109,23 +74,20 @@ export class PolicyComponent {
     formData.append('coverage', this.schemeDetails.coverage.toString());
     formData.append('duration', this.schemeDetails.maturityPeriod.toString());
     formData.append('planId', this.planId!);
-    formData.append('schemeId', this.schemeId!);
+    formData.append('schemeId', this.schemeDetails._id);
     formData.append('customerId', this.customerData._id);
     formData.append('agentId', this.customerData.agentId);
     formData.append('policyApplication', application, 'PolicyApplication.pdf');
-
 
     for (const proofType in this.files) {    
       const file = this.files[proofType];
       if (file) {
         formData.append(proofType, file, file.name);
       }
-    }
-
+    }    
     this.httpService.createPolicy('/api/v1/policy', formData, { headers: this.headers }).subscribe({
       next: (res) => {
-        alert('Your policy has been approved successfully!');
-        this.location.back();
+        alert('Your policy has been submitted successfully!');
       },
       error: (err) => {
         console.error('Error creating policy', err);

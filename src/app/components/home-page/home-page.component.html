@@ -7,8 +7,11 @@
                 <button>Contact us</button>
                 <button (click)="goToDashboard()">Dashboard</button>
             </div>
-            
-            <button (click)="loginAndSignupDialog()">Login</button>
+            <div style="display: flex;
+            gap: 10px;">
+                <button style="width: 135px;" (click)="agentRegisterDialog()">Become an Agent</button>
+                <button (click)="loginAndSignupDialog()">Login</button>
+            </div>
         </div>
     </div>
 
