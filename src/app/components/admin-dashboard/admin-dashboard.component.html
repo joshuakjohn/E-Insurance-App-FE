@@ -65,6 +65,9 @@
         </div>
 
         <div *ngIf="tab === 'policy'">
+            <div *ngIf="pendingPolicies.length === 0" class="no-policies">
+                <p>No pending policies for approval are found.</p>
+            </div>
             <div class="policy" *ngFor="let policy of pendingPolicies" style="display: flex;
                 justify-content: space-between;
                 align-items: center;">
@@ -74,6 +77,10 @@
                     <p>Premium amount: {{policy.premiumAmount}}</p>
                     <p>Policy duration: {{policy.duration}}</p>
                     <p>Policy coverage: {{policy.coverage}}</p>
+                    <p>Premium paid: {{policy.premiumPaid}}</p>
+                    <p>Policy start date: {{policy.policyStartDate}}</p>
+                    <p>Policy status: {{policy.status}}</p>
+                    <p>Pending Premium: {{policy.pendingPremium}}</p>
                 </div>
                 <div>
                     <button mat-raised-button (click)="approvePolicy(policy._id)">Approve Policy</button>

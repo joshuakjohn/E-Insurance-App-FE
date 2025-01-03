@@ -72,7 +72,8 @@ export class SchemeFormComponent {
     }
   }
 
-  onClose(): void {
+  onClear(): void {
+    this.schemeForm.reset();
     this.router.navigate(['/admin/dashboard']);
   }
 }
