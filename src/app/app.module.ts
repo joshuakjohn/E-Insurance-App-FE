@@ -51,7 +51,7 @@ import { AuthInterceptor } from './service/interceptor/auth.interceptor';
     ProfileComponent,
     AdminDashboardComponent,
     AgentPolicyComponent,
-    AdminLoginComponent
+    AdminLoginComponent,
     AgentRegistrationComponent
   ],
   imports: [
