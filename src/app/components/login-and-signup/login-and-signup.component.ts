@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class LoginAndSignupComponent {
 
   role: string = 'Customer'
-  passValid: boolean = true
+  loginErrorMessage: string = ' '
 
   signinForm!: FormGroup;
   signupForm!: FormGroup
@@ -114,7 +114,10 @@ get signinFormControls() { return this.signinForm.controls; }
         },
         error: (err) => {
           console.log(err);
-          this.passValid = false
+            if(err.error.message === 'Agent not approved')
+              this.loginErrorMessage = '*Agent not approved'
+            else
+              this.loginErrorMessage = '*invalid email or password'
         }
       });
     }

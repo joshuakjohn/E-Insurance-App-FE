@@ -64,8 +64,6 @@
                   <mat-error *ngIf="signupFormControls['confirm']['errors']?.['required']">This field is required</mat-error>
                 </mat-form-field>
               </div>
-              <span [ngStyle]="{ 'visibility': false ? 'hidden' : 'visible' }">*Incorrect email or password</span>
-
             </div>
             <button style="margin-top: 10px;" type="submit" (click)="handleRegistration()">Sign Up</button>
           </form>
@@ -92,7 +90,7 @@
                 <input type="password" matInput formControlName="password">
                 <mat-error *ngIf="signinFormControls['password']['errors']?.['required']">This field is required</mat-error>
             </mat-form-field>
-            <span [ngStyle]="{ 'visibility': passValid ? 'hidden' : 'visible' }">*Incorrect email or password</span>
+            <span>{{loginErrorMessage}}</span>
             <a href="#">Forgot your password?</a>
             <button type="submit" (click)="handleSignin()">Sign In</button>
           </form>
