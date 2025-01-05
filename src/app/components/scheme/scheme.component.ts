@@ -114,10 +114,10 @@ export class SchemeComponent implements OnInit {
   }
 
   buyScheme(scheme: any): void { 
-    this.height = 1800+'px'
     this.selectedScheme = scheme;         
     if(localStorage.getItem('role') === 'customer'){
       this.policyApplication = true
+      this.height = 1800+'px'
     } else {
       this.openLoginDialog();
     }
@@ -160,7 +160,7 @@ export class SchemeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (localStorage.getItem('role') === 'customer') {
         this.policyApplication = true
-
+        this.height = 1800+'px'
         // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
       } else {
         console.log('User did not log in');
