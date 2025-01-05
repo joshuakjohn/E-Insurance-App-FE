@@ -49,13 +49,21 @@ export class AgentComponent {
   tabSwitch(input: string){
     if(input === 'customer')
       this.tab = 'customer'
-    else if(input === 'policy')
+    else if(input === 'policy'){
       this.tab = 'policy'
       this.pendingPolicies = this.agentPolices.filter((policy: any) => {
-      if(policy.status === 'submitted')
-        return true
-      return false
-    })
+        if(policy.status === 'submitted')
+          return true
+        return false
+      })
+      this.pendingPolicies.map(policy => {
+        const customer = this.customers.find(customer => {
+          return customer._id === policy.customerId
+        })
+        policy.customerName = customer.username
+        policy.customerEmail = customer.email
+      })
+    }
   }
 
   fetchAgentPolicies(): void {    
