@@ -1,55 +1,51 @@
 <div class="navbar">
     <mat-button-toggle-group
-  name="policyStatus"
-  aria-label="Policy Status"
-  class="tabs"
->
-  <mat-button-toggle
-    *ngFor="let tab of tabs"
-    [value]="tab.key"
-    [checked]="activeTab === tab.key"
-    (change)="setActiveTab(tab.key)"
-    class="toggle"
-  >
-    {{ tab.label }}
-  </mat-button-toggle>
-</mat-button-toggle-group>
- </div>
+    name="policyStatus"
+    aria-label="Policy Status"
+    class="tabs">
+      <mat-button-toggle
+        *ngFor="let tab of tabs"
+        [value]="tab.key"
+        [checked]="activeTab === tab.key"
+        (change)="setActiveTab(tab.key)"
+        class="toggle">
+        {{ tab.label }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+</div>
   
   <div class="policy-container">
     <div *ngFor="let policy of filteredPolicies" class="policy-card">
       <!-- Header Section -->
       <div class="policy-card-header">
-        <div class="icon">
-          <img src="path/to/icon.png" alt="Policy Icon" />
-        </div>
         <div class="title">
           <h2>{{ policy.policyName }}</h2>
-          <p class="status">{{ policy.status }}</p>
+          <p class="status">Status: {{ policy.status }}</p>
         </div>
       </div>
+
   
       <!-- Details Section -->
       <div class="policy-card-details">
         <div class="detail-card">
           <h3>Coverage</h3>
-          <p>{{ policy.coverage }}</p>
+          <p>{{ policy.coverage | currency:'INR' }}</p>
         </div>
         <div class="detail-card">
           <h3>Duration</h3>
-          <p>{{ policy.duration }} years</p>
+          <p>{{ policy.duration }} Months</p>
         </div>
         <div class="detail-card">
           <h3>Premium</h3>
-          <p>{{ policy.premiumAmount | currency }}</p>
+          <p>{{ policy.premiumAmount | currency:'INR' }}</p>
         </div>
         <div class="detail-card">
           <h3>Premium Paid</h3>
-          <p>{{ policy.premiumPaid | currency }}</p>
+          <p>{{ policy.premiumPaid }}</p>
         </div>
         <div class="detail-card">
           <h3>Pending Premium</h3>
-          <p>{{ policy.pendingPremium | currency }}</p>
+          <p>{{ policy.pendingPremium }}</p>
         </div>
       </div>
   
@@ -57,12 +53,6 @@
       <div class="policy-card-benefits">
         <h3>Benefits</h3>
         <p>{{ policy.description }}</p>
-      </div>
-  
-      <!-- Eligibility Section -->
-      <div class="policy-card-eligibility">
-        <h3>Eligibility</h3>
-        <p>Open to all individuals aged 18-65</p>
       </div>
   
       <div *ngIf="isPremiumDue(policy.createdAt)" class="pay-button">
@@ -84,5 +74,4 @@
         <button (click)="payPremium(selectedPolicy)">Pay Now</button>
       </div>
     </div>
-  </div>
-  
+  </div>  
