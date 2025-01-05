@@ -48,7 +48,7 @@
                 </mat-form-field>
                 <div class="horizontal" *ngIf="role === 'Customer'">
                   <span>Upload your image</span>
-                  <input type="file" style="margin: 0 0 22.4px 30px;" formControlName="image">
+                  <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event)">
                 </div>
               </div>
               <div class="horizontal">

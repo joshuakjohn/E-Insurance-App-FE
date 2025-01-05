@@ -12,7 +12,8 @@ import { Router } from '@angular/router';
 export class LoginAndSignupComponent {
 
   role: string = 'Customer'
-  loginErrorMessage: string = ' '
+  loginErrorMessage: string = ''
+  uploadedFile: File | null = null;
 
   signinForm!: FormGroup;
   signupForm!: FormGroup
@@ -35,7 +36,6 @@ export class LoginAndSignupComponent {
         phno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         age: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
         region: ['', [Validators.required]],
-        image: [''],
         password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/)]],
         confirm: ['', [Validators.required]]
       })
@@ -74,19 +74,26 @@ get signinFormControls() { return this.signinForm.controls; }
   }
 
   handleRegistration(){
+    
     if(this.signupForm.valid){
-      let data = {};
 
-      const { signup_role, username, email, password, phno, age, region, image } = this.signupForm.value
-      if(signup_role === 'Customer')
-        data = {username, email, password, phno, age, region}
-      else if(signup_role === 'Agent')
-        data = {username, email, password, phno, region}
-      else if(signup_role === 'Employee' || signup_role === 'Admin')
-        data = {username, email, password, phno}
+        const formData = new FormData();
+        // Append the file
+        if (this.uploadedFile) {
+          formData.append('customerImage', this.uploadedFile);
+        }
+      
+        // Append other form fields
+        Object.keys(this.signupForm.controls).forEach((key) => {
+          if (key !== 'confirm') { // Skip the 'confirm' field
+            const value = this.signupForm.get(key)?.value;
+            if (value) {
+              formData.append(key, value);
+            }
+          }
+        });          
 
-      const role_lower = signup_role.toLowerCase()
-        this.httpService.postApiCall(`/api/v1/${role_lower}/register`, data).subscribe({
+        this.httpService.postApiCall(`/api/v1/customer/register`, formData).subscribe({
         next: (res) => {
           console.log(res)
           this.dialogRef.close();
@@ -146,6 +153,13 @@ get signinFormControls() { return this.signinForm.controls; }
       this.signupForm.get('region')?.clearValidators();
     }
     this.signupForm.get('region')?.updateValueAndValidity();
+  }
+
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.uploadedFile = input.files[0];
+    }
   }
 
 }
