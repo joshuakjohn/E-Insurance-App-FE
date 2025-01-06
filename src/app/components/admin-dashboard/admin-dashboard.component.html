@@ -22,7 +22,7 @@
 
     <div class="agents">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
-            <mat-button-toggle (click)="tabSwitch('allPlans'); goToBrowsePlan()" checked="true" class="toggle">Browse plans</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('allPlans')" checked="true" class="toggle">Browse plans</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('agent')" [checked]="tab === 'agent'" class="toggle">Browse Agents</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('policy')" class="toggle">Pending Policies</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('plan')" [checked]="tab === 'plan'" class="toggle">Add New Plan</mat-button-toggle>
