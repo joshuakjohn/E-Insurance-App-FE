@@ -22,11 +22,14 @@ export class AgentComponent {
   customerPolicies: any[] = [];
   pendingPolicies: any[] = []
   height: string = ''
-
+  email: string | null
+  username: string | null
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router
   ){
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
+    this.email = localStorage.getItem('email')
+    this.username = localStorage.getItem('username')
   }
 
   ngOnInit(): void {
