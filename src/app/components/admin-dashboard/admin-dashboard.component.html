@@ -22,11 +22,12 @@
 
     <div class="agents">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
-            <mat-button-toggle (click)="tabSwitch('allPlans')" checked="true" class="toggle">Browse plans</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('allPlans'); goToBrowsePlan()" checked="true" class="toggle">Browse plans</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('agent')" [checked]="tab === 'agent'" class="toggle">Browse Agents</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('policy')" class="toggle">Pending Policies</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('plan')" [checked]="tab === 'plan'" class="toggle">Add New Plan</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('scheme')" [checked]="tab === 'scheme'" class="toggle">Add New Scheme</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('plan'); goToplan()" [checked]="tab === 'plan'" class="toggle">Add New Plan</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('scheme'); goToScheme()" [checked]="tab === 'scheme'" class="toggle">Add New Scheme</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('approveAgent')" [checked]="tab === 'approveAgent'" class="toggle">Approve Agents</mat-button-toggle>
         </mat-button-toggle-group>
 
         <div *ngIf="tab === 'allPlans'" class="plans">
@@ -88,12 +89,25 @@
             </div>
         </div>
 
-        <div *ngIf="tab === 'plan'" class="section">
-            <app-plan-form></app-plan-form>
+        <div *ngIf="tab === 'plan'" class="section" (cilck)=goToplan()>
+          <router-outlet></router-outlet>
         </div>
         
         <div *ngIf="tab === 'scheme'" class="section">
             <app-scheme-form></app-scheme-form>
+        </div>
+
+        <div *ngIf="tab === 'approveAgent'" class="agents">
+            <div *ngIf="pendingAgents.length === 0" class="no-agents">
+                <p>No pending agents for approval.</p>
+            </div>
+            <div *ngFor="let agent of pendingAgents" class="agent">
+                <p>Name: {{ agent.username }}</p>
+                <p>Email: {{ agent.email }}</p>
+                <p>Region: {{ agent.region }}</p>
+                <p>Phone number: {{ agent.phno }}</p>
+                <button mat-raised-button (click)="approveAgent(agent._id)">Approve Agent</button>
+            </div>
         </div>
     </div>
 
