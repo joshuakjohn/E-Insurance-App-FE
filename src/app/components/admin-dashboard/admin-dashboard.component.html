@@ -43,7 +43,7 @@
               <div *ngIf="isSchemesVisible[plan._id]" class="scheme-cards">
                 <div class="scheme-card" *ngFor="let scheme of plan.schemes">
                     <div class="scheme-card-header">
-                        <p><strong>{{ scheme.schemeName }}</strong></p>
+                        <p>{{ scheme.schemeName }}</p>
                     </div>
                     <div class="scheme-card-body">
                         <p>{{ scheme.description }}</p>
@@ -57,15 +57,36 @@
             </div>
           </div>
           
-          
-
-        <div *ngIf="tab === 'agent'">
+        <div *ngIf="tab === 'agent'" class="agents">
             <div class="agent" *ngFor="let agent of agents">
-                <p>Name: {{agent.username}}</p>
-                <p>Email: {{agent.email}}</p>
-                <p>Region: {{agent.region}}</p>
-                <p>Phone number: {{agent.phno}}</p>
-                <button mat-raised-button (click)="viewAgentPolicies(agent._id)">View policies</button>
+                <div class="agent-card-header">
+                    <p class="agent-name">Name: {{ agent.username }}</p>
+                    <p>Email: {{ agent.email }}</p>
+                    <p>Region: {{ agent.region }}</p>
+                    <p>Phone number: {{ agent.phno }}</p>
+                </div>
+                <button mat-raised-button (click)="viewAgentPolicies(agent._id)">
+                    {{ expandedAgentId === agent._id ? 'Hide Policies' : 'View Policies' }}
+                </button>
+        
+                <!-- Policy Cards -->
+                <div *ngIf="expandedAgentId === agent._id" class="policy-cards">
+                    <div *ngFor="let policy of policies" class="policy-card">
+                        <div class="policy-card-header">
+                            <h3>{{ policy.policyName }}</h3>
+                        </div>
+                        <div class="policy-card-body">
+                            <p>Description: {{ policy.description }}</p>
+                            <p>Premium Amount: {{ policy.premiumAmount }}</p>
+                            <p>Policy Duration: {{ policy.duration }}</p>
+                            <p>Policy Coverage: {{ policy.coverage }}</p>
+                            <p>Premium Paid: {{ policy.premiumPaid }}</p>
+                            <p>Policy start date: {{policy.policyStartDate | date: 'yyyy-MM-dd'}}</p>
+                            <p>Policy Status: {{ policy.status }}</p>
+                            <p>Pending Premium: {{ policy.pendingPremium }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

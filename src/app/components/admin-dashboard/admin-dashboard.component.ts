@@ -1,7 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { HttpService } from 'src/app/services/http-services/http.service';
-import { AgentPolicyComponent } from './agentpolicy/agentpolicy.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -18,6 +17,7 @@ export class AdminDashboardComponent {
   tab: string = 'plans';
   agents: any[] = [];
   plans: any[] = [];
+  policies: any[] = [];
   pendingPolicies: any[] = [];
   pendingAgents: any[] = [];
 
@@ -28,6 +28,7 @@ export class AdminDashboardComponent {
   showSchemeForm: boolean = false;
 
   isSchemesVisible: { [planId: string]: boolean } = {};
+  expandedAgentId: string | null = null; 
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router) {
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
@@ -107,7 +108,6 @@ export class AdminDashboardComponent {
           if (index !== -1) {
             this.plans[index].schemes = res.data; // Attach schemes to the specific plan
           }
-          // Toggle the visibility after fetching the schemes
           this.isSchemesVisible[planId] = !this.isSchemesVisible[planId];
         },
         error: (err: any) => {
@@ -115,7 +115,6 @@ export class AdminDashboardComponent {
         },
       });
     } else {
-      // Toggle the visibility if schemes are already fetched
       this.isSchemesVisible[planId] = !this.isSchemesVisible[planId];
     }
   }
@@ -169,17 +168,28 @@ export class AdminDashboardComponent {
     });
   }
   
-  viewAgentPolicies(agentId: string) {
-    const dialogRef = this.dialog.open(AgentPolicyComponent, {
-      height: '600px',
-      width: '1000px',
-      data: { agentId: agentId },
-    });
-  
-    dialogRef.afterClosed().subscribe(() => {
-      console.log('The dialog was closed');
-    });
-  }
+  viewAgentPolicies(agentId: string): void {
+    if (this.expandedAgentId === agentId) {
+        // Collapse the policies if the agent is already expanded
+        this.expandedAgentId = null;
+        this.policies = [];
+    } else {
+        // Fetch and expand policies for the selected agent
+        this.expandedAgentId = agentId;
+        const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken') || ''}`);
+        this.httpService.getApiCall(`/api/v1/policy/${agentId}`, header).subscribe({
+            next: (res: any) => {
+                console.log('Policies fetched:', res.data);
+                this.policies = res.data; // Populate the policies array
+            },
+            error: (err: any) => {
+                console.error('Error fetching policies:', err);
+                this.policies = []; // Reset policies on error
+            },
+        });
+    }
+}
+
   
   approvePolicy(policyId: string) {
     this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Approved'}).subscribe({
