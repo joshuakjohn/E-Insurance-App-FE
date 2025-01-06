@@ -19,6 +19,7 @@ export class AdminDashboardComponent {
   agents: any[] = [];
   plans: any[] = [];
   pendingPolicies: any[] = [];
+  pendingAgents: any[] = [];
 
   adminEmail: string = '';
   adminUsername: string = '';
@@ -34,6 +35,7 @@ export class AdminDashboardComponent {
     this.fetchAgents();
     this.fetchPendingPolicies();
     this.loadAdminDetails();
+    this.fetchPendingAgents();
     this.tabSwitch('allPlans');
   }
 
@@ -43,9 +45,15 @@ export class AdminDashboardComponent {
     if (input === 'allPlans') {
       this.fetchAllPlans();
     } else if (input === 'plan') {
-      this.showPlanForm = true;
+        this.showPlanForm = true;
     } else if (input === 'scheme') {
-      this.showSchemeForm = true;
+        this.showSchemeForm = true;
+    } else if (input === 'policy') {
+        this.fetchPendingPolicies();
+    } else if (input === 'agent') {
+        this.fetchAgents();
+    } else if (input === 'approveAgent') {
+        this.fetchPendingAgents();
     }
   }
 
@@ -105,12 +113,37 @@ export class AdminDashboardComponent {
     });
   }
 
+  fetchPendingAgents(): void {
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    this.httpService.getApiCall('/api/v1/agent', header).subscribe({
+        next: (res: any) => {
+            this.pendingAgents = res.data.filter((agent: any) => agent.status !== 'Approved');
+        },
+        error: (err: any) => {
+            console.error('Error fetching pending agents:', err);
+        },
+    });
+  }
+
+  approveAgent(agentId: string): void {
+    this.httpService.patchApiCall(`/api/v1/agent/${agentId}`, { status: 'Approved' }).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.pendingAgents = this.pendingAgents.filter(agent => agent._id !== agentId);
+      },
+      error: (err: any) => {
+        console.error('Error approving agent:', err);
+      },
+    });
+  }
+
   fetchPendingPolicies(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/policy/admin', header).subscribe({
       next: (res: any) => {
-        this.pendingPolicies = res.data.filter((policy: any) => policy.status === 'Waiting for approval');
+        this.pendingPolicies = res.data.filter((policy: any) => policy.status !== 'Approved');
       },
+      
       error: (err: any) => {
         console.error('Error fetching pending policies:', err);
       },
@@ -149,4 +182,17 @@ export class AdminDashboardComponent {
     localStorage.clear();
     this.router.navigate(['/dashboard/plans']);
   }
+
+    goToplan(){
+      console.log('------------')
+      this.router.navigate(['/admin/dashboard/add-plan'])
+    }
+    goToScheme(){
+      console.log('------------')
+      this.router.navigate(['/admin/dashboard/add-scheme'])
+    }
+    goToBrowsePlan(){
+      console.log('------------')
+      this.router.navigate(['/admin/dashboard/browse-plans'])
+    }
 }

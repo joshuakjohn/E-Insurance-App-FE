@@ -22,11 +22,14 @@ export class AgentComponent {
   customerPolicies: any[] = [];
   pendingPolicies: any[] = []
   height: string = ''
-
+  email: string | null
+  username: string | null
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router
   ){
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
+    this.email = localStorage.getItem('email')
+    this.username = localStorage.getItem('username')
   }
 
   ngOnInit(): void {
@@ -35,7 +38,7 @@ export class AgentComponent {
   }
 
   fetchCustomers(): void {
-    const header = new HttpHeaders().set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY5NWJkOGRmMzdjZjE3ZDBjY2VhNDIiLCJlbWFpbCI6ImF2aUBnbWFpbC5jb20iLCJpYXQiOjE3MzU1NzM1MjYsImV4cCI6MTczNjE3ODMyNn0.j-dES4y5s04ZoTI-F6LuNfSpqfl8Cv-JQ9Sb3-ZkGm4`);
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/customer', header).subscribe({
       next: (res: any) => {
         this.customers = res.data
@@ -49,17 +52,25 @@ export class AgentComponent {
   tabSwitch(input: string){
     if(input === 'customer')
       this.tab = 'customer'
-    else if(input === 'policy')
+    else if(input === 'policy'){
       this.tab = 'policy'
       this.pendingPolicies = this.agentPolices.filter((policy: any) => {
-      if(policy.status === 'submitted')
-        return true
-      return false
-    })
+        if(policy.status === 'submitted')
+          return true
+        return false
+      })
+      this.pendingPolicies.map(policy => {
+        const customer = this.customers.find(customer => {
+          return customer._id === policy.customerId
+        })
+        policy.customerName = customer.username
+        policy.customerEmail = customer.email
+      })
+    }
   }
 
   fetchAgentPolicies(): void {    
-    const header = new HttpHeaders().set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY5NWJkOGRmMzdjZjE3ZDBjY2VhNDIiLCJlbWFpbCI6ImF2aUBnbWFpbC5jb20iLCJpYXQiOjE3MzU1NzM1MjYsImV4cCI6MTczNjE3ODMyNn0.j-dES4y5s04ZoTI-F6LuNfSpqfl8Cv-JQ9Sb3-ZkGm4`);     
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);     
     this.httpService.getApiCall(`/api/v1/policy/agent`, header).subscribe({
       next: (res: any) => {
         this.agentPolices = res.data        

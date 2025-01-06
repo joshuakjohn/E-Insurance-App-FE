@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginAndSignupComponent } from '../login-and-signup/login-and-signup.component';
 import { Router } from '@angular/router';
 import { AgentRegistrationComponent } from '../login-and-signup/agent-registration/agent-registration.component';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { PROFILE_ICON } from 'src/assets/svg-icons';
 
 @Component({
   selector: 'app-home-page',
@@ -12,8 +15,16 @@ import { AgentRegistrationComponent } from '../login-and-signup/agent-registrati
 export class HomePageComponent {
 
   role = localStorage.getItem('role')
+  profilePhotoBuffer: string | null
+  email!: string | null
+  username!: string | null
 
-  constructor(public dialog: MatDialog,public router:Router){}
+  constructor(public dialog: MatDialog,public router:Router, public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, public cdr: ChangeDetectorRef){
+    iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
+    this.profilePhotoBuffer = localStorage.getItem('profileImage');   
+    this.email = localStorage.getItem('email')
+    this.username = localStorage.getItem('username')
+  }
 
   agentRegisterDialog(){
     let dialogRef = this.dialog.open(AgentRegistrationComponent, {
@@ -40,6 +51,9 @@ export class HomePageComponent {
       console.log('The dialog was closed');
       if(result)
         this.role = result
+        this.profilePhotoBuffer = localStorage.getItem('profileImage');
+        this.email = localStorage.getItem('email')
+        this.username = localStorage.getItem('username')
     });
   }
   goToDashboard() {
@@ -59,4 +73,11 @@ export class HomePageComponent {
     });
   }
   
+  logout(): void {
+    localStorage.clear()
+    this.role = null
+    this.profilePhotoBuffer = null
+    this.email = null
+    this.username = null
+  }
 }

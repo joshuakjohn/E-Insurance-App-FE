@@ -80,7 +80,15 @@ export class ProfileComponent implements OnInit {
   bufferToBase64(buffer: number[]): string {
     // Convert the buffer array (byte data) to a base64-encoded string
     const byteArray = new Uint8Array(buffer);
-    return btoa(String.fromCharCode(...byteArray)); // Convert the byte array to base64
+    
+    // Process in chunks to avoid exceeding the stack size
+    const chunkSize = 8192; // Adjust the chunk size if needed
+    const chunks: string[] = [];
+    for (let i = 0; i < byteArray.length; i += chunkSize) {
+      chunks.push(String.fromCharCode(...byteArray.slice(i, i + chunkSize)));
+    }
+  
+    return btoa(chunks.join('')); // Convert the concatenated string to Base64
   }
   
   base64ToBlob(base64: string): Blob {
