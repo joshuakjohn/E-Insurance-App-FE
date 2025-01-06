@@ -9,16 +9,16 @@
 
 <mat-menu #menu="matMenu">
     <div class="account_menu">
-        <span>email</span>
+        <span>{{email}}</span>
         <img style="padding: 20px;" src="../../../assets/pngegg.png" width="100px" height="100px">
-        <span>Hi, user!</span>
+        <span>Hi, {{username}}!</span>
         <button style="background-color: rgb(223, 223, 223); margin: 20px;" mat-raised-button (click)="logout()">Logout</button>
     </div>
 </mat-menu>
 
 <div class="main">
 
-    <h1>Welcome agent</h1>
+    <h1>Welcome {{username}}</h1>
 
     <div class="customers">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
@@ -27,11 +27,11 @@
           </mat-button-toggle-group>
         <div *ngIf="tab === 'customer'; else pending">
             <div class="customer" *ngFor="let customer of customers">
-                <p>Name: {{customer.username}}</p>
-                <p>Email: {{customer.email}}</p>
-                <p>Age : {{customer.age}}</p>
-                <p>Region : {{customer.region}}</p>
-                <p>Phone number : {{customer.phno}}</p>
+                <pre>Name           :       {{customer.username}}</pre>
+                <pre>Email          :       {{customer.email}}</pre>
+                <pre>Age            :       {{customer.age}}</pre>
+                <pre>Region         :       {{customer.region}}</pre>
+                <pre>Phone number   :       {{customer.phno}}</pre>
                 <button mat-raised-button (click)="viewCustomerPolicies(customer._id)">View policies</button>
 
                 <div class="details"
@@ -47,15 +47,14 @@
                         margin-bottom: 20px;
                         border-radius: 5px;">
                             <div class="policy">
-                                <p>Policy name: {{policy.policyName}}</p>
-                                <p>Desciption: {{policy.desciption}}</p>
-                                <p>Premium amount: {{policy.premiumAmount}}</p>
-                                <p>Policy duration: {{policy.duration}}</p>
-                                <p>Policy coverage: {{policy.coverage}}</p>
-                                <p>Premium paid: {{policy.premiumPaid}}</p>
-                                <p>Policy start date: {{policy.policyStartDate | date: 'yyyy-MM-dd'}}</p>
-                                <p>Policy status: {{policy.status}}</p>
-                                <p>Pending Premium: {{policy.pendingPremium}}</p>
+                                <pre>Policy name          :       {{policy.policyName}}</pre>
+                                <pre>Premium amount       :       {{policy.premiumAmount}}</pre>
+                                <pre>Policy duration      :       {{policy.duration}}</pre>
+                                <pre>Policy coverage      :       {{policy.coverage}}</pre>
+                                <pre>Premium paid         :       {{policy.premiumPaid}}</pre>
+                                <pre>Policy start date    :       {{policy.policyStartDate | date: 'yyyy-MM-dd'}}</pre>
+                                <pre>Policy status        :       {{policy.status}}</pre>
+                                <pre>Pending Premium      :       {{policy.pendingPremium}}</pre>
                             </div>
                             <div style="display: flex;
                             gap: 10px;
@@ -83,11 +82,12 @@
                 justify-content: space-between;
                 align-items: center;">
                     <div>
-                        <p>Policy name: {{policy.policyName}}</p>
-                        <p>Desciption: {{policy.desciption}}</p>
-                        <p>Premium amount: {{policy.premiumAmount}}</p>
-                        <p>Policy duration: {{policy.duration}}</p>
-                        <p>Policy coverage: {{policy.coverage}}</p>
+                        <pre>Customer name      :       {{policy.customerName}}</pre>
+                        <pre>Customer email     :       {{policy.customerEmail}}</pre>
+                        <pre>Policy name        :       {{policy.policyName}}</pre>
+                        <pre>Premium amount     :       {{policy.premiumAmount}}</pre>
+                        <pre>Policy duration    :       {{policy.duration}}</pre>
+                        <pre>Policy coverage    :       {{policy.coverage}}</pre>
                     </div>
                     <div>
                         <button mat-raised-button (click)="forwardButton(policy._id)">Forward to admin</button>
