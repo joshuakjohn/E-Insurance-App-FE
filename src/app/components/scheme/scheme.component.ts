@@ -8,6 +8,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DROPDOWN_ICON } from 'src/assets/svg-icons';
 import { PolicyComponent } from '../policy/policy.component';
 import { HttpParams } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scheme',
@@ -30,6 +32,7 @@ export class SchemeComponent implements OnInit {
   policyApplication: boolean = false;
   height: string = '190px'
   totalPages!:number;
+   private searchSubject: Subject<string> = new Subject<string>();
 
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer,
@@ -51,7 +54,10 @@ export class SchemeComponent implements OnInit {
         console.error('Plan ID is missing.');
       }
     });
+    this.searchSubject.pipe(debounceTime(300)).subscribe(query => {
+      this.performSearch(query);
 
+    });
   }
   
   ngAfterViewInit(){
@@ -192,35 +198,41 @@ export class SchemeComponent implements OnInit {
       // }
     });
   }
-  onSearch(): void {
-    this.isLoading = true;
-  
+  onSearchChange(): void {
     const query = this.searchQuery.trim();
     if (query) {
-      const params = {
-        search: query,
-        page: this.currentPage,
-        limit: this.itemsPerPage,
-      };
-      const httpParams = new HttpParams({ fromObject: params });
-  
-      this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
-        next: (res: any) => {
-          this.schemes = res.data.results || []; 
-          this.totalResults = this.schemes.length; 
-          this.isLoading = false;
-        },
-        error: (err: any) => {
-          console.error('Error fetching schemes:', err);
-          this.schemes = [];
-          this.isLoading = false;
-        }
-      });
-    } else {
-      this.schemes = []; 
-      this.fetchSchemes()
-      this.isLoading = false;
+      this.searchSubject.next(query); // Emit the query after every keystroke
     }
+  }
+
+  onSearchBlur(): void {
+    const query = this.searchQuery.trim();
+    if (query) {
+      this.performSearch(query); // Ensure API is called on blur
+    }
+  }
+
+  private performSearch(query: string): void {
+    this.isLoading = true;
+
+    const params = {
+      search: query,
+      page: this.currentPage,
+      limit: this.itemsPerPage,
+    };
+
+    this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
+      next: (res: any) => {
+        this.schemes = res.data.results || [];
+        this.totalResults = this.schemes.length;
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Error fetching schemes:', err);
+        this.schemes = [];
+        this.isLoading = false;
+      }
+    });
   }
       applicationToggle(event: string){
     if(event === 'close'){

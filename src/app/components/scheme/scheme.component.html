@@ -1,6 +1,6 @@
 <div class="container">
   <div class="scheme-header">
-    <input type="search" [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search schemes" class="search-bar">
+    <input type="text"[(ngModel)]="searchQuery"(input)="onSearchChange()"(blur)="onSearchBlur()"placeholder="Search for schemes..."class="search-bar"/>
     <mat-icon [matMenuTriggerFor]="filterMenu" class="filter-icon">filter_list</mat-icon>
     <mat-menu #filterMenu="matMenu">
     <button class="filter-button" (click)="filter('asc')">Low-High</button>
