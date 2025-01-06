@@ -29,10 +29,11 @@ export class AdminLoginComponent {
       console.log('hello')
 
       this.httpService.postApiCall('/api/v1/admin', { email, password }).subscribe({
-        next: (res) => {
+        next: (res:any) => {
           console.log(res);
-
-          // Navigate to dashboard
+          localStorage.setItem('authToken', res.token);
+          localStorage.setItem('username', res.username);
+          localStorage.setItem('email', res.email);
           this.router.navigate(['/admin/dashboard']);
         },
         error: (err) => {

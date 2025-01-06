@@ -22,11 +22,11 @@
 
     <div class="agents">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
-            <mat-button-toggle (click)="tabSwitch('allPlans'); goToBrowsePlan()" checked="true" class="toggle">Browse plans</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('allPlans')" checked="true" class="toggle">Browse plans</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('agent')" [checked]="tab === 'agent'" class="toggle">Browse Agents</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('policy')" class="toggle">Pending Policies</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('plan'); goToplan()" [checked]="tab === 'plan'" class="toggle">Add New Plan</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('scheme'); goToScheme()" [checked]="tab === 'scheme'" class="toggle">Add New Scheme</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('plan')" [checked]="tab === 'plan'" class="toggle">Add New Plan</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('scheme')" [checked]="tab === 'scheme'" class="toggle">Add New Scheme</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('approveAgent')" [checked]="tab === 'approveAgent'" class="toggle">Approve Agents</mat-button-toggle>
         </mat-button-toggle-group>
 
@@ -36,32 +36,57 @@
               <p>Description: {{ plan.description }}</p>
               <p>Category: {{ plan.category }}</p>
               
-              <button mat-raised-button (click)="viewSchemes(plan._id)">View Schemes</button>
-          
-              <div *ngIf="plan.schemes">
-                <h4>Schemes:</h4>
-                <ul>
-                  <li *ngFor="let scheme of plan.schemes">
-                    <p>Name: {{ scheme.schemeName }}</p>
-                    <p>Description: {{ scheme.description }} </p>
-                    <p>Eligibility Criteria: {{ scheme.eligibilityCriteria }}</p>
-                    <p>Premium: {{ scheme.premium }}</p>
-                    <p>Maturity Period: {{ scheme.maturityPeriod }}</p>
-                    <p>Coverage: {{ scheme.coverage }}</p>
-                  </li>
-                </ul>
-              </div>
+              <button mat-raised-button (click)="viewSchemes(plan._id)">
+                {{ isSchemesVisible[plan._id] ? 'Hide Schemes' : 'View Schemes' }}
+              </button>
+
+              <div *ngIf="isSchemesVisible[plan._id]" class="scheme-cards">
+                <div class="scheme-card" *ngFor="let scheme of plan.schemes">
+                    <div class="scheme-card-header">
+                        <p>{{ scheme.schemeName }}</p>
+                    </div>
+                    <div class="scheme-card-body">
+                        <p>{{ scheme.description }}</p>
+                        <p>Eligibility Criteria: {{ scheme.eligibilityCriteria }}</p>
+                        <p>Premium: {{ scheme.premium }}</p>
+                        <p>Maturity Period: {{ scheme.maturityPeriod }}</p>
+                        <p>Coverage: {{ scheme.coverage }}</p>
+                    </div>
+                </div>
+                </div>
             </div>
           </div>
           
-
-        <div *ngIf="tab === 'agent'">
+        <div *ngIf="tab === 'agent'" class="agents">
             <div class="agent" *ngFor="let agent of agents">
-                <p>Name: {{agent.username}}</p>
-                <p>Email: {{agent.email}}</p>
-                <p>Region: {{agent.region}}</p>
-                <p>Phone number: {{agent.phno}}</p>
-                <button mat-raised-button (click)="viewAgentPolicies(agent._id)">View policies</button>
+                <div class="agent-card-header">
+                    <p class="agent-name">Name: {{ agent.username }}</p>
+                    <p>Email: {{ agent.email }}</p>
+                    <p>Region: {{ agent.region }}</p>
+                    <p>Phone number: {{ agent.phno }}</p>
+                </div>
+                <button mat-raised-button (click)="viewAgentPolicies(agent._id)">
+                    {{ expandedAgentId === agent._id ? 'Hide Policies' : 'View Policies' }}
+                </button>
+        
+                <!-- Policy Cards -->
+                <div *ngIf="expandedAgentId === agent._id" class="policy-cards">
+                    <div *ngFor="let policy of policies" class="policy-card">
+                        <div class="policy-card-header">
+                            <h3>{{ policy.policyName }}</h3>
+                        </div>
+                        <div class="policy-card-body">
+                            <p>Description: {{ policy.description }}</p>
+                            <p>Premium Amount: {{ policy.premiumAmount }}</p>
+                            <p>Policy Duration: {{ policy.duration }}</p>
+                            <p>Policy Coverage: {{ policy.coverage }}</p>
+                            <p>Premium Paid: {{ policy.premiumPaid }}</p>
+                            <p>Policy start date: {{policy.policyStartDate | date: 'yyyy-MM-dd'}}</p>
+                            <p>Policy Status: {{ policy.status }}</p>
+                            <p>Pending Premium: {{ policy.pendingPremium }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -89,12 +114,25 @@
             </div>
         </div>
 
-        <div *ngIf="tab === 'plan'" class="section" (cilck)=goToplan()>
+        <div *ngIf="tab === 'plan'" class="section">
           <router-outlet></router-outlet>
         </div>
         
         <div *ngIf="tab === 'scheme'" class="section">
             <app-scheme-form></app-scheme-form>
+        </div>
+
+        <div *ngIf="tab === 'approveAgent'" class="agents">
+            <div *ngIf="pendingAgents.length === 0" class="no-agents">
+                <p>No pending agents for approval.</p>
+            </div>
+            <div *ngFor="let agent of pendingAgents" class="agent">
+                <p>Name: {{ agent.username }}</p>
+                <p>Email: {{ agent.email }}</p>
+                <p>Region: {{ agent.region }}</p>
+                <p>Phone number: {{ agent.phno }}</p>
+                <button mat-raised-button (click)="approveAgent(agent._id)">Approve Agent</button>
+            </div>
         </div>
 
         <div *ngIf="tab === 'approveAgent'" class="agents">
