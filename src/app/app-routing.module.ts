@@ -54,8 +54,8 @@ const routes: Routes = [
         children: [
           { path: 'add-plan', component: PlanFormComponent },
           { path: 'add-scheme', component: SchemeFormComponent },
-          { path: 'plans', component: PlanComponent },
-          { path: 'plans/:planId/scheme', component: SchemeComponent },
+          { path: '', component: PlanFormComponent },
+          {path:'browse-plans',component:AdminDashboardComponent}
         ]
       },
     ]

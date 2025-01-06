@@ -78,7 +78,8 @@ export class PlanFormComponent {
     }
   }
 
-  onClose(): void {
+  onClear(): void {
+    this.planForm.reset();
     this.router.navigate(['/admin/dashboard/plans']); 
   }
 }
