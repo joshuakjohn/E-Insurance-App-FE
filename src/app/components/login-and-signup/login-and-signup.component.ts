@@ -116,7 +116,29 @@ get signinFormControls() { return this.signinForm.controls; }
           console.log(res);
           localStorage.setItem('authToken', res.token);
           localStorage.setItem('username', res.username);
-          localStorage.setItem('role', role_lower);   
+          localStorage.setItem('email', res.email);
+          localStorage.setItem('role', role_lower); 
+          
+          function bufferToBase64(buffer: any) {
+            let binary = '';
+            let bytes = new Uint8Array(buffer);
+            let length = bytes.length;
+          
+            for (let i = 0; i < length; i++) {
+              binary += String.fromCharCode(bytes[i]);
+            }
+          
+            return window.btoa(binary); // Return the Base64 encoded string
+          }
+          
+          if(res.profilePhoto){
+            // Get the Base64 encoded image
+            const base64Image = "data:image/png;base64," + bufferToBase64(res.profilePhoto.data);
+          
+            // Save it to localStorage (if needed)
+            localStorage.setItem("profileImage", base64Image);
+          }
+          
           this.dialogRef.close(role_lower);
         },
         error: (err) => {

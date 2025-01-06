@@ -5,12 +5,32 @@
                 <button (click)="this.router.navigate(['/dashboard/plans'])">Home</button>
                 <button>About us</button>
                 <button>Contact us</button>
-                <button (click)="goToDashboard()">Dashboard</button>
             </div>
             <div style="display: flex;
+            align-items: center;
             gap: 10px;">
                 <button style="width: 135px;" (click)="agentRegisterDialog()">Become an Agent</button>
-                <button (click)="loginAndSignupDialog()">Login</button>
+                <button *ngIf="!role" (click)="loginAndSignupDialog()">Login</button>
+                <button *ngIf="role" style="border: 50%;
+                width: 43px;
+                height: 43px;
+                margin-left: 15px;
+                background-size: cover;" [ngStyle]="{'background-image': profilePhotoBuffer && role ? 'url(' + profilePhotoBuffer + ')' : 'url(../../../assets/pngegg.png)'}" [matMenuTriggerFor]="menu"></button>
+
+
+                <mat-menu #menu="matMenu">
+                    <div class="account_menu">
+                        <span>{{email}}</span>
+                        <img style="padding: 20px;
+                        border-radius: 50%;" [src]="profilePhotoBuffer && role ? profilePhotoBuffer : '../../../assets/pngegg.png'" width="100px" height="100px">
+                        <span>Hi, {{username}}!</span>
+                        <div style="display: flex;
+                        gap: 10px;">
+                            <button (click)=goToDashboard()>Dashboard</button>
+                            <button (click)=logout()>Logout</button>
+                        </div>
+                    </div>
+                  </mat-menu>
             </div>
         </div>
     </div>

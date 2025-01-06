@@ -35,6 +35,7 @@
 
             .menu{
                 display: flex;
+                align-items: center;
                 gap: 10px;
                 width: auto;
             }
@@ -85,3 +86,11 @@ button:hover{
 button:active{
 	transform: scale(0.95);
 }
+
+.account_menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 280px;
+    height: 260px;
+  }
