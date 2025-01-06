@@ -41,21 +41,31 @@ export class AdminDashboardComponent {
 
   tabSwitch(input: string) {
     this.tab = input;
-    
+  
+    const routes: { [key: string]: string } = {
+      allPlans: '/admin/dashboard/browse-plans',
+      agent: '/admin/dashboard/browse-agents',
+      policy: '/admin/dashboard/pending-policies',
+      plan: '/admin/dashboard/add-plan',
+      scheme: '/admin/dashboard/add-scheme',
+      approveAgent: '/admin/dashboard/approve-agents',
+    };
+  
+    if (routes[input]) {
+      this.router.navigate([routes[input]]);
+    }
+  
     if (input === 'allPlans') {
       this.fetchAllPlans();
-    } else if (input === 'plan') {
-        this.showPlanForm = true;
-    } else if (input === 'scheme') {
-        this.showSchemeForm = true;
     } else if (input === 'policy') {
-        this.fetchPendingPolicies();
+      this.fetchPendingPolicies();
     } else if (input === 'agent') {
-        this.fetchAgents();
+      this.fetchAgents();
     } else if (input === 'approveAgent') {
-        this.fetchPendingAgents();
+      this.fetchPendingAgents();
     }
   }
+  
 
   loadAdminDetails(): void {
     this.adminEmail = localStorage.getItem('email') || 'admin@example.com';
@@ -183,16 +193,4 @@ export class AdminDashboardComponent {
     this.router.navigate(['/dashboard/plans']);
   }
 
-    goToplan(){
-      console.log('------------')
-      this.router.navigate(['/admin/dashboard/add-plan'])
-    }
-    goToScheme(){
-      console.log('------------')
-      this.router.navigate(['/admin/dashboard/add-scheme'])
-    }
-    goToBrowsePlan(){
-      console.log('------------')
-      this.router.navigate(['/admin/dashboard/browse-plans'])
-    }
 }

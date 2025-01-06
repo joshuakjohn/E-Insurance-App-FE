@@ -52,10 +52,13 @@ const routes: Routes = [
         path: 'dashboard', 
         component: AdminDashboardComponent,
         children: [
+          { path: '', redirectTo: 'browse-plans', pathMatch: 'full' }, // Default tab route
+          { path: 'browse-plans', component: AdminDashboardComponent }, 
           { path: 'add-plan', component: PlanFormComponent },
           { path: 'add-scheme', component: SchemeFormComponent },
-          { path: '', component: PlanFormComponent },
-          {path:'browse-plans',component:AdminDashboardComponent}
+          { path: 'browse-agents', component: AdminDashboardComponent }, 
+          { path: 'pending-policies', component: AdminDashboardComponent }, 
+          { path: 'approve-agents', component: AdminDashboardComponent }
         ]
       },
     ]
