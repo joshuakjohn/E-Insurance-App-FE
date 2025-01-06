@@ -40,4 +40,7 @@ getSearchScheme(endpoint:string,params:any):Observable<any>{
 getRefreshToken(endpoint:string):Observable<any>{
   return this.http.get('http://localhost:4000'+endpoint);
 }
+getFilterScheme(endpoint:string):Observable<any>{
+  return this.http.get('http://localhost:4000'+endpoint);
+}
 }

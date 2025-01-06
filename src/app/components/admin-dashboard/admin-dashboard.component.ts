@@ -39,6 +39,7 @@ export class AdminDashboardComponent {
     this.fetchPendingPolicies();
     this.loadAdminDetails();
     this.fetchPendingAgents();
+    this.fetchPendingAgents();
     this.tabSwitch('allPlans');
   }
 

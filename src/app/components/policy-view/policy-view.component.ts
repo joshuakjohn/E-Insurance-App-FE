@@ -27,9 +27,9 @@ export class PolicyViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private httpService: HttpService,
-    private location: Location, private cdr: ChangeDetectorRef
+    private location: Location, 
+    private cdr: ChangeDetectorRef
   ) {
-    // Retrieve token from localStorage and set it in the headers
     this.authToken = localStorage.getItem('authToken');
     this.headers = this.authToken
       ? new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`)
@@ -53,7 +53,7 @@ export class PolicyViewComponent implements OnInit {
     this.httpService.getPolicyCustomer('/api/v1/policy', { headers: this.headers }).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          this.policyDetails = res.data; // Assuming 'data' is the array of policies
+          this.policyDetails = res.data;
         } else {
           this.errorMessage = 'Unable to fetch policy details.';
         }
@@ -99,18 +99,15 @@ export class PolicyViewComponent implements OnInit {
     this.activeTab = tab;
   }
 
-  isPremiumDue(createdAt: Date): boolean {
+  isPremiumDue(createdAt: Date, lastPaymentDate: Date): boolean {
     const currentDate = new Date();
     const createdDate = new Date(createdAt);
+    const lastPayment = lastPaymentDate ? new Date(lastPaymentDate) : createdDate;
 
-    // Calculate the difference in time
-    const timeDifference = currentDate.getTime() - createdDate.getTime();
-
-    // Convert the time difference to days
+    // Calculate the difference in time since the last payment or policy creation
+    const timeDifference = currentDate.getTime() - lastPayment.getTime();
     const dayDifference = timeDifference / (1000 * 3600 * 24);
-
-    // Check if the difference is greater than or equal to 25 days
-    return dayDifference >= 0;
+    return dayDifference >= 25;
   }
 
   showOverlay(policy: any): void {
@@ -123,27 +120,21 @@ export class PolicyViewComponent implements OnInit {
   }
 
   payPremium(policy: any): void {
-    console.log(`Paying premium for policy: ${policy.policyName}`);
-  
     const data = {
       policyId: policy._id,
       agentId: this.customerData.agentId,
       paymentAmount: policy.premiumAmount
     };
-  
+
     this.httpService.payPremium('/api/v1/customer/paypremium/', data, { headers: this.headers }).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
           console.log('Payment successful:', res.message);
-  
-          // Refresh policies to get the latest state from the database
           this.fetchPolicyDetails();
   
-          // Trigger change detection if necessary
           setTimeout(() => this.cdr.detectChanges(), 0);
-  
-          // Close the overlay after refreshing
           this.closeOverlay();
+          policy.lastPaymentDate = new Date().toISOString();
         } else {
           console.error('Payment failed:', res.message);
         }
@@ -153,9 +144,8 @@ export class PolicyViewComponent implements OnInit {
       }
     });
   }
+
   setActiveTab(tabKey: string): void {
     this.activeTab = tabKey;
   }
-
-  
 }

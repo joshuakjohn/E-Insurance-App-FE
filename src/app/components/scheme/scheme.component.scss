@@ -27,7 +27,6 @@ h1 {
 }
 
 p {
-  font-size: 20px;
   text-align: justify;
   text-justify: inter-word;
 }
@@ -74,4 +73,27 @@ button:hover{
   color: #b0b0b0;
   font-style: italic;
 }
-
+.scheme-header{
+  display: flex;
+}
+.filter-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #555; 
+  padding: 10px;
+}
+ ::ng-deep .mat-mdc-menu-content{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  padding-left: 3px;
+}
+.filter-button{
+border: none;
+font-size: 16px;
+ margin-left: 5px;
+}
+.filter-button:hover{
+  background-color:#ccc;
+  border-radius: 2px;
+}
