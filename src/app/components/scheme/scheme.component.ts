@@ -1,4 +1,4 @@
-import {  Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpService } from 'src/app/service/http-service/http.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +8,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DROPDOWN_ICON } from 'src/assets/svg-icons';
 import { PolicyComponent } from '../policy/policy.component';
 import { HttpParams } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-scheme',
@@ -15,7 +17,7 @@ import { HttpParams } from '@angular/common/http';
   styleUrls: ['./scheme.component.scss']
 })
 export class SchemeComponent implements OnInit {
-  extend: string = 'none'
+  extend: string = 'none';
   schemes: any[] = [];
   planId: string | null = null;
   planDetails: any = {}; 
@@ -28,15 +30,20 @@ export class SchemeComponent implements OnInit {
   itemsPerPage: number = 10; 
   totalResults: number = 0;
   policyApplication: boolean = false;
-  height: string = '190px'
+  height: string = '190px';
+  totalPages!: number;
+  private searchSubject: Subject<string> = new Subject<string>();
+  sortOrder: 'asc' | 'desc' = 'asc'; // Default sort order
 
-  constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer,
+  constructor(
+    public iconRegistry: MatIconRegistry, 
+    private sanitizer: DomSanitizer,
     private httpService: HttpService,
     public router: Router,
     private route: ActivatedRoute,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
-      iconRegistry.addSvgIconLiteral('dropdown-icon', sanitizer.bypassSecurityTrustHtml(DROPDOWN_ICON));
+    iconRegistry.addSvgIconLiteral('dropdown-icon', sanitizer.bypassSecurityTrustHtml(DROPDOWN_ICON));
   }
 
   ngOnInit(): void {
@@ -49,10 +56,12 @@ export class SchemeComponent implements OnInit {
         console.error('Plan ID is missing.');
       }
     });
-
+    this.searchSubject.pipe(debounceTime(300)).subscribe(query => {
+      this.performSearch(query);
+    });
   }
   
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     setTimeout(() => {
       window.scrollTo({
         top: 475,
@@ -60,7 +69,6 @@ export class SchemeComponent implements OnInit {
         behavior: 'smooth'
       });
     }, 50);
-
   }
 
   fetchPlanDetails(): void {
@@ -78,8 +86,13 @@ export class SchemeComponent implements OnInit {
     }
   }
 
-  fetchSchemes() {
+  fetchSchemes(): void {
     if (this.planId) {
+      const params = {
+        page: this.currentPage.toString(),
+        limit: this.itemsPerPage.toString(),
+      };
+
       this.httpService.getAllScheme(`/api/v1/scheme/${this.planId}/getall`).subscribe({
         next: (res: any) => {
           if (res.code === 200) {
@@ -90,9 +103,8 @@ export class SchemeComponent implements OnInit {
           console.error('Error fetching schemes:', err);
         },
       });
-    } 
+    }
   }
-
   getPlanImage(): string {
     if (!this.planDetails.category) {
       return 'assets/images/default-scheme.jpg'; 
@@ -112,7 +124,6 @@ export class SchemeComponent implements OnInit {
         return 'assets/images/default-scheme.jpg';
     }
   }
-
   buyScheme(scheme: any): void { 
     this.selectedScheme = scheme;         
     if(localStorage.getItem('role') === 'customer'){
@@ -190,38 +201,75 @@ export class SchemeComponent implements OnInit {
       // }
     });
   }
-  onSearch(): void {
-    this.isLoading = true;
-  
+
+
+  onSearchChange(): void {
     const query = this.searchQuery.trim();
     if (query) {
-      const params = {
-        search: query,
-        page: this.currentPage,
-        limit: this.itemsPerPage,
-      };
-      const httpParams = new HttpParams({ fromObject: params });
-  
-      this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
-        next: (res: any) => {
-          // Update the schemes array with the data from the API response
-          this.schemes = res.data.results || []; // Make sure the property path matches the response structure
-          this.totalResults = this.schemes.length; // Update total results
-          this.isLoading = false;
-        },
-        error: (err: any) => {
-          console.error('Error fetching schemes:', err);
-          this.schemes = [];
-          this.isLoading = false;
-        }
-      });
-    } else {
-      this.schemes = []; 
-      this.fetchSchemes()
-      this.isLoading = false;
+        this.searchSubject.next(query); 
+    }
+}
+  onSearchBlur(): void {
+    const query = this.searchQuery.trim();
+    if (query) {
+      this.performSearch(query); 
     }
   }
-      applicationToggle(event: string){
+  private performSearch(query: string): void {
+    this.isLoading = true;
+    const params = {
+        search: query,
+        page: this.currentPage.toString(),
+        limit: this.itemsPerPage.toString(),
+        sortOrder: this.sortOrder 
+    };
+    this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
+        next: (res: any) => {
+            this.schemes = res.data.results || [];
+            this.totalResults = res.total || 0;
+            this.isLoading = false;
+        },
+        error: (err: any) => {
+            console.error('Error fetching schemes:', err);
+            this.schemes = [];
+            this.isLoading = false;
+        }
+    });
+}
+
+filter(sortOrder: 'asc' | 'desc' = 'asc') {
+  if (this.sortOrder === sortOrder) {
+      return; 
+  }
+  this.isLoading = true;
+  this.sortOrder = sortOrder; 
+  const query = this.searchQuery.trim();
+  if (query) {
+      this.performSearch(query); 
+  } else {
+      this.httpService.getFilterScheme(`/api/v1/scheme/filter?sortOrder=${sortOrder}`).subscribe({
+          next: (res: any) => {
+              if (res.code === 200) {
+                  this.schemes = res.data || [];
+                  this.totalResults = res.total || 0;
+                  this.currentPage = res.page || 1;
+                  this.totalPages = res.totalPages || 1;
+              } else {
+                  console.warn('Unexpected response:', res);
+                  this.schemes = [];
+              }
+
+              this.isLoading = false;
+          },
+          error: (err: any) => {
+              console.error('Error fetching filtered schemes:', err);
+              this.schemes = [];
+              this.isLoading = false;
+          }
+      });
+  }
+}
+  applicationToggle(event: string){
     if(event === 'close'){
       this.policyApplication = false
       this.height = '190px'
