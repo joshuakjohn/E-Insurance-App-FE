@@ -27,6 +27,8 @@ export class AdminDashboardComponent {
   showPlanForm: boolean = false;
   showSchemeForm: boolean = false;
 
+  isSchemesVisible: { [planId: string]: boolean } = {};
+
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router) {
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
   }
@@ -98,17 +100,24 @@ export class AdminDashboardComponent {
 
   viewSchemes(planId: string): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall(`/api/v1/scheme/${planId}/getall`, header).subscribe({
-      next: (res: any) => {
-        const index = this.plans.findIndex(plan => plan._id === planId);
-        if (index !== -1) {
-          this.plans[index].schemes = res.data; // Attach schemes to the specific plan
-        }
-      },
-      error: (err: any) => {
-        console.error('Error fetching schemes:', err);
-      },
-    });
+    if (!this.isSchemesVisible[planId]) {
+      this.httpService.getApiCall(`/api/v1/scheme/${planId}/getall`, header).subscribe({
+        next: (res: any) => {
+          const index = this.plans.findIndex(plan => plan._id === planId);
+          if (index !== -1) {
+            this.plans[index].schemes = res.data; // Attach schemes to the specific plan
+          }
+          // Toggle the visibility after fetching the schemes
+          this.isSchemesVisible[planId] = !this.isSchemesVisible[planId];
+        },
+        error: (err: any) => {
+          console.error('Error fetching schemes:', err);
+        },
+      });
+    } else {
+      // Toggle the visibility if schemes are already fetched
+      this.isSchemesVisible[planId] = !this.isSchemesVisible[planId];
+    }
   }
 
   fetchAgents(): void {
