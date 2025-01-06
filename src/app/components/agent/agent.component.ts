@@ -38,7 +38,7 @@ export class AgentComponent {
   }
 
   fetchCustomers(): void {
-    const header = new HttpHeaders().set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY5NWJkOGRmMzdjZjE3ZDBjY2VhNDIiLCJlbWFpbCI6ImF2aUBnbWFpbC5jb20iLCJpYXQiOjE3MzU1NzM1MjYsImV4cCI6MTczNjE3ODMyNn0.j-dES4y5s04ZoTI-F6LuNfSpqfl8Cv-JQ9Sb3-ZkGm4`);
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/customer', header).subscribe({
       next: (res: any) => {
         this.customers = res.data
@@ -70,7 +70,7 @@ export class AgentComponent {
   }
 
   fetchAgentPolicies(): void {    
-    const header = new HttpHeaders().set('Authorization', `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzY5NWJkOGRmMzdjZjE3ZDBjY2VhNDIiLCJlbWFpbCI6ImF2aUBnbWFpbC5jb20iLCJpYXQiOjE3MzU1NzM1MjYsImV4cCI6MTczNjE3ODMyNn0.j-dES4y5s04ZoTI-F6LuNfSpqfl8Cv-JQ9Sb3-ZkGm4`);     
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);     
     this.httpService.getApiCall(`/api/v1/policy/agent`, header).subscribe({
       next: (res: any) => {
         this.agentPolices = res.data        

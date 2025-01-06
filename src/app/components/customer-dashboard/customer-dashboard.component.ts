@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { PROFILE_ICON } from 'src/assets/svg-icons';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -7,18 +10,26 @@ import { Router } from '@angular/router';
   styleUrls: ['./customer-dashboard.component.scss']
 })
 export class CustomerDashboardComponent {
+
+  activeTab: string = 'policies'; // Default tab
+  username: string | null
+  email: string | null
+
+  constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private router: Router){
+    iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
+    this.username = localStorage.getItem('username')
+    this.email = localStorage.getItem('email')
+  }
+
+  homeButtonEvent(){
+    this.router.navigate([`/dashboard/plans`]);
+  }
+
   tabs = [
-    { key: 'overview', label: 'Overview' },
-    { key: 'profile', label: 'Profile' },
     { key: 'policies', label: 'Policies' },
+    { key: 'profile', label: 'Profile' },
     { key: 'reports', label: 'Reports' },
   ];
-
-  // State
-  activeTab: string = 'overview'; // Default tab
-  userName: string = 'John Doe';
-  userEmail: string = 'john.doe@example.com';
-  constructor(private router: Router) {}
 
   // Methods
   setActiveTab(tab: string): void {
