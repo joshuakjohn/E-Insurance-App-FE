@@ -58,12 +58,9 @@ export class SchemeFormComponent {
 
     if (this.schemeForm.valid) {
       const schemeData = this.schemeForm.value;
-      const selectedPlanId = schemeData.planId;
-
       this.httpService.postApiCall('/api/v1/scheme', schemeData, this.header).subscribe({
         next: (res) => {
           console.log('Scheme created successfully:', res);
-          this.router.navigate([`/admin/dashboard/plans/${selectedPlanId}/scheme`]);
         },
         error: (error) => {
           console.error('Error creating scheme:', error);
@@ -74,6 +71,6 @@ export class SchemeFormComponent {
 
   onClear(): void {
     this.schemeForm.reset();
-    this.router.navigate(['/admin/dashboard']);
+    this.isFormSubmitted = false;
   }
 }

@@ -42,7 +42,7 @@
         </div>
         <br>
         <button class="cancelbutton" (click)="onClear()">Clear</button>
-        <button class="createplanbutton" (click)="handleSubmit()">Create Plan</button>
+        <button class="createplanbutton" (click)="handleSubmit(); onClear()">Create Plan</button>
       </form>
     </div>
   </body>
