@@ -20,4 +20,8 @@ export class HttpService {
   patchApiCall(endpoint: string, data: any){
     return this.http.patch('http://localhost:4000'+endpoint, data)
   }
+
+  getAgentById(endpoint:string,header:any){
+    return this.http.get('http://localhost:4000'+endpoint,header)
+  }
 }

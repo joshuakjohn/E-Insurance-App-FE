@@ -67,23 +67,22 @@
     }
 }
 
-button{
+.button{
     height: 40px;
     width: 100px;
     border-radius: 30px;
     background-color: transparent;
     color: rgb(0, 0, 0);
     border: 1px solid #214c87;
-
     margin-top: 10px;
 }
 
-button:hover{
+.button:hover{
     transition: background-color ease .5s;
     background-color: #557fba;
 }
 
-button:active{
+.button:active{
 	transform: scale(0.95);
 }
 
@@ -91,6 +90,6 @@ button:active{
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 280px;
-    height: 260px;
+    width: 100px;
+    height: 40px
   }
