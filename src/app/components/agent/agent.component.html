@@ -24,6 +24,7 @@
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
             <mat-button-toggle (click)="tabSwitch('customer')" checked="true" class="toggle">Browse customers</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('policy')" class="toggle">Pending policies</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('profile')" class="toggle">Profile</mat-button-toggle>
           </mat-button-toggle-group>
         <div *ngIf="tab === 'customer'; else pending">
             <div class="customer" *ngFor="let customer of customers">
@@ -81,34 +82,61 @@
             </div>
         </div>
         <ng-template #pending>
-            <div *ngIf="pendingPolicies.length === 0" class="no-policies">
-                <p>No pending policies for approval are found.</p>
-            </div>
-            <div class="customer" *ngFor="let policy of pendingPolicies" style="display: flex;
-            flex-direction: column;">
-                <div style="display: flex;
-                justify-content: space-between;
-                align-items: center;">
-                    <div>
-                        <pre>Customer name      :       {{policy.customerName}}</pre>
-                        <pre>Customer email     :       {{policy.customerEmail}}</pre>
-                        <pre>Policy name        :       {{policy.policyName}}</pre>
-                        <pre>Premium amount     :       {{policy.premiumAmount}}</pre>
-                        <pre>Policy duration    :       {{policy.duration}}</pre>
-                        <pre>Policy coverage    :       {{policy.coverage}}</pre>
+            <div *ngIf="tab === 'policy'; else profile">
+                <div *ngIf="pendingPolicies.length === 0" class="no-policies">
+                      <p>No pending policies for approval are found.</p>
+                </div>
+                <div class="customer" *ngFor="let policy of pendingPolicies" style="display: flex;
+                flex-direction: column;">
+                    <div style="display: flex;
+                    justify-content: space-between;
+                    align-items: center;">
+                        <div>
+                            <pre>Customer name      :       {{policy.customerName}}</pre>
+                            <pre>Customer email     :       {{policy.customerEmail}}</pre>
+                            <pre>Policy name        :       {{policy.policyName}}</pre>
+                            <pre>Premium amount     :       {{policy.premiumAmount}}</pre>
+                            <pre>Policy duration    :       {{policy.duration}}</pre>
+                            <pre>Policy coverage    :       {{policy.coverage}}</pre>
+                        </div>
+                        <div>
+                            <button mat-raised-button (click)="forwardButton(policy._id)">Forward to admin</button>
+                        </div>
                     </div>
-                    <div>
-                        <button mat-raised-button (click)="forwardButton(policy._id)">Forward to admin</button>
+                    <div style="display: flex;
+                    gap: 10px;">
+                        <button (click)="downloadPdf(policy.policyApplication.data)">View Application</button>
+                        <button (click)="downloadPdf(policy.incomeProof.data)">Income Proof</button>
+                        <button (click)="downloadPdf(policy.ageProof.data)">Age Proof</button>
+                        <button (click)="downloadPdf(policy.idProof.data)">Identity Proof</button>
                     </div>
                 </div>
-                <div style="display: flex;
-                gap: 10px;">
-                    <button (click)="downloadPdf(policy.policyApplication.data)">View Application</button>
-                    <button (click)="downloadPdf(policy.incomeProof.data)">Income Proof</button>
-                    <button (click)="downloadPdf(policy.ageProof.data)">Age Proof</button>
-                    <button (click)="downloadPdf(policy.idProof.data)">Identity Proof</button>
-                </div>
             </div>
+            
+            <ng-template #profile>
+                <div class="customer-profile">
+                    <!-- Header -->
+                    <header class="profile-header">
+                        <h1>Agent Profile</h1>
+                    </header>
+                    <section class="profile-section">
+                        <div class="profile-picture">
+                            <!-- Dynamically show the profile picture -->
+                            <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
+                            <p *ngIf="!profilePicUrl">No profile picture available</p>
+                        </div>
+                        <div class="profile-info">
+                            <h2>{{agent.username}}</h2>
+                            <pre>Email                  :       {{agent.email}}</pre>
+                            <pre>Phone                  :       {{agent.phno}}</pre>
+                            <pre>Region                 :       {{agent.region}}</pre>
+                            <pre>Number of customers    :       {{agent.num_of_customers}}</pre>
+                            <pre>Number of policies     :       {{agent.num_of_policies}}</pre>
+                            <pre>Commission             :       {{agent.commission}}</pre>
+                        </div>
+                    </section>
+                </div>
+            </ng-template>
         </ng-template>
     </div>
 
