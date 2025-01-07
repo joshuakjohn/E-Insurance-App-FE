@@ -83,7 +83,7 @@
       <!-- Action Buttons -->
       <div class="action-buttons">
         <button class="cancelbutton" type="button" (click)="onClear()">Clear</button>
-        <button class="createschemebutton" (click)="handleSubmit()">Create Scheme</button>
+        <button class="createschemebutton" (click)="handleSubmit(); onClear()">Create Scheme</button>
       </div>
     </form>
   </div>
