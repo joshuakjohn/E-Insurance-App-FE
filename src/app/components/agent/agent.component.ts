@@ -25,6 +25,10 @@ export class AgentComponent {
   email: string | null
   username: string | null
 
+  currentPage: number = 1;
+  totalPages: number = 1;
+  limit: number = 3;
+
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router
   ){
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
@@ -34,18 +38,23 @@ export class AgentComponent {
 
   ngOnInit(): void {
     this.fetchCustomers();
-    this.fetchAgentPolicies()
+    this.fetchAgentPolicies();
+    console.log('Current Page:', this.currentPage);
+    console.log('Total Pages:', this.totalPages);
   }
 
   fetchCustomers(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall('/api/v1/customer', header).subscribe({
-      next: (res: any) => {
-        this.customers = res.data
-      },
-      error: (err: any) => {
-        console.error('Error fetching plans:', err);
-      },
+    const params = { page: this.currentPage.toString(), limit: this.limit.toString() };
+    this.httpService.getApiCall('/api/v1/customer', header, params).subscribe({
+        next: (res: any) => {
+          console.log('Fetched Data:', res);
+            this.customers = res.data;
+            this.totalPages = res.totalPages;
+        },
+        error: (err: any) => {
+            console.error('Error fetching customers:', err);
+        },
     });
   }
 
@@ -137,5 +146,19 @@ export class AgentComponent {
     // Clean up
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
+  }
+
+  prevPage(): void {
+    if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchCustomers();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchCustomers();
+    }
   }
 }

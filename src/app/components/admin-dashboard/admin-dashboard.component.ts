@@ -136,7 +136,7 @@ export class AdminDashboardComponent {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/agent', header).subscribe({
         next: (res: any) => {
-            this.pendingAgents = res.data.filter((agent: any) => agent.status !== 'Approved');
+            this.pendingAgents = res.data.filter((agent: any) => agent.status === 'Waiting for approval');
         },
         error: (err: any) => {
             console.error('Error fetching pending agents:', err);
@@ -160,7 +160,7 @@ export class AdminDashboardComponent {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/policy/admin', header).subscribe({
       next: (res: any) => {
-        this.pendingPolicies = res.data.filter((policy: any) => policy.status !== 'Approved');
+        this.pendingPolicies = res.data.filter((policy: any) => policy.status === 'Waiting for approval');
       },
       
       error: (err: any) => {
