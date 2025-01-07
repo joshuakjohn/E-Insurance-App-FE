@@ -74,8 +74,16 @@
                     </ng-template>
                 </div>
             </div>
+            <div class="pagination">              
+                <button mat-button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+                <span>Page {{currentPage}} of {{totalPages}}</span>
+                <button mat-button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+            </div>
         </div>
         <ng-template #pending>
+            <div *ngIf="pendingPolicies.length === 0" class="no-policies">
+                <p>No pending policies for approval are found.</p>
+            </div>
             <div class="customer" *ngFor="let policy of pendingPolicies" style="display: flex;
             flex-direction: column;">
                 <div style="display: flex;
