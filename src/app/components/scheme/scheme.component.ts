@@ -128,7 +128,7 @@ export class SchemeComponent implements OnInit {
     this.selectedScheme = scheme;         
     if(localStorage.getItem('role') === 'customer'){
       this.policyApplication = true
-      this.height = 1800+'px'
+      this.height = 1150+'px'
     } else {
       this.openLoginDialog();
     }

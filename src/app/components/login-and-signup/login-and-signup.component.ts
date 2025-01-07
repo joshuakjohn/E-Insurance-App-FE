@@ -80,7 +80,7 @@ get signinFormControls() { return this.signinForm.controls; }
         const formData = new FormData();
         // Append the file
         if (this.uploadedFile) {
-          formData.append('customerImage', this.uploadedFile);
+          formData.append('image', this.uploadedFile);
         }
       
         // Append other form fields

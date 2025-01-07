@@ -31,6 +31,10 @@
                 </mat-form-field>
               </div>
               <div class="horizontal">
+                <span>Upload your image</span>
+                <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event)">
+              </div>
+              <div class="horizontal">
                 <mat-form-field appearance="outline">
                   <mat-label>Password</mat-label>
                   <input type="password" matInput formControlName="password">
