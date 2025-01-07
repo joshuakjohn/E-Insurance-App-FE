@@ -213,6 +213,7 @@ export class AgentComponent {
     }
   
     return new Blob([uintArray]);
+  }
     
   prevPage(): void {
     if (this.currentPage > 1) {
