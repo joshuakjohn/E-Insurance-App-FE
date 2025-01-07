@@ -28,11 +28,11 @@
 
 .main{
     width: calc(100vw - 80px);
-    height: auto;
+    min-height: calc(100vh - 100px); /* Full height minus header/footer */
     margin: 40px 40px;
     padding-bottom: 40px;
-
-    
+    display: flex;
+    flex-direction: column;
 
     .tabs{
         margin: 10px;
@@ -157,4 +157,29 @@
 
 .action-btn:hover {
     background-color: #0056b3;
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 20px;
+
+    span {
+        font-size: 16px;
+    }
+
+    button {
+        min-width: 100px;
+    }
+}
+
+.no-policies {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+    text-align: center;
+    font-size: 20px;
+    color: #888;
 }

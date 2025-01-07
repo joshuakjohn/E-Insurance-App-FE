@@ -27,6 +27,10 @@ export class AgentComponent {
   agent: any
   profilePicUrl: string = '';
 
+  currentPage: number = 1;
+  totalPages: number = 1;
+  limit: number = 3;
+
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router
   ){
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
@@ -56,13 +60,16 @@ export class AgentComponent {
 
   fetchCustomers(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall('/api/v1/customer', header).subscribe({
-      next: (res: any) => {
-        this.customers = res.data
-      },
-      error: (err: any) => {
-        console.error('Error fetching plans:', err);
-      },
+    const params = { page: this.currentPage.toString(), limit: this.limit.toString() };
+    this.httpService.getApiCall('/api/v1/customer', header, params).subscribe({
+        next: (res: any) => {
+          console.log('Fetched Data:', res);
+            this.customers = res.data;
+            this.totalPages = res.totalPages;
+        },
+        error: (err: any) => {
+            console.error('Error fetching customers:', err);
+        },
     });
   }
 
@@ -206,5 +213,18 @@ export class AgentComponent {
     }
   
     return new Blob([uintArray]);
+    
+  prevPage(): void {
+    if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchCustomers();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchCustomers();
+    }
   }
 }
