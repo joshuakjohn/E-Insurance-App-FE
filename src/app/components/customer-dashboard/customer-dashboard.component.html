@@ -1,9 +1,10 @@
 <div class="header">
   <div class="buttons">
       <button mat-button (click)="homeButtonEvent()">Home</button>
-      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="collabrator button" matTooltip="Collabrator" class="small-icon-button">
-          <mat-icon style="transform: scale(2);" svgIcon="profile-icon"></mat-icon>
-      </button>        
+      <button class="button" style="border: 50%;
+      width: 43px;
+      height: 43px;
+      background-size: cover;" [ngStyle]="{'background-image': 'url(../../../assets/pngegg.png)'}" [matMenuTriggerFor]="menu"></button>
   </div>
 </div>
 
@@ -37,7 +38,7 @@
       <ng-container [ngSwitch]="activeTab">
 
         <mat-button-toggle-group
-          (change)="setActiveTab($event.value)">
+          (change)="setActiveTab($event.value)" class="toggle-group">
             <mat-button-toggle class="toggle" *ngFor="let tab of tabs" [value]="tab.key" [checked]="tab.key === 'policies'">
               {{ tab.label }}
             </mat-button-toggle>          

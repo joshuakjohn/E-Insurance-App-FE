@@ -193,7 +193,7 @@ export class AdminDashboardComponent {
 
   
   approvePolicy(policyId: string) {
-    this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Approved'}).subscribe({
+    this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Active'}).subscribe({
       next: (res: any) => {
         console.log(res);
         this.pendingPolicies = this.pendingPolicies.filter((policy) => policy._id !== policyId);
