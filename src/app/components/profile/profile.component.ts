@@ -14,6 +14,10 @@ export class ProfileComponent implements OnInit {
   headers: HttpHeaders;
   customerData: any;
   profilePicUrl: string = '';
+  isEditing: boolean = false;
+
+  // Store original customer data for reverting on cancel
+  originalCustomerData: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +38,7 @@ export class ProfileComponent implements OnInit {
       this.errorMessage = 'Authorization token is missing.';
     }
   }
+
   fetchCustomerDetails(): void {
     if (!this.headers.has('Authorization')) {
       console.error('Authorization token is missing');
@@ -44,6 +49,7 @@ export class ProfileComponent implements OnInit {
       next: (res: any) => {
         if (res.code === 200) {
           this.customerData = res.data;
+          this.originalCustomerData = { ...res.data }; // Save the original data for reverting on cancel
           this.createImageFromBuffer(res.data.profilePhoto );
         } else {
           this.errorMessage = 'Unable to fetch customer details.';
@@ -56,6 +62,16 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  toggleEditMode(): void {
+    if (!this.isEditing) {
+      // Entering edit mode - retain the current data
+      this.customerData = { ...this.originalCustomerData };
+    } else {
+      // Canceling edit mode - revert to the original data
+      this.customerData = { ...this.originalCustomerData };
+    }
+    this.isEditing = !this.isEditing;
+  }
   createImageFromBuffer(buffer: any): void {
     if (!buffer || !Array.isArray(buffer.data)) {
       this.errorMessage = 'Invalid buffer data';
@@ -63,13 +79,11 @@ export class ProfileComponent implements OnInit {
     }
   
     const base64String = this.bufferToBase64(buffer.data);
-  
-    // Ensure that the base64 string has the proper prefix for image type (e.g., PNG or JPEG)
-    let dataUrl = 'data:image/png;base64,' + base64String; // Change 'image/png' to the correct type if needed
+    let dataUrl = 'data:image/png;base64,' + base64String;
     
     try {
-      const imageBlob = this.base64ToBlob(base64String);  // Convert the base64 part to a Blob
-      const imageUrl = URL.createObjectURL(imageBlob);  // Generate an object URL for the image
+      const imageBlob = this.base64ToBlob(base64String);  
+      const imageUrl = URL.createObjectURL(imageBlob);  
       this.profilePicUrl = imageUrl;  
     } catch (error) {
       this.errorMessage = 'Error converting buffer to image.';
@@ -78,21 +92,18 @@ export class ProfileComponent implements OnInit {
   }
   
   bufferToBase64(buffer: number[]): string {
-    // Convert the buffer array (byte data) to a base64-encoded string
     const byteArray = new Uint8Array(buffer);
-    
-    // Process in chunks to avoid exceeding the stack size
-    const chunkSize = 8192; // Adjust the chunk size if needed
+    const chunkSize = 8192; 
     const chunks: string[] = [];
     for (let i = 0; i < byteArray.length; i += chunkSize) {
       chunks.push(String.fromCharCode(...byteArray.slice(i, i + chunkSize)));
     }
   
-    return btoa(chunks.join('')); // Convert the concatenated string to Base64
+    return btoa(chunks.join('')); 
   }
   
   base64ToBlob(base64: string): Blob {
-    const binaryString = window.atob(base64); // Decode the base64 string
+    const binaryString = window.atob(base64); 
     const length = binaryString.length;
     const uintArray = new Uint8Array(length);
     
@@ -103,4 +114,9 @@ export class ProfileComponent implements OnInit {
     return new Blob([uintArray]);
   }
   
+  saveChanges(): void {
+    console.log('Updated Customer Data:', this.customerData);
+    this.originalCustomerData = { ...this.customerData };
+    this.isEditing = false;
+  }
 }
