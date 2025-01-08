@@ -88,11 +88,12 @@ export class PolicyViewComponent implements OnInit {
   }
 
   get filteredPolicies() {
-    return this.policyDetails.filter(policy => {
+    const policy = this.policyDetails.filter(policy => {
       return this.activeTab === 'active'
         ? policy.status === 'Active'
-        : policy.status === 'submitted';
-    });
+        : policy.status === 'submitted' || policy.status === 'Waiting for approval';
+    });   
+    return policy
   }
 
   switchTab(tab: string) {
