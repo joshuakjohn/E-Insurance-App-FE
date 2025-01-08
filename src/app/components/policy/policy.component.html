@@ -1,75 +1,113 @@
 <div class="main" id="policy-form">
   <div class="policy-form">
     <h1>Policy Application</h1>
-    <h3>Applicant details</h3>
-    <mat-form-field appearance="outline">
-      <mat-label>Full name</mat-label>
-      <input matInput id="fullName">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Address</mat-label>
-      <input matInput id="address">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Date of Birth</mat-label>
-      <input matInput id="dob">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Gender</mat-label>
-      <input matInput id="gender">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Annual Income</mat-label>
-      <input matInput id="income">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Educational Qualification</mat-label>
-      <input matInput id="education">
-    </mat-form-field>
+    <h2>Applicant details</h2>
+    <div class="horizontal">
+      <mat-form-field appearance="outline">
+        <mat-label>Full name</mat-label>
+        <input matInput id="fullName">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Address</mat-label>
+        <input matInput id="address">
+      </mat-form-field>
+    </div>
+    
+    <div class="horizontal">
+      <mat-form-field appearance="outline">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput id="dob">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Gender</mat-label>
+        <input matInput id="gender">
+      </mat-form-field>
+    </div>
+    
+    <div class="horizontal">
+      <mat-form-field appearance="outline">
+        <mat-label>Annual Income</mat-label>
+        <input matInput id="income">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Educational Qualification</mat-label>
+        <input matInput id="education">
+      </mat-form-field>
+    </div>
+    
 
-    <h3>Nominee details</h3>
-    <mat-form-field appearance="outline">
-      <mat-label>Nominee name</mat-label>
-      <input matInput id="nomineename">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Nominee Realation</mat-label>
-      <input matInput id="nomineerel">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Nominee Address</mat-label>
-      <input matInput id="nomineeadd">
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Nominee contact number</mat-label>
-      <input matInput id="nomineecon">
-    </mat-form-field>
+    <h2>Nominee details</h2>
+    <div class="horizontal">
+      <mat-form-field appearance="outline">
+        <mat-label>Nominee name</mat-label>
+        <input matInput id="nomineename">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nominee Realation</mat-label>
+        <input matInput id="nomineerel">
+      </mat-form-field>
+    </div>
+    
+    <div class="horizontal">
+      <mat-form-field appearance="outline">
+        <mat-label>Nominee Address</mat-label>
+        <input matInput id="nomineeadd">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Nominee contact number</mat-label>
+        <input matInput id="nomineecon">
+      </mat-form-field>
+    </div>
+    
 
-    <h3>Documents</h3>
-    <h4>Photograph</h4>
-    <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'photograph')">
+    <h2>Documents</h2>
 
-    <h4>Identity proof</h4>
-    <mat-form-field appearance="outline">
-      <mat-label>Document type</mat-label>
-      <input matInput id="idproof">
-    </mat-form-field>
-    <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'idproof')">
+    <div style="display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;">
 
-    <h4>Age proof</h4>
-    <mat-form-field appearance="outline">
-      <mat-label>Document type</mat-label>
-      <input matInput id="ageproof">
-    </mat-form-field>
-    <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'ageproof')">
+      <div class="horizontal">
+      
+        <div>
+          <h4>Income proof</h4>
+          <mat-form-field appearance="outline">
+            <mat-label>Document type</mat-label>
+            <input matInput id="incomeproof">
+          </mat-form-field>
+          <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'incomeproof')">
+        </div>
+  
+        <div>
+          <h4>Identity proof</h4>
+          <mat-form-field appearance="outline">
+            <mat-label>Document type</mat-label>
+            <input matInput id="idproof">
+          </mat-form-field>
+          <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'idproof')">
+        </div>
+  
+      </div>
+  
+      <div class="horizontal">
+        <div>
+          <h4>Age proof</h4>
+          <mat-form-field appearance="outline">
+            <mat-label>Document type</mat-label>
+            <input matInput id="ageproof">
+          </mat-form-field>
+          <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'ageproof')">
+        </div>
+  
+        <div>
+          <h4>Photograph</h4>
+          <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'photograph')">
+        </div>
+        
+      </div>
 
-    <h4>Income proof</h4>
-    <mat-form-field appearance="outline">
-      <mat-label>Document type</mat-label>
-      <input matInput id="incomeproof">
-    </mat-form-field>
-    <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'incomeproof')">
-
+    </div>
+    
     <span>Your application will be sent to your agent for verification and further processing.</span>
 
     <div style="display: flex; justify-content: center; margin-top: 10px; gap: 30px">

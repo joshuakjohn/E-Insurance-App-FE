@@ -2,16 +2,16 @@
     <div class="header">
         <div class="outer_menu">
             <div class="menu">
-                <button (click)="this.router.navigate(['/dashboard/plans'])">Home</button>
-                <button>About us</button>
-                <button>Contact us</button>
+                <button class="button" (click)="this.router.navigate(['/dashboard/plans'])">Home</button>
+                <button class="button">About us</button>
+                <button class="button">Contact us</button>
             </div>
             <div style="display: flex;
             align-items: center;
             gap: 10px;">
-                <button style="width: 135px;" (click)="agentRegisterDialog()">Become an Agent</button>
-                <button *ngIf="!role" (click)="loginAndSignupDialog()">Login</button>
-                <button *ngIf="role" style="border: 50%;
+                <button class="button" style="width: 135px;" (click)="agentRegisterDialog()">Become an Agent</button>
+                <button class="button" *ngIf="!role" (click)="loginAndSignupDialog()">Login</button>
+                <button class="button" *ngIf="role" style="border: 50%;
                 width: 43px;
                 height: 43px;
                 margin-left: 15px;
@@ -19,16 +19,10 @@
 
 
                 <mat-menu #menu="matMenu">
-                    <div class="account_menu">
-                        <span>{{email}}</span>
-                        <img style="padding: 20px;
-                        border-radius: 50%;" [src]="profilePhotoBuffer && role ? profilePhotoBuffer : '../../../assets/pngegg.png'" width="100px" height="100px">
-                        <span>Hi, {{username}}!</span>
-                        <div style="display: flex;
-                        gap: 10px;">
-                            <button (click)=goToDashboard()>Dashboard</button>
-                            <button (click)=logout()>Logout</button>
-                        </div>
+                    <span style="margin: 16px 16px 16px 16px;">Hi, {{username}}!</span>
+                    <div style="margin-top: 10px;">
+                        <button class="default-button" mat-menu-item (click)=goToDashboard()>Dashboard</button>
+                        <button class="default-button" mat-menu-item (click)=logout()>Logout</button>
                     </div>
                   </mat-menu>
             </div>
@@ -52,7 +46,7 @@
             margin-top: 50px;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">We are committed to providing you with the protection and security you deserve with our comprehensive insurance solutions that are designed to give you peace of mind</p>
         
-            <button (click)="explore()">Explore</button>
+            <button class="button" (click)="explore()">Explore</button>
         </div>
     </div>
 

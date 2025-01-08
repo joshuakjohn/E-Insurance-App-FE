@@ -65,11 +65,9 @@ export class PlanFormComponent {
       if (description) {
         payload.description = description;
       }
-      console.log('-------')
       this.httpService.postApiCall('/api/v1/plan', payload, this.header).subscribe({
         next: (res) => {
           console.log('Plan created successfully:', res);
-          this.router.navigate(['admin/dashboard/plans']); 
         },
         error: (error) => {
           console.error('Error creating plan:', error);
@@ -80,6 +78,6 @@ export class PlanFormComponent {
 
   onClear(): void {
     this.planForm.reset();
-    this.router.navigate(['/admin/dashboard/plans']); 
+    this.isFormSubmitted = false;
   }
 }

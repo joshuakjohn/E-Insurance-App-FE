@@ -11,6 +11,7 @@ import { HttpService } from 'src/app/services/http-services/http.service';
 export class AgentRegistrationComponent {
 
   signupForm!: FormGroup
+  uploadedFile: File | null = null;
 
   constructor(
     public httpService: HttpService,
@@ -37,10 +38,27 @@ get signupFormControls() { return this.signupForm.controls; }
 
 handleRegistration(){
   if(this.signupForm.valid){
-    const { username, email, password, phno, region } = this.signupForm.value
-    const data = {username, email, password, phno, region}
 
-    this.httpService.postApiCall(`/api/v1/agent/register`, data).subscribe({
+    const formData = new FormData();
+      // Append the file
+      if (this.uploadedFile) {
+        formData.append('image', this.uploadedFile);
+      }
+    
+      // Append other form fields
+      Object.keys(this.signupForm.controls).forEach((key) => {
+        console.log(key);
+        
+        if (key !== 'confirm') { // Skip the 'confirm' field
+          const value = this.signupForm.get(key)?.value;
+          if (value) {
+            formData.append(key, value);
+          }
+        }
+      });
+             
+
+      this.httpService.postApiCall(`/api/v1/agent/register`, formData).subscribe({
       next: (res) => {
         console.log(res)
         this.dialogRef.close();
@@ -50,6 +68,14 @@ handleRegistration(){
         console.log(err)
       }
     })
+
+  }
+}
+
+onFileChange(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  if (input.files && input.files.length > 0) {
+    this.uploadedFile = input.files[0];
   }
 }
 

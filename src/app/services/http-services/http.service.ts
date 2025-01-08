@@ -13,11 +13,15 @@ export class HttpService {
     return this.http.post('http://localhost:4000'+endpoint, data)
   }
 
-  getApiCall(endpoint: string, headers: HttpHeaders){
-    return this.http.get('http://localhost:4000'+endpoint, { headers })
+  getApiCall(endpoint: string, headers: HttpHeaders, params?: any){
+    return this.http.get('http://localhost:4000'+endpoint, { headers, params })
   }
 
   patchApiCall(endpoint: string, data: any){
     return this.http.patch('http://localhost:4000'+endpoint, data)
+  }
+
+  getAgentById(endpoint:string,header:any){
+    return this.http.get('http://localhost:4000'+endpoint,header)
   }
 }
