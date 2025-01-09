@@ -124,28 +124,106 @@
             
             <ng-template #profile>
                 <div class="customer-profile">
-                    <!-- Header -->
-                    <header class="profile-header">
-                        <h1>Agent Profile</h1>
-                    </header>
-                    <section class="profile-section">
-                        <div class="profile-picture">
-                            <!-- Dynamically show the profile picture -->
-                            <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
-                            <p *ngIf="!profilePicUrl">No profile picture available</p>
+                  <!-- Header -->
+                  <header class="profile-header">
+                    <h1>Agent Profile</h1>
+                  </header>
+              
+                  <section class="profile-section">
+                    <div class="profile-picture">
+                      <!-- Dynamically show the profile picture -->
+                      <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
+                      <p *ngIf="!profilePicUrl">No profile picture available</p>
+                    </div>
+                    <div class="profile-info">
+                      <form #profileFrom="ngForm">
+                        <!-- Username Field -->
+                        <div class="form-group">
+                          <label for="username">Username:</label>
+                          <span *ngIf="!isEditing">{{ agent.username }}</span>
+                          <input
+                            *ngIf="isEditing"
+                            id="username"
+                            [(ngModel)]="agent.username"
+                            name="username"
+                            required
+                          />
                         </div>
-                        <div class="profile-info">
-                            <h2>{{agent.username}}</h2>
-                            <pre>Email                  :       {{agent.email}}</pre>
-                            <pre>Phone                  :       {{agent.phno}}</pre>
-                            <pre>Region                 :       {{agent.region}}</pre>
-                            <pre>Number of customers    :       {{agent.num_of_customers}}</pre>
-                            <pre>Number of policies     :       {{agent.num_of_policies}}</pre>
-                            <pre>Commission             :       {{agent.commission}}</pre>
+              
+                        <!-- Email Field -->
+                        <div class="form-group">
+                          <label for="email">Email:</label>
+                          <span *ngIf="!isEditing">{{ agent.email }}</span>
+                          <input
+                            *ngIf="isEditing"
+                            id="email"
+                            [(ngModel)]="agent.email"
+                            name="email"
+                            type="email"
+                            required
+                          />
                         </div>
-                    </section>
+              
+                        <!-- Phone Field -->
+                        <div class="form-group">
+                          <label for="phone">Phone:</label>
+                          <span *ngIf="!isEditing">{{ agent.phno }}</span>
+                          <input
+                            *ngIf="isEditing"
+                            id="phone"
+                            [(ngModel)]="agent.phno"
+                            name="phone"
+                            type="tel"
+                          />
+                        </div>
+              
+                        <!-- Region Field -->
+                        <div class="form-group">
+                          <label for="region">Region:</label>
+                          <span *ngIf="!isEditing">{{ agent.region }}</span>
+                          <input
+                            *ngIf="isEditing"
+                            id="region"
+                            [(ngModel)]="agent.region"
+                            name="region"
+                          />
+                        </div>
+              
+                        <!-- Number of Customers Field -->
+                        <div class="form-group">
+                          <label for="num_of_customers">Number of Customers:</label>
+                          <span>{{ agent.num_of_customers }}</span>
+                        </div>
+              
+                        <!-- Number of Policies Field -->
+                        <div class="form-group">
+                          <label for="num_of_policies">Number of Policies:</label>
+                          <span>{{ agent.num_of_policies }}</span>
+                        </div>
+              
+                        <!-- Commission Field -->
+                        <div class="form-group">
+                          <label for="commission">Commission:</label>
+                          <span>{{ agent.commission }}</span>
+                        </div>
+                      </form>
+                    </div>
+                  </section>
+              
+                  <div class="profile-actions">
+                    <button (click)="toggleEditMode()" class="edit-button">
+                      {{ isEditing ? 'Cancel' : 'Edit' }}
+                    </button>
+              
+                  <!-- Save Changes Button -->
+                    <button *ngIf="isEditing" class="SaveButton"
+                      [disabled]="!profileFrom.valid" 
+                      (click)="saveChanges()">
+                      Save
+                    </button>
                 </div>
-            </ng-template>
+                </div>
+              </ng-template>              
         </ng-template>
     </div>
 
