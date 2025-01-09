@@ -1,19 +1,88 @@
 <div class="customer-profile">
-    <!-- Header -->
-    <header class="profile-header">
-        <h1>Customer Profile</h1>
-    </header>
-    <section class="profile-section">
-        <div class="profile-picture">
-            <!-- Dynamically show the profile picture -->
-            <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
-            <p *ngIf="!profilePicUrl">No profile picture available</p>
+  <!-- Header -->
+  <header class="profile-header">
+    <h1>Customer Profile</h1>
+  </header>
+
+  <section class="profile-section">
+    <!-- Profile Picture -->
+    <div class="profile-picture">
+      <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
+      <p *ngIf="!profilePicUrl">No profile picture available</p>
+    </div>
+
+    <!-- Profile Info -->
+    <div class="profile-info">
+      <form #profileForm="ngForm">
+        <!-- Username Field -->
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <span *ngIf="!isEditing">{{ customerData?.username || 'Customer Name' }}</span>
+          <input 
+            *ngIf="isEditing" 
+            id="username" 
+            [(ngModel)]="customerData.username" 
+            name="username" 
+            required
+          />
         </div>
-        <div class="profile-info">
-            <h2>{{ customerData?.username || 'Customer Name' }}</h2>
-            <p>Email: {{ customerData?.email || 'No email provided' }}</p>
-            <p>Phone: {{ customerData?.phno || 'No phone number provided' }}</p>
-            <p>Address: {{ customerData?.address || 'No address provided' }}</p>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <span *ngIf="!isEditing">{{ customerData?.email || 'No email provided' }}</span>
+          <input 
+            *ngIf="isEditing" 
+            id="email" 
+            [(ngModel)]="customerData.email" 
+            name="email" 
+            type="email" 
+            required
+          />
         </div>
-    </section>
+
+        <!-- Phone Field -->
+        <div class="form-group">
+          <label for="phone">Phone:</label>
+          <span *ngIf="!isEditing">{{ customerData?.phno || 'No phone number provided' }}</span>
+          <input 
+            *ngIf="isEditing" 
+            id="phone" 
+            [(ngModel)]="customerData.phno" 
+            name="phone" 
+            type="tel" 
+          />
+        </div>
+
+        <!-- Address Field -->
+        <div class="form-group">
+          <label for="address">Address:</label>
+          <span *ngIf="!isEditing">{{ customerData?.address || 'No address provided' }}</span>
+          <input 
+            *ngIf="isEditing" 
+            id="address" 
+            [(ngModel)]="customerData.address" 
+            name="address" 
+          />
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- Action Buttons -->
+  <div class="profile-actions">
+    <button (click)="toggleEditMode()" class="edit-button">
+      {{ isEditing ? 'Cancel' : 'Edit' }}
+    </button>
+  </div>
+
+  <!-- Save Changes Button -->
+  <footer *ngIf="isEditing">
+    <button 
+      [disabled]="!profileForm.valid" 
+      (click)="saveChanges()"
+    >
+      Save
+    </button>
+  </footer>
 </div>

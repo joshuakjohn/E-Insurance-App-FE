@@ -26,10 +26,14 @@ export class AgentComponent {
   username: string | null
   agent: any
   profilePicUrl: string = '';
+  isEditing: boolean = false;
 
   currentPage: number = 1;
   totalPages: number = 1;
   limit: number = 3;
+  loader:string = 'flex' 
+
+  originalAgentData: any;
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router
   ){
@@ -45,11 +49,24 @@ export class AgentComponent {
     
   }
 
+  private updateActiveTab(url: string): void {
+    if (url.includes('/customerdashboard/profile')) {
+      this.tab = 'profile';
+    } else if (url.includes('/customerdashboard/policy')) {
+      this.tab = 'policies';
+    } else if (url.includes('/customerdashboard/reports')) {
+      this.tab = 'reports';
+    } else {
+      this.tab = 'policies'; // Fallback to default tab
+    }
+  }
+
   fetchAgentById(): void{
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/agent/get-agent', header).subscribe({
       next: (res: any) => {
         this.agent = res.data
+        this.originalAgentData={...res.data};
         this.createImageFromBuffer(res.data.profilePhoto);
       },
       error: (err: any) => {
@@ -66,30 +83,21 @@ export class AgentComponent {
           console.log('Fetched Data:', res);
             this.customers = res.data;
             this.totalPages = res.totalPages;
+            this.loader = 'none'
         },
         error: (err: any) => {
             console.error('Error fetching customers:', err);
+            this.loader = 'none'
         },
     });
   }
 
   tabSwitch(input: string){
-    if(input === 'customer')
+    if(input === 'customer'){
       this.tab = 'customer'
+    }
     else if(input === 'policy'){
       this.tab = 'policy'
-      this.pendingPolicies = this.agentPolices.filter((policy: any) => {
-        if(policy.status === 'submitted')
-          return true
-        return false
-      })
-      this.pendingPolicies.map(policy => {
-        const customer = this.customers.find(customer => {
-          return customer._id === policy.customerId
-        })
-        policy.customerName = customer.username
-        policy.customerEmail = customer.email
-      })
     }
     else if(input === 'profile')
       this.tab = 'profile'
@@ -99,7 +107,20 @@ export class AgentComponent {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);     
     this.httpService.getApiCall(`/api/v1/policy/agent`, header).subscribe({
       next: (res: any) => {
-        this.agentPolices = res.data        
+        this.agentPolices = res.data 
+        
+        this.pendingPolicies = this.agentPolices.filter((policy: any) => {
+          if(policy.status === 'submitted')
+            return true
+          return false
+        })
+        this.pendingPolicies.map(policy => {
+          const customer = this.customers.find(customer => {
+            return customer._id === policy.customerId
+          })
+          policy.customerName = customer.username
+          policy.customerEmail = customer.email
+        })
       },
       error: (err: any) => {
         console.error('Error fetching plans:', err);
@@ -116,7 +137,7 @@ export class AgentComponent {
       if(this.customerPolicies.length === 0)
         this.height = 50+'px'
       else
-      this.height = this.customerPolicies.length*360+'px'      
+      this.height = this.customerPolicies.length*390+'px'      
       this.extendedCard = this.extendedCard === id ? null : id; 
   }
 
@@ -227,5 +248,17 @@ export class AgentComponent {
         this.currentPage++;
         this.fetchCustomers();
     }
+  }
+  toggleEditMode():void{
+    if(!this.isEditing){
+      this.agent={...this.originalAgentData};
+    }else{
+      this.agent={...this.originalAgentData};
+    }
+    this.isEditing=!this.isEditing
+  }
+  saveChanges():void{
+    this.originalAgentData={...this.agent};
+    this.isEditing = false;
   }
 }

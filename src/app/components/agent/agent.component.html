@@ -1,9 +1,10 @@
 <div class="header">
     <div class="buttons">
         <button mat-button (click)="homeButtonEvent()">Home</button>
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="collabrator button" matTooltip="Collabrator" class="small-icon-button">
-            <mat-icon style="transform: scale(2);" svgIcon="profile-icon"></mat-icon>
-        </button>        
+        <button class="button" style="border: 50%;
+        width: 43px;
+        height: 43px;
+        background-size: cover;" [ngStyle]="{'background-image': 'url(../../../assets/pngegg.png)'}" [matMenuTriggerFor]="menu"></button>      
     </div>
 </div>
 
@@ -25,15 +26,23 @@
             <mat-button-toggle (click)="tabSwitch('customer')" checked="true" class="toggle">Browse customers</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('policy')" class="toggle">Pending policies</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('profile')" class="toggle">Profile</mat-button-toggle>
-          </mat-button-toggle-group>
+        </mat-button-toggle-group>
+        <div class="spinner" [style.display]="loader">
+            <mat-spinner></mat-spinner>
+        </div>
         <div *ngIf="tab === 'customer'; else pending">
+
+            <div *ngIf="customers.length === 0 && loader === 'none'" class="no-policies">
+                <p>No customers were found.</p>
+            </div>
+            
             <div class="customer" *ngFor="let customer of customers">
                 <pre>Name           :       {{customer.username}}</pre>
                 <pre>Email          :       {{customer.email}}</pre>
                 <pre>Age            :       {{customer.age}}</pre>
                 <pre>Region         :       {{customer.region}}</pre>
                 <pre>Phone number   :       {{customer.phno}}</pre>
-                <button mat-raised-button (click)="viewCustomerPolicies(customer._id)">View policies</button>
+                <button (click)="viewCustomerPolicies(customer._id)">View policies</button>
 
                 <div class="details"
                 [ngStyle]="{ 
@@ -43,10 +52,10 @@
                         <div *ngFor="let policy of customerPolicies" style="display: flex;
                         flex-direction: column;
                         justify-content: space-between;
-                        background-color: rgb(175, 175, 175);
-                        padding: 10px;
+                        background-color: rgb(220, 228, 237);
+                        padding: 10px 30px 20px 30px;
                         margin-bottom: 20px;
-                        border-radius: 5px;">
+                        border-radius: 30px;">
                             <div class="policy">
                                 <pre>Policy name          :       {{policy.policyName}}</pre>
                                 <pre>Premium amount       :       {{policy.premiumAmount}}</pre>
@@ -75,7 +84,7 @@
                     </ng-template>
                 </div>
             </div>
-            <div class="pagination">              
+            <div class="pagination" *ngIf="loader === 'none' && totalPages>1">              
                 <button mat-button (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
                 <span>Page {{currentPage}} of {{totalPages}}</span>
                 <button mat-button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
@@ -83,7 +92,7 @@
         </div>
         <ng-template #pending>
             <div *ngIf="tab === 'policy'; else profile">
-                <div *ngIf="pendingPolicies.length === 0" class="no-policies">
+                <div *ngIf="pendingPolicies.length === 0 && loader === 'none'" class="no-policies">
                       <p>No pending policies for approval are found.</p>
                 </div>
                 <div class="customer" *ngFor="let policy of pendingPolicies" style="display: flex;
@@ -100,7 +109,7 @@
                             <pre>Policy coverage    :       {{policy.coverage}}</pre>
                         </div>
                         <div>
-                            <button mat-raised-button (click)="forwardButton(policy._id)">Forward to admin</button>
+                            <button style="width: 150px;" (click)="forwardButton(policy._id)">Forward to admin</button>
                         </div>
                     </div>
                     <div style="display: flex;
@@ -115,28 +124,106 @@
             
             <ng-template #profile>
                 <div class="customer-profile">
-                    <!-- Header -->
-                    <header class="profile-header">
-                        <h1>Agent Profile</h1>
-                    </header>
-                    <section class="profile-section">
-                        <div class="profile-picture">
-                            <!-- Dynamically show the profile picture -->
-                            <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
-                            <p *ngIf="!profilePicUrl">No profile picture available</p>
+                  <!-- Header -->
+                  <header class="profile-header">
+                    <h1>Agent Profile</h1>
+                  </header>
+              
+                  <section class="profile-section">
+                    <div class="profile-picture">
+                      <!-- Dynamically show the profile picture -->
+                      <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
+                      <p *ngIf="!profilePicUrl">No profile picture available</p>
+                    </div>
+                    <div class="profile-info">
+                      <form #profileFrom="ngForm">
+                        <!-- Username Field -->
+                        <div class="form-group">
+                          <label for="username">Username:</label>
+                          <span *ngIf="!isEditing">{{ agent.username }}</span>
+                          <input
+                            *ngIf="isEditing"
+                            id="username"
+                            [(ngModel)]="agent.username"
+                            name="username"
+                            required
+                          />
                         </div>
-                        <div class="profile-info">
-                            <h2>{{agent.username}}</h2>
-                            <pre>Email                  :       {{agent.email}}</pre>
-                            <pre>Phone                  :       {{agent.phno}}</pre>
-                            <pre>Region                 :       {{agent.region}}</pre>
-                            <pre>Number of customers    :       {{agent.num_of_customers}}</pre>
-                            <pre>Number of policies     :       {{agent.num_of_policies}}</pre>
-                            <pre>Commission             :       {{agent.commission}}</pre>
+              
+                        <!-- Email Field -->
+                        <div class="form-group">
+                          <label for="email">Email:</label>
+                          <span *ngIf="!isEditing">{{ agent.email }}</span>
+                          <input
+                            *ngIf="isEditing"
+                            id="email"
+                            [(ngModel)]="agent.email"
+                            name="email"
+                            type="email"
+                            required
+                          />
                         </div>
-                    </section>
+              
+                        <!-- Phone Field -->
+                        <div class="form-group">
+                          <label for="phone">Phone:</label>
+                          <span *ngIf="!isEditing">{{ agent.phno }}</span>
+                          <input
+                            *ngIf="isEditing"
+                            id="phone"
+                            [(ngModel)]="agent.phno"
+                            name="phone"
+                            type="tel"
+                          />
+                        </div>
+              
+                        <!-- Region Field -->
+                        <div class="form-group">
+                          <label for="region">Region:</label>
+                          <span *ngIf="!isEditing">{{ agent.region }}</span>
+                          <input
+                            *ngIf="isEditing"
+                            id="region"
+                            [(ngModel)]="agent.region"
+                            name="region"
+                          />
+                        </div>
+              
+                        <!-- Number of Customers Field -->
+                        <div class="form-group">
+                          <label for="num_of_customers">Number of Customers:</label>
+                          <span>{{ agent.num_of_customers }}</span>
+                        </div>
+              
+                        <!-- Number of Policies Field -->
+                        <div class="form-group">
+                          <label for="num_of_policies">Number of Policies:</label>
+                          <span>{{ agent.num_of_policies }}</span>
+                        </div>
+              
+                        <!-- Commission Field -->
+                        <div class="form-group">
+                          <label for="commission">Commission:</label>
+                          <span>{{ agent.commission }}</span>
+                        </div>
+                      </form>
+                    </div>
+                  </section>
+              
+                  <div class="profile-actions">
+                    <button (click)="toggleEditMode()" class="edit-button">
+                      {{ isEditing ? 'Cancel' : 'Edit' }}
+                    </button>
+              
+                  <!-- Save Changes Button -->
+                    <button *ngIf="isEditing" class="SaveButton"
+                      [disabled]="!profileFrom.valid" 
+                      (click)="saveChanges()">
+                      Save
+                    </button>
                 </div>
-            </ng-template>
+                </div>
+              </ng-template>              
         </ng-template>
     </div>
 
