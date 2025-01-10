@@ -34,7 +34,6 @@ export class HomePageComponent {
   );
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result)
         this.role = result
     });
@@ -48,7 +47,6 @@ export class HomePageComponent {
   );
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result)
         this.role = result
         this.profilePhotoBuffer = localStorage.getItem('profileImage');
@@ -60,7 +58,7 @@ export class HomePageComponent {
     if(this.role === 'customer')
       this.router.navigate(['/customerdashboard/policy'])
     else if(this.role === 'agent')
-      this.router.navigate(['/agent'])
+      this.router.navigate(['/agent/customers'])
     else if(!this.role)
       this.loginAndSignupDialog()
   }

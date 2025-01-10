@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpService } from 'src/app/service/http-service/http.service';
+import { HttpService } from 'src/app/services/http-services/http.service';
 
 @Component({
   selector: 'app-plan',
@@ -17,7 +17,7 @@ export class PlanComponent implements OnInit {
   }
 
   fetchPlans(): void {
-    this.httpService.getAllPlan('/api/v1/plan').subscribe({
+    this.httpService.getApiCall('/api/v1/plan').subscribe({
       next: (res: any) => {
         this.plans = res.data
         this.plans.map((plan: any) => {

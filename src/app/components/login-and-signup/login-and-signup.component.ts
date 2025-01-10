@@ -110,7 +110,6 @@ get signinFormControls() { return this.signinForm.controls; }
 
         this.httpService.postApiCall(`/api/v1/customer/register`, formData).subscribe({
         next: (res) => {
-          console.log(res)
           this.dialogRef.close();
           window.alert('Registration successfull');
         },
@@ -128,7 +127,6 @@ get signinFormControls() { return this.signinForm.controls; }
   
       this.httpService.postApiCall(`/api/v1/${role_lower}`, { email, password }).subscribe({
         next: (res: any) => {
-          console.log(res);
           localStorage.setItem('authToken', res.token);
           localStorage.setItem('username', res.username);
           localStorage.setItem('email', res.email);
@@ -169,7 +167,6 @@ get signinFormControls() { return this.signinForm.controls; }
   
   
   onRoleChange(newRole: string) {
-    console.log('Role changed to:', newRole);
     this.role = newRole;
     this.updateConditionalFields()
   }

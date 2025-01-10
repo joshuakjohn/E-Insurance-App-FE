@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpService } from 'src/app/service/http-service/http.service';
+import { HttpService } from 'src/app/services/http-services/http.service';
 import { Location } from '@angular/common';
 
 @Component({
@@ -52,7 +52,7 @@ export class PolicyViewComponent implements OnInit {
       this.errorMessage = 'Authorization token is missing.';
       return;
     }
-    this.httpService.getPolicyCustomer('/api/v1/policy', { headers: this.headers }).subscribe({
+    this.httpService.getApiCall('/api/v1/policy', this.headers).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
           this.policyDetails = res.data;
@@ -76,7 +76,7 @@ export class PolicyViewComponent implements OnInit {
       return;
     }
 
-    this.httpService.getCustomerById('/api/v1/customer/getcustomer', { headers: this.headers }).subscribe({
+    this.httpService.getApiCall('/api/v1/customer/getcustomer', this.headers).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
           this.customerData = res.data;
@@ -105,15 +105,14 @@ export class PolicyViewComponent implements OnInit {
     this.activeTab = tab;
   }
 
-  isPremiumDue(createdAt: Date, lastPaymentDate: Date): boolean {
-    const currentDate = new Date();
-    const createdDate = new Date(createdAt);
-    const lastPayment = lastPaymentDate ? new Date(lastPaymentDate) : createdDate;
-
-    // Calculate the difference in time since the last payment or policy creation
-    const timeDifference = currentDate.getTime() - lastPayment.getTime();
-    const dayDifference = timeDifference / (1000 * 3600 * 24);
-    return dayDifference >= 25;
+  isPremiumDue(createdAt: Date, premiumPaid: number): boolean {
+    const startDate = new Date(createdAt)
+    const currentDate = new Date()
+    const diffTime = currentDate.getTime() - startDate.getTime();
+    const diffDays = diffTime / (1000 * 60 * 60 * 24); // Total days
+    const approxMonths = diffDays / 30.436875; // Average days in a month (365.25/12)   
+     
+    return approxMonths>premiumPaid;
   }
 
   showOverlay(policy: any): void {
@@ -132,10 +131,9 @@ export class PolicyViewComponent implements OnInit {
       paymentAmount: policy.premiumAmount
     };
 
-    this.httpService.payPremium('/api/v1/customer/paypremium/', data, { headers: this.headers }).subscribe({
+    this.httpService.postApiCall('/api/v1/customer/paypremium/', data, this.headers).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          console.log('Payment successful:', res.message);
           this.fetchPolicyDetails();
   
           setTimeout(() => this.cdr.detectChanges(), 0);
