@@ -1,0 +1,115 @@
+<div class="header">
+    <div class="buttons">
+        <button mat-button (click)="homeButtonEvent()">Home</button>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu button" matTooltip="Menu" class="small-icon-button">
+            <mat-icon style="transform: scale(2);" svgIcon="profile-icon"></mat-icon>
+        </button>        
+    </div>
+</div>
+
+<mat-menu #menu="matMenu">
+    <div class="account_menu">
+        <span>{{ employeeEmail }}</span>
+        <img style="padding: 20px;" src="../../../assets/admin-avatar.png" width="100px" height="100px">
+        <span>Hi, {{ employeeUsername }}!</span>
+        <button style="background-color: rgb(223, 223, 223); margin: 20px;" (click)="logout()" mat-raised-button>Logout</button>
+    </div>
+</mat-menu>
+
+<div class="main">
+
+    <h1>Welcome {{ employeeUsername }}!</h1>
+
+    <div class="agents">
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
+            <mat-button-toggle (click)="tabSwitch('allPlans')" checked="true" class="toggle">Browse plans</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('agent')" [checked]="tab === 'agent'" class="toggle">Browse Agents</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('approveAgent')" [checked]="tab === 'approveAgent'" class="toggle">Approve Agents</mat-button-toggle>
+        </mat-button-toggle-group>
+
+        <div *ngIf="tab === 'allPlans'" class="plans">
+            <div class="plan" *ngFor="let plan of plans">
+              <p>Plan Name: {{ plan.planName }}</p>
+              <p>Description: {{ plan.description }}</p>
+              <p>Category: {{ plan.category }}</p>
+              
+              <button mat-raised-button (click)="viewSchemes(plan._id)">
+                {{ isSchemesVisible[plan._id] ? 'Hide Schemes' : 'View Schemes' }}
+              </button>
+              <div *ngIf="isSchemesVisible[plan._id] && (!plan.schemes || plan.schemes.length === 0)" style="text-align: center; margin-top: 20px;">
+                <h3>No schemes found for this plan</h3>
+              </div>
+              <div *ngIf="isSchemesVisible[plan._id]" class="scheme-cards">
+                <div class="scheme-card" *ngFor="let scheme of plan.schemes">
+                    <div class="scheme-card-header">
+                        <p>{{ scheme.schemeName }}</p>
+                    </div>
+                    <div class="scheme-card-body">
+                        <p>{{ scheme.description }}</p>
+                        <p>Eligibility Criteria: {{ scheme.eligibilityCriteria }}</p>
+                        <p>Premium: {{ scheme.premium }}</p>
+                        <p>Maturity Period: {{ scheme.maturityPeriod }}</p>
+                        <p>Coverage: {{ scheme.coverage }}</p>
+                    </div>
+                </div>
+                </div>
+            </div>
+          </div>
+          
+        <div *ngIf="tab === 'agent'" class="agents">
+            <div *ngFor="let agent of agents" class="agent">
+                <div class="agent-card-header">
+                    <p class="agent-name">Name: {{ agent.username }}</p>
+                    <p>Email: {{ agent.email }}</p>
+                    <p>Region: {{ agent.region }}</p>
+                    <p>Phone number: {{ agent.phno }}</p>
+                </div>
+                
+                <button mat-raised-button (click)="viewAgentPolicies(agent._id)">
+                    {{ expandedAgentId === agent._id ? 'Hide Policies' : 'View Policies' }}
+                </button>
+            
+                <!-- Policy Cards -->
+                <div *ngIf="expandedAgentId === agent._id">
+                    <div *ngIf="policies.length > 0" class="policy-cards">
+                        <div *ngFor="let policy of policies" class="policy-card">
+                            <div class="policy-card-header">
+                                <h3>{{ policy.policyName }}</h3>
+                            </div>
+                            <div class="policy-card-body">
+                                <p>Description: {{ policy.description }}</p>
+                                <p>Premium Amount: {{ policy.premiumAmount }}</p>
+                                <p>Policy Duration: {{ policy.duration }}</p>
+                                <p>Policy Coverage: {{ policy.coverage }}</p>
+                                <p>Premium Paid: {{ policy.premiumPaid }}</p>
+                                <p>Policy Start Date: {{ policy.policyStartDate | date: 'yyyy-MM-dd' }}</p>
+                                <p>Policy Status: {{ policy.status }}</p>
+                                <p>Pending Premium: {{ policy.pendingPremium }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="policies.length === 0" style="text-align: center; margin-top: 20px;">
+                        <h3>No policy found for this agent</h3>
+                    </div>
+                </div>
+            </div>            
+        </div>
+
+        <div *ngIf="tab === 'approveAgent'" class="agents">
+            <div *ngIf="pendingAgents.length === 0" class="no-agents">
+                <p>No pending agents for approval.</p>
+            </div>
+            <div *ngFor="let agent of pendingAgents" class="agent">
+                <p>Name: {{ agent.username }}</p>
+                <p>Email: {{ agent.email }}</p>
+                <p>Region: {{ agent.region }}</p>
+                <p>Phone number: {{ agent.phno }}</p>
+                <button mat-raised-button (click)="approveAgent(agent._id)">Approve Agent</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+
+    </div>
+</div>
