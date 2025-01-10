@@ -19,6 +19,7 @@ export class PolicyViewComponent implements OnInit {
   isOverlayVisible: boolean = false;
   selectedPolicy: any = null;
   customerData: any;
+  isLoading: boolean = false;
   tabs = [
     { key: 'active', label: 'Active' },
     { key: 'pending', label: 'Pending' }
@@ -46,6 +47,7 @@ export class PolicyViewComponent implements OnInit {
   }
 
   fetchPolicyDetails(): void {
+    this.isLoading = true;
     if (!this.authToken) {
       this.errorMessage = 'Authorization token is missing.';
       return;
@@ -54,6 +56,8 @@ export class PolicyViewComponent implements OnInit {
       next: (res: any) => {
         if (res.code === 200) {
           this.policyDetails = res.data;
+          this.isLoading = false;
+         
         } else {
           this.errorMessage = 'Unable to fetch policy details.';
         }
@@ -61,6 +65,7 @@ export class PolicyViewComponent implements OnInit {
       error: (err: any) => {
         this.errorMessage = 'An error occurred while fetching policy details.';
         console.error('Error fetching policy:', err);
+        this.isLoading = false;
       }
     });
   }

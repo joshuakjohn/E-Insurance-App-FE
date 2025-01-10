@@ -206,7 +206,15 @@
 .navbar .nav-item.active {
     color: #4CAF50;
 }
-
+.no-policies {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65vh;
+    text-align: center;
+    font-size: 20px;
+    color: #888;
+}
 .navbar .nav-item.active::after {
     content: '';
     position: absolute;
