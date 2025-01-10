@@ -136,6 +136,7 @@
   
   .edit-button {
     padding: 12px 25px;
+    width: 110px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -150,18 +151,19 @@
   }
   
   /* Save Button */
-  footer button {
+  .save{
     padding: 12px 25px;
+    width: 110px;
     background-color: #4CAF50;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 18px;
-    margin-top: 15px;
+    margin: 15px 0 0 10px;
   }
   
-  footer button:hover {
+  .save:hover {
     background-color: #45a049;
   }
   
@@ -177,7 +179,7 @@
       padding: 10px 20px;
     }
   
-    footer button {
+    .save button {
       font-size: 16px;
       padding: 10px 20px;
     }

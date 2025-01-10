@@ -74,15 +74,12 @@
     <button (click)="toggleEditMode()" class="edit-button">
       {{ isEditing ? 'Cancel' : 'Edit' }}
     </button>
-  </div>
 
   <!-- Save Changes Button -->
-  <footer *ngIf="isEditing">
-    <button 
+    <button class="save" *ngIf="isEditing"
       [disabled]="!profileForm.valid" 
-      (click)="saveChanges()"
-    >
+      (click)="saveChanges()">
       Save
     </button>
-  </footer>
+  </div>
 </div>
