@@ -24,7 +24,7 @@
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
             <mat-button-toggle (click)="tabSwitch('allPlans')" checked="true" class="toggle">Browse plans</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('agent')" [checked]="tab === 'agent'" class="toggle">Browse Agents</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('policy')" class="toggle">Pending Policies</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('policy')" class="toggle">Approve Policies</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('plan')" [checked]="tab === 'plan'" class="toggle">Add New Plan</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('scheme')" [checked]="tab === 'scheme'" class="toggle">Add New Scheme</mat-button-toggle>
             <mat-button-toggle (click)="tabSwitch('approveAgent')" [checked]="tab === 'approveAgent'" class="toggle">Approve Agents</mat-button-toggle>
