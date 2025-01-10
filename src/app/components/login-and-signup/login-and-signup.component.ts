@@ -14,9 +14,11 @@ export class LoginAndSignupComponent {
   role: string = 'Customer'
   loginErrorMessage: string = ''
   uploadedFile: File | null = null;
+  filteredRegions: string[] = []; 
+  signupFormToggled: boolean = false;
 
   signinForm!: FormGroup;
-  signupForm!: FormGroup
+  signupForm!: FormGroup;
 
   constructor(
     public httpService: HttpService,
@@ -65,6 +67,10 @@ get signinFormControls() { return this.signinForm.controls; }
     if (signUpButton && signInButton && container) {
       signUpButton.addEventListener('click', () => {
         container.classList.add('right-panel-active');
+        if (!this.signupFormToggled) {
+          this.fetchAgentRegion(); 
+          this.signupFormToggled = true; 
+        }
       });
 
       signInButton.addEventListener('click', () => {
@@ -72,7 +78,16 @@ get signinFormControls() { return this.signinForm.controls; }
       });
     }
   }
-
+  fetchAgentRegion() {
+    this.httpService.getAgentRegion('/api/v1/agent/getregion').subscribe({
+      next: (res: any) => {
+        if (res.data) {
+          this.filteredRegions = res.data.split(',').map((region: string) => region.trim());
+        }
+      },
+      error: (err) => console.error(err)
+    });
+  }
   handleRegistration(){
     
     if(this.signupForm.valid){

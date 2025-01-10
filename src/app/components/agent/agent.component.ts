@@ -26,6 +26,7 @@ export class AgentComponent {
   username: string | null
   agent: any
   profilePicUrl: string = '';
+  isEditing: boolean = false;
 
   currentPage: number = 1;
   totalPages: number = 1;
@@ -33,6 +34,7 @@ export class AgentComponent {
   customerLoader:string = 'flex' 
   pendingPoliciesLoader = 'flex'
 
+  originalAgentData: any;
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, 
     private httpService: HttpService, public dialog: MatDialog, public router: Router, private cdr: ChangeDetectorRef){
@@ -63,6 +65,7 @@ export class AgentComponent {
     this.httpService.getApiCall('/api/v1/agent/get-agent', header).subscribe({
       next: (res: any) => {
         this.agent = res.data
+        this.originalAgentData={...res.data};
         this.createImageFromBuffer(res.data.profilePhoto);
       },
       error: (err: any) => {
@@ -107,11 +110,13 @@ export class AgentComponent {
 
 
   fetchAgentPolicies(): void {    
-    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);     
-    this.httpService.getApiCall(`/api/v1/policy/agent`, header).subscribe({
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);  
+    const params = { page: this.currentPage.toString(), limit: this.limit.toString() };
+   
+    this.httpService.getApiCall(`/api/v1/policy/agent`, header, params).subscribe({
       next: (res: any) => {
         this.agentPolices = res.data 
-        
+        this.totalPages = res.totalPages;
         this.pendingPolicies = this.agentPolices.filter((policy: any) => {
           if(policy.status === 'submitted')
             return true
@@ -253,5 +258,31 @@ export class AgentComponent {
         this.currentPage++;
         this.fetchCustomers();
     }
+  }
+
+  prevPage2(): void {
+    if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchAgentPolicies();
+    }
+  }
+
+  nextPage2(): void {
+    if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchAgentPolicies();
+    }
+  }
+  toggleEditMode():void{
+    if(!this.isEditing){
+      this.agent={...this.originalAgentData};
+    }else{
+      this.agent={...this.originalAgentData};
+    }
+    this.isEditing=!this.isEditing
+  }
+  saveChanges():void{
+    this.originalAgentData={...this.agent};
+    this.isEditing = false;
   }
 }

@@ -15,5 +15,5 @@ export class HttpService {
   getAllPlan(endpoint: string){
     return this.http.get('http://localhost:4000'+ endpoint)
   }
-
+ 
 }

@@ -24,4 +24,7 @@ export class HttpService {
   getAgentById(endpoint:string,header:any){
     return this.http.get('http://localhost:4000'+endpoint,header)
   }
+  getAgentRegion(endpoint:string){
+    return this.http.get('http://localhost:4000'+ endpoint);
+  }
 }
