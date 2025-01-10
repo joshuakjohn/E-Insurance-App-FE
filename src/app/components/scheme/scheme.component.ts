@@ -171,7 +171,7 @@ export class SchemeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (localStorage.getItem('role') === 'customer') {
         this.policyApplication = true
-        this.height = 1800+'px'
+        this.height = 1150+'px'
         // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
       } else {
         console.log('User did not log in');
