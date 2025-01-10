@@ -104,11 +104,13 @@ export class AgentComponent {
   }
 
   fetchAgentPolicies(): void {    
-    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);     
-    this.httpService.getApiCall(`/api/v1/policy/agent`, header).subscribe({
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);  
+    const params = { page: this.currentPage.toString(), limit: this.limit.toString() };
+   
+    this.httpService.getApiCall(`/api/v1/policy/agent`, header, params).subscribe({
       next: (res: any) => {
         this.agentPolices = res.data 
-        
+        this.totalPages = res.totalPages;
         this.pendingPolicies = this.agentPolices.filter((policy: any) => {
           if(policy.status === 'submitted')
             return true
@@ -247,6 +249,20 @@ export class AgentComponent {
     if (this.currentPage < this.totalPages) {
         this.currentPage++;
         this.fetchCustomers();
+    }
+  }
+
+  prevPage2(): void {
+    if (this.currentPage > 1) {
+        this.currentPage--;
+        this.fetchAgentPolicies();
+    }
+  }
+
+  nextPage2(): void {
+    if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+        this.fetchAgentPolicies();
     }
   }
   toggleEditMode():void{
