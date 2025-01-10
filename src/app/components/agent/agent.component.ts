@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { HttpService } from 'src/app/services/http-services/http.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class AgentComponent {
 
   extendedCard: number | null = null;
-  tab: string = 'customer';
+  tab: string = '';
   customers: any[] = [];
   agentPolices: any[] = [];
   customerPolicies: any[] = [];
@@ -30,21 +30,32 @@ export class AgentComponent {
   currentPage: number = 1;
   totalPages: number = 1;
   limit: number = 3;
-  loader:string = 'flex' 
+  customerLoader:string = 'flex' 
+  pendingPoliciesLoader = 'flex'
 
 
-  constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router
-  ){
+  constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, 
+    private httpService: HttpService, public dialog: MatDialog, public router: Router, private cdr: ChangeDetectorRef){
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
     this.email = localStorage.getItem('email')
     this.username = localStorage.getItem('username')
   }
 
   ngOnInit(): void {
+    this.updateActiveTab(this.router.url)
     this.fetchCustomers();
     this.fetchAgentPolicies()
-    this.fetchAgentById()
-    
+    this.fetchAgentById()       
+  }
+
+  private updateActiveTab(url: string): void {    
+    if (url.includes('/agent/customers')) {
+      this.tab = 'customer';
+    } else if (url.includes('/agent/pendingPolicies')) {
+      this.tab = 'policy';
+    } else if (url.includes('/agent/profile')) {
+      this.tab = 'profile';
+    }    
   }
 
   fetchAgentById(): void{
@@ -68,24 +79,32 @@ export class AgentComponent {
           console.log('Fetched Data:', res);
             this.customers = res.data;
             this.totalPages = res.totalPages;
-            this.loader = 'none'
+            this.customerLoader = 'none'
         },
         error: (err: any) => {
             console.error('Error fetching customers:', err);
-            this.loader = 'none'
+            this.customerLoader = 'none'
         },
     });
   }
 
   tabSwitch(input: string){
-    if(input === 'customer')
+    if(input === 'customer'){
+      this.router.navigate(['/agent/customers'])
+
       this.tab = 'customer'
+      return
+    }
     else if(input === 'policy'){
+      this.router.navigate(['/agent/pendingPolicies'])      
       this.tab = 'policy'
+      return
     }
     else if(input === 'profile')
+      this.router.navigate(['/agent/profile'])    
       this.tab = 'profile'
   }
+
 
   fetchAgentPolicies(): void {    
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);     
@@ -105,9 +124,11 @@ export class AgentComponent {
           policy.customerName = customer.username
           policy.customerEmail = customer.email
         })
+        this.pendingPoliciesLoader = 'none'
       },
       error: (err: any) => {
         console.error('Error fetching plans:', err);
+        this.pendingPoliciesLoader = 'none'
       },
     });
   }

@@ -204,15 +204,9 @@ button:active{
 }
 
 .tabs{
-    border: none;
+    border: 1px solid #214c87
 }
 
-.toggle{
-    border: 1px solid #214c87 !important;
-    border-radius: 50px;
-    margin-right: 10px;
-    overflow: hidden;
-}
 
 .toggle:hover{
     transition: background-color ease .5s;
