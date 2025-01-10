@@ -100,15 +100,14 @@ export class PolicyViewComponent implements OnInit {
     this.activeTab = tab;
   }
 
-  isPremiumDue(createdAt: Date, lastPaymentDate: Date): boolean {
-    const currentDate = new Date();
-    const createdDate = new Date(createdAt);
-    const lastPayment = lastPaymentDate ? new Date(lastPaymentDate) : createdDate;
-
-    // Calculate the difference in time since the last payment or policy creation
-    const timeDifference = currentDate.getTime() - lastPayment.getTime();
-    const dayDifference = timeDifference / (1000 * 3600 * 24);
-    return dayDifference >= 25;
+  isPremiumDue(createdAt: Date, premiumPaid: number): boolean {
+    const startDate = new Date(createdAt)
+    const currentDate = new Date()
+    const diffTime = currentDate.getTime() - startDate.getTime();
+    const diffDays = diffTime / (1000 * 60 * 60 * 24); // Total days
+    const approxMonths = diffDays / 30.436875; // Average days in a month (365.25/12)   
+     
+    return approxMonths>premiumPaid;
   }
 
   showOverlay(policy: any): void {
