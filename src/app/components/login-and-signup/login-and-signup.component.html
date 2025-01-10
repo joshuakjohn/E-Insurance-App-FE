@@ -41,10 +41,14 @@
               </div>
               </ng-template>
               <div>
-                <mat-form-field appearance="outline" style="width: 100%;" *ngIf="role === 'Customer' || role === 'Agent'">
+                <mat-form-field appearance="outline" style="width: 100%;">
                   <mat-label>Region</mat-label>
-                  <input matInput formControlName="region">
-                  <mat-error *ngIf="signupFormControls['region']['errors']?.['required']">This field is required</mat-error>
+                  <mat-select formControlName="region">
+                    <mat-option *ngFor="let region of filteredRegions" [value]="region">
+                      {{ region }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="signupForm.controls['region'].hasError('required')">This field is required</mat-error>
                 </mat-form-field>
                 <div class="horizontal" *ngIf="role === 'Customer'">
                   <span>Upload your image</span>
