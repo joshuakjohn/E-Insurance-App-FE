@@ -55,14 +55,7 @@ button:active{
 }
 
 .toggle-group{
-    border: none;
-}
-
-.toggle{
-    border: 1px solid #214c87 !important;
-    border-radius: 50px;
-    margin-right: 10px;
-    overflow: hidden;
+    border: 1px solid #214c87;
 }
 
 ::ng-deep .mat-button-toggle-checked {
