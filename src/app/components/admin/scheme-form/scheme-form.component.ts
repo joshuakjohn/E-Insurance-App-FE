@@ -2,7 +2,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpService } from 'src/app/services/http-service/http.service';
+import { HttpService } from 'src/app/services/http-services/http.service';
 
 @Component({
   selector: 'app-scheme-form',
@@ -43,7 +43,7 @@ export class SchemeFormComponent {
   }
 
   fetchPlans(): void {
-    this.httpService.getAllPlan('/api/v1/plan').subscribe({
+    this.httpService.getApiCall('/api/v1/plan').subscribe({
       next: (res: any) => {
         this.plans = res.data;
       },
@@ -60,7 +60,6 @@ export class SchemeFormComponent {
       const schemeData = this.schemeForm.value;
       this.httpService.postApiCall('/api/v1/scheme', schemeData, this.header).subscribe({
         next: (res) => {
-          console.log('Scheme created successfully:', res);
         },
         error: (error) => {
           console.error('Error creating scheme:', error);

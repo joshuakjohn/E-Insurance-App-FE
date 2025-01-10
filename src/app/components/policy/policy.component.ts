@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpService } from 'src/app/service/http-service/http.service';
+import { HttpService } from 'src/app/services/http-services/http.service';
 import { HttpHeaders } from '@angular/common/http';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import html2canvas from 'html2canvas';
@@ -47,9 +47,7 @@ export class PolicyComponent {
   async fetchCustomerDetails(): Promise<void> {
     try {
       const response: any = await lastValueFrom(
-        this.httpService.getCustomerById('/api/v1/customer/getcustomer', {
-          headers: this.headers,
-        })
+        this.httpService.getApiCall('/api/v1/customer/getcustomer', this.headers)
       );
   
       if (response.code === 200) {
@@ -85,7 +83,7 @@ export class PolicyComponent {
         formData.append(proofType, file, file.name);
       }
     }    
-    this.httpService.createPolicy('/api/v1/policy', formData, { headers: this.headers }).subscribe({
+    this.httpService.postApiCall('/api/v1/policy', formData, this.headers).subscribe({
       next: (res) => {
         alert('Your policy has been submitted successfully!');
       },
@@ -144,8 +142,6 @@ export class PolicyComponent {
   // Capture file on input change
   onFileChange(event: any, proofType: string): void {
     const selectedFile = event.target.files[0]; // Single file
-    this.files[proofType] = selectedFile || null;
-    console.log(this.files[proofType]);
-    
+    this.files[proofType] = selectedFile || null;    
   }
 }

@@ -1,7 +1,14 @@
 <body>
     <div class="container">
-        <h1>Admin Login</h1>
+        <h1>Login</h1>
         <form [formGroup] = "loginForm">
+            <mat-form-field appearance="outline">
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="signin_role">
+                  <mat-option value="Admin">Admin</mat-option>
+                  <mat-option value="Employee">Employee</mat-option>
+                </mat-select>
+            </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Email or phone</mat-label>
                 <input matInput formControlName = "email">

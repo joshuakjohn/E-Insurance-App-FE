@@ -337,3 +337,14 @@
     border: 1px solid #214c87;
     border-radius: 50px; 
 }
+
+.pay-button{
+
+    button:disabled {
+        background-color: #ccc; /* Gray background */
+        color: #666;           /* Gray text */
+        cursor: not-allowed;   /* Change cursor to indicate unavailability */
+        border: 1px solid #aaa;
+      }
+
+}

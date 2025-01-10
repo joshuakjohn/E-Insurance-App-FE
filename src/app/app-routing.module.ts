@@ -12,6 +12,7 @@ import { CustomerDashboardComponent } from './components/customer-dashboard/cust
 import { ProfileComponent } from './components/profile/profile.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
 
 const routes: Routes = [
   {
@@ -59,6 +60,23 @@ const routes: Routes = [
           { path: 'browse-agents', component: AdminDashboardComponent }, 
           { path: 'pending-policies', component: AdminDashboardComponent }, 
           { path: 'approve-agents', component: AdminDashboardComponent }
+        ]
+      },
+    ]
+  },
+  {
+    path: 'employee',
+    children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'login', component: AdminLoginComponent },
+      { 
+        path: 'dashboard', 
+        component: EmployeeDashboardComponent,
+        children: [
+          { path: '', redirectTo: 'browse-plans', pathMatch: 'full' }, // Default tab route
+          { path: 'browse-plans', component: EmployeeDashboardComponent}, 
+          { path: 'browse-agents', component: EmployeeDashboardComponent }, 
+          { path: 'approve-agents', component: EmployeeDashboardComponent }
         ]
       },
     ]

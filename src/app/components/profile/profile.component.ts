@@ -1,7 +1,7 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpService } from 'src/app/service/http-service/http.service';
+import { HttpService } from 'src/app/services/http-services/http.service';
 
 @Component({
   selector: 'app-profile',
@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
       return;
     }
 
-    this.httpService.getCustomerById('/api/v1/customer/getcustomer', { headers: this.headers }).subscribe({
+    this.httpService.getApiCall('/api/v1/customer/getcustomer', this.headers).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
           this.customerData = res.data;
@@ -115,7 +115,6 @@ export class ProfileComponent implements OnInit {
   }
   
   saveChanges(): void {
-    console.log('Updated Customer Data:', this.customerData);
     this.originalCustomerData = { ...this.customerData };
     this.isEditing = false;
   }

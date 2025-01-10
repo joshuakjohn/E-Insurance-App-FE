@@ -64,8 +64,8 @@
         <p>{{ policy.description }}</p>
       </div>
   
-      <div *ngIf="isPremiumDue(policy.createdAt, policy.lastPaymentDate) && policy.status==='Active'" class="pay-button">
-        <button (click)="showOverlay(policy)">Pay Premium</button>
+      <div *ngIf="policy.status==='Active'" class="pay-button">
+        <button [disabled]="!isPremiumDue(policy.createdAt, policy.premiumPaid)" (click)="showOverlay(policy)">Pay Premium</button>
       </div>
     </div>
   </div>

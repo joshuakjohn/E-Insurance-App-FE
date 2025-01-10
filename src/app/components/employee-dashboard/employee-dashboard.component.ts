@@ -8,12 +8,11 @@ import { PROFILE_ICON } from 'src/assets/svg-icons';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrls: ['./admin-dashboard.component.scss']
+  selector: 'app-employee-dashboard',
+  templateUrl: './employee-dashboard.component.html',
+  styleUrls: ['./employee-dashboard.component.scss']
 })
-export class AdminDashboardComponent {
-
+export class EmployeeDashboardComponent {
   tab: string = 'plans';
   agents: any[] = [];
   plans: any[] = [];
@@ -21,11 +20,8 @@ export class AdminDashboardComponent {
   pendingPolicies: any[] = [];
   pendingAgents: any[] = [];
 
-  adminEmail: string = '';
-  adminUsername: string = '';
-
-  showPlanForm: boolean = false;
-  showSchemeForm: boolean = false;
+  employeeEmail: string = '';
+  employeeUsername: string = '';
 
   isSchemesVisible: { [planId: string]: boolean } = {};
   expandedAgentId: string | null = null; 
@@ -36,7 +32,6 @@ export class AdminDashboardComponent {
 
   ngOnInit(): void {
     this.fetchAgents();
-    this.fetchPendingPolicies();
     this.loadAdminDetails();
     this.fetchPendingAgents();
     this.fetchPendingAgents();
@@ -47,12 +42,9 @@ export class AdminDashboardComponent {
     this.tab = input;
   
     const routes: { [key: string]: string } = {
-      allPlans: '/admin/dashboard/browse-plans',
-      agent: '/admin/dashboard/browse-agents',
-      policy: '/admin/dashboard/pending-policies',
-      plan: '/admin/dashboard/add-plan',
-      scheme: '/admin/dashboard/add-scheme',
-      approveAgent: '/admin/dashboard/approve-agents',
+      allPlans: '/employee/dashboard/browse-plans',
+      agent: '/employee/dashboard/browse-agents',
+      approveAgent: '/employee/dashboard/approve-agents',
     };
   
     if (routes[input]) {
@@ -61,35 +53,24 @@ export class AdminDashboardComponent {
   
     if (input === 'allPlans') {
       this.fetchAllPlans();
-    } else if (input === 'policy') {
-      this.fetchPendingPolicies();
     } else if (input === 'agent') {
       this.fetchAgents();
     } else if (input === 'approveAgent') {
       this.fetchPendingAgents();
     }
   }
-  
 
   loadAdminDetails(): void {
-    this.adminEmail = localStorage.getItem('email') || 'admin@example.com';
-    this.adminUsername = localStorage.getItem('username') || 'Admin';
-  }
-
-  navigateToAddPlan() {
-    this.showPlanForm = true;
-    this.showSchemeForm = false;
-  }
-
-  navigateToAddScheme() {
-    this.showSchemeForm = true;
-    this.showPlanForm = false;
+    this.employeeEmail = localStorage.getItem('email') || 'employee@example.com';
+    this.employeeUsername = localStorage.getItem('username') || 'Employee';
   }
   
   fetchAllPlans(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/plan', header).subscribe({
-      next: (res: any) => {        
+      next: (res: any) => {
+        console.log(res);
+        
         this.plans = res.data;
       },
       error: (err: any) => {
@@ -120,7 +101,7 @@ export class AdminDashboardComponent {
 
   fetchAgents(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall('/api/v1/agent', header).subscribe({
+    this.httpService.getApiCall('/api/v1/agent/employee', header).subscribe({
       next: (res: any) => {
         this.agents = res.data;
       },
@@ -145,23 +126,11 @@ export class AdminDashboardComponent {
   approveAgent(agentId: string): void {
     this.httpService.patchApiCall(`/api/v1/agent/${agentId}`, { status: 'Approved' }).subscribe({
       next: (res: any) => {
+        console.log(res);
         this.pendingAgents = this.pendingAgents.filter(agent => agent._id !== agentId);
       },
       error: (err: any) => {
         console.error('Error approving agent:', err);
-      },
-    });
-  }
-
-  fetchPendingPolicies(): void {
-    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall('/api/v1/policy/admin', header).subscribe({
-      next: (res: any) => {
-        this.pendingPolicies = res.data.filter((policy: any) => policy.status === 'Waiting for approval');
-      },
-      
-      error: (err: any) => {
-        console.error('Error fetching pending policies:', err);
       },
     });
   }
@@ -177,6 +146,7 @@ export class AdminDashboardComponent {
         const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken') || ''}`);
         this.httpService.getApiCall(`/api/v1/policy/${agentId}`, header).subscribe({
             next: (res: any) => {
+                console.log('Policies fetched:', res.data);
                 this.policies = res.data; // Populate the policies array
             },
             error: (err: any) => {
@@ -186,18 +156,6 @@ export class AdminDashboardComponent {
         });
     }
 }
-
-  
-  approvePolicy(policyId: string) {
-    this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Active'}).subscribe({
-      next: (res: any) => {
-        this.pendingPolicies = this.pendingPolicies.filter((policy) => policy._id !== policyId);
-      },
-      error: (err: any) => {
-        console.error('Error approving policy:', err);
-      },
-    });
-  }
 
   homeButtonEvent() {
     this.router.navigate([`/dashboard/plans`]);

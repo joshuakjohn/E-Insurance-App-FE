@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { HttpService } from '../http-service/http.service';
+import { HttpService } from '../http-services/http.service';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 
@@ -99,7 +99,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
       if (userId) {
         const role = localStorage.getItem('role');
-        this.refreshTokenInProgress$ = this.httpService.getRefreshToken(`/api/v1/${role}/${userId}/refreshtoken`).pipe(
+        this.refreshTokenInProgress$ = this.httpService.getApiCall(`/api/v1/${role}/${userId}/refreshtoken`).pipe(
           tap((res: any) => {
             this.isRefreshing = false;
             this.refreshTokenInProgress$ = null;
