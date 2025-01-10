@@ -115,7 +115,6 @@ export class ProfileComponent implements OnInit {
   }
   
   saveChanges(): void {
-    console.log('Updated Customer Data:', this.customerData);
     this.originalCustomerData = { ...this.customerData };
     this.isEditing = false;
   }

@@ -129,7 +129,6 @@ export class PolicyViewComponent implements OnInit {
     this.httpService.postApiCall('/api/v1/customer/paypremium/', data, this.headers).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          console.log('Payment successful:', res.message);
           this.fetchPolicyDetails();
   
           setTimeout(() => this.cdr.detectChanges(), 0);

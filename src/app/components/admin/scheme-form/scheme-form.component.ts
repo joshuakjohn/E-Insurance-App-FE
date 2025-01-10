@@ -60,7 +60,6 @@ export class SchemeFormComponent {
       const schemeData = this.schemeForm.value;
       this.httpService.postApiCall('/api/v1/scheme', schemeData, this.header).subscribe({
         next: (res) => {
-          console.log('Scheme created successfully:', res);
         },
         error: (error) => {
           console.error('Error creating scheme:', error);

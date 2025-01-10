@@ -67,7 +67,7 @@ export class PlanFormComponent {
       }
       this.httpService.postApiCall('/api/v1/plan', payload, this.header).subscribe({
         next: (res) => {
-          console.log('Plan created successfully:', res);
+          console.log('Plan created successfully:');
         },
         error: (error) => {
           console.error('Error creating plan:', error);

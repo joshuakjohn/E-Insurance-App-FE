@@ -79,7 +79,6 @@ export class AgentComponent {
     const params = { page: this.currentPage.toString(), limit: this.limit.toString() };
     this.httpService.getApiCall('/api/v1/customer', header, params).subscribe({
         next: (res: any) => {
-          console.log('Fetched Data:', res);
             this.customers = res.data;
             this.totalPages = res.totalPages;
             this.customerLoader = 'none'
@@ -154,7 +153,6 @@ export class AgentComponent {
   forwardButton(policyId: string){
     this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Waiting for approval'}).subscribe({
       next: (res: any) => {
-        console.log(res)
         this.pendingPolicies = this.pendingPolicies.filter(policy => {
           if(policy._id === policyId)
             return false;
@@ -178,8 +176,6 @@ export class AgentComponent {
   }
 
   downloadPdf(pdf: ArrayBuffer) {
-    console.log(pdf)
-
     const arrayBuffer = new Uint8Array(pdf).buffer;
 
     // Convert ArrayBuffer to Blob
@@ -203,8 +199,6 @@ export class AgentComponent {
   }
 
   createImageFromBuffer(buffer: any): void {
-    console.log(buffer);
-    
   
     const base64String = this.bufferToBase64(buffer.data);
   

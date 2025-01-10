@@ -34,7 +34,6 @@ export class HomePageComponent {
   );
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result)
         this.role = result
     });
@@ -48,7 +47,6 @@ export class HomePageComponent {
   );
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       if(result)
         this.role = result
         this.profilePhotoBuffer = localStorage.getItem('profileImage');

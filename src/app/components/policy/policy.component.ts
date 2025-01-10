@@ -142,8 +142,6 @@ export class PolicyComponent {
   // Capture file on input change
   onFileChange(event: any, proofType: string): void {
     const selectedFile = event.target.files[0]; // Single file
-    this.files[proofType] = selectedFile || null;
-    console.log(this.files[proofType]);
-    
+    this.files[proofType] = selectedFile || null;    
   }
 }

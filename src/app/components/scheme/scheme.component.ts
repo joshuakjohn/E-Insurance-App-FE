@@ -145,7 +145,6 @@ export class SchemeComponent implements OnInit {
     } else {
       // If user is not logged in, store the selected scheme ID and open the login/signup dialog
       this.selectedSchemeId = schemeId;
-      console.log(this.selectedSchemeId)
     }
   }
 
@@ -172,9 +171,6 @@ export class SchemeComponent implements OnInit {
       if (localStorage.getItem('role') === 'customer') {
         this.policyApplication = true
         this.height = 1150+'px'
-        // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
-      } else {
-        console.log('User did not log in');
       }
     });
   }
@@ -185,23 +181,6 @@ export class SchemeComponent implements OnInit {
     this.applicationToggle('close')
     this.extendedCard = this.extendedCard === id ? null : id;
   }
-
-  policyDialog(): void {
-    const dialogRef = this.dialog.open(PolicyComponent, {
-      height: '600px',
-      width: '1200px',
-      data: {planId: this.planId, schemeId: this.selectedSchemeId}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // if (localStorage.getItem('role') === 'customer') {
-      //   this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
-      // } else {
-      //   console.log('User did not log in');
-      // }
-    });
-  }
-
 
   onSearchChange(): void {
     const query = this.searchQuery.trim();
