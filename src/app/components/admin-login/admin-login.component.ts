@@ -26,11 +26,9 @@ export class AdminLoginComponent {
   handleLogin() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      console.log('hello')
 
       this.httpService.postApiCall('/api/v1/admin', { email, password }).subscribe({
         next: (res:any) => {
-          console.log(res);
           localStorage.setItem('authToken', res.token);
           localStorage.setItem('username', res.username);
           localStorage.setItem('email', res.email);

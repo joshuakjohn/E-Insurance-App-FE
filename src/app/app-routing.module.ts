@@ -63,8 +63,13 @@ const routes: Routes = [
       },
     ]
   },
-  { path: 'agent', component: AgentComponent }
-
+  { path: 'agent', component: AgentComponent,
+    children:[
+      {path:'customers',component:AgentComponent},
+      {path:'pendingPolicies',component:AgentComponent},
+      {path:'profile',component:AgentComponent},
+    ]
+   }
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { HttpService } from 'src/app/services/http-services/http.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 export class AgentComponent {
 
   extendedCard: number | null = null;
-  tab: string = 'customer';
+  tab: string = '';
   customers: any[] = [];
   agentPolices: any[] = [];
   customerPolicies: any[] = [];
@@ -31,34 +31,33 @@ export class AgentComponent {
   currentPage: number = 1;
   totalPages: number = 1;
   limit: number = 3;
-  loader:string = 'flex' 
+  customerLoader:string = 'flex' 
+  pendingPoliciesLoader = 'flex'
 
   originalAgentData: any;
 
-  constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router
-  ){
+  constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, 
+    private httpService: HttpService, public dialog: MatDialog, public router: Router, private cdr: ChangeDetectorRef){
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
     this.email = localStorage.getItem('email')
     this.username = localStorage.getItem('username')
   }
 
   ngOnInit(): void {
+    this.updateActiveTab(this.router.url)
     this.fetchCustomers();
     this.fetchAgentPolicies()
-    this.fetchAgentById()
-    
+    this.fetchAgentById()       
   }
 
-  private updateActiveTab(url: string): void {
-    if (url.includes('/customerdashboard/profile')) {
+  private updateActiveTab(url: string): void {    
+    if (url.includes('/agent/customers')) {
+      this.tab = 'customer';
+    } else if (url.includes('/agent/pendingPolicies')) {
+      this.tab = 'policy';
+    } else if (url.includes('/agent/profile')) {
       this.tab = 'profile';
-    } else if (url.includes('/customerdashboard/policy')) {
-      this.tab = 'policies';
-    } else if (url.includes('/customerdashboard/reports')) {
-      this.tab = 'reports';
-    } else {
-      this.tab = 'policies'; // Fallback to default tab
-    }
+    }    
   }
 
   fetchAgentById(): void{
@@ -80,28 +79,34 @@ export class AgentComponent {
     const params = { page: this.currentPage.toString(), limit: this.limit.toString() };
     this.httpService.getApiCall('/api/v1/customer', header, params).subscribe({
         next: (res: any) => {
-          console.log('Fetched Data:', res);
             this.customers = res.data;
             this.totalPages = res.totalPages;
-            this.loader = 'none'
+            this.customerLoader = 'none'
         },
         error: (err: any) => {
             console.error('Error fetching customers:', err);
-            this.loader = 'none'
+            this.customerLoader = 'none'
         },
     });
   }
 
   tabSwitch(input: string){
     if(input === 'customer'){
+      this.router.navigate(['/agent/customers'])
+
       this.tab = 'customer'
+      return
     }
     else if(input === 'policy'){
+      this.router.navigate(['/agent/pendingPolicies'])      
       this.tab = 'policy'
+      return
     }
     else if(input === 'profile')
+      this.router.navigate(['/agent/profile'])    
       this.tab = 'profile'
   }
+
 
   fetchAgentPolicies(): void {    
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);  
@@ -123,9 +128,11 @@ export class AgentComponent {
           policy.customerName = customer.username
           policy.customerEmail = customer.email
         })
+        this.pendingPoliciesLoader = 'none'
       },
       error: (err: any) => {
         console.error('Error fetching plans:', err);
+        this.pendingPoliciesLoader = 'none'
       },
     });
   }
@@ -146,7 +153,6 @@ export class AgentComponent {
   forwardButton(policyId: string){
     this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Waiting for approval'}).subscribe({
       next: (res: any) => {
-        console.log(res)
         this.pendingPolicies = this.pendingPolicies.filter(policy => {
           if(policy._id === policyId)
             return false;
@@ -170,8 +176,6 @@ export class AgentComponent {
   }
 
   downloadPdf(pdf: ArrayBuffer) {
-    console.log(pdf)
-
     const arrayBuffer = new Uint8Array(pdf).buffer;
 
     // Convert ArrayBuffer to Blob
@@ -195,8 +199,6 @@ export class AgentComponent {
   }
 
   createImageFromBuffer(buffer: any): void {
-    console.log(buffer);
-    
   
     const base64String = this.bufferToBase64(buffer.data);
   
