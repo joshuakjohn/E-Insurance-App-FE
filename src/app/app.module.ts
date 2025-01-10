@@ -31,7 +31,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { AgentRegistrationComponent } from './components/login-and-signup/agent-registration/agent-registration.component';
-import { AuthInterceptor } from './service/interceptor/auth.interceptor';
+import { AuthInterceptor } from './services/interceptor/auth.interceptor';
 import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
 
 @NgModule({

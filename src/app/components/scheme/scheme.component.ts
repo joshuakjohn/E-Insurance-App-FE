@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpService } from 'src/app/service/http-service/http.service';
+import { HttpService } from 'src/app/services/http-services/http.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginAndSignupComponent } from '../login-and-signup/login-and-signup.component';
 import { MatIconRegistry } from '@angular/material/icon';
@@ -73,7 +73,7 @@ export class SchemeComponent implements OnInit {
 
   fetchPlanDetails(): void {
     if (this.planId) {
-      this.httpService.getPlanById(`/api/v1/plan/${this.planId}`).subscribe({
+      this.httpService.getApiCall(`/api/v1/plan/${this.planId}`).subscribe({
         next: (res: any) => {
           if (res.code === 200) {
             this.planDetails = res.plan;
@@ -93,7 +93,7 @@ export class SchemeComponent implements OnInit {
         limit: this.itemsPerPage.toString(),
       };
 
-      this.httpService.getAllScheme(`/api/v1/scheme/${this.planId}/getall`).subscribe({
+      this.httpService.getApiCall(`/api/v1/scheme/${this.planId}/getall`).subscribe({
         next: (res: any) => {
           if (res.code === 200) {
             this.schemes = res.data;            
@@ -145,7 +145,6 @@ export class SchemeComponent implements OnInit {
     } else {
       // If user is not logged in, store the selected scheme ID and open the login/signup dialog
       this.selectedSchemeId = schemeId;
-      console.log(this.selectedSchemeId)
     }
   }
 
@@ -171,10 +170,7 @@ export class SchemeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (localStorage.getItem('role') === 'customer') {
         this.policyApplication = true
-        this.height = 1800+'px'
-        // this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
-      } else {
-        console.log('User did not log in');
+        this.height = 1150+'px'
       }
     });
   }
@@ -185,23 +181,6 @@ export class SchemeComponent implements OnInit {
     this.applicationToggle('close')
     this.extendedCard = this.extendedCard === id ? null : id;
   }
-
-  policyDialog(): void {
-    const dialogRef = this.dialog.open(PolicyComponent, {
-      height: '600px',
-      width: '1200px',
-      data: {planId: this.planId, schemeId: this.selectedSchemeId}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // if (localStorage.getItem('role') === 'customer') {
-      //   this.router.navigate([`/dashboard/plans/${this.planId}/scheme/${this.selectedSchemeId}/policy`]);
-      // } else {
-      //   console.log('User did not log in');
-      // }
-    });
-  }
-
 
   onSearchChange(): void {
     const query = this.searchQuery.trim();
@@ -247,7 +226,7 @@ filter(sortOrder: 'asc' | 'desc' = 'asc') {
   if (query) {
       this.performSearch(query); 
   } else {
-      this.httpService.getFilterScheme(`/api/v1/scheme/filter?sortOrder=${sortOrder}`).subscribe({
+      this.httpService.getApiCall(`/api/v1/scheme/filter?sortOrder=${sortOrder}`).subscribe({
           next: (res: any) => {
               if (res.code === 200) {
                   this.schemes = res.data || [];

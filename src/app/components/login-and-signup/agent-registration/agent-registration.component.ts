@@ -46,9 +46,7 @@ handleRegistration(){
       }
     
       // Append other form fields
-      Object.keys(this.signupForm.controls).forEach((key) => {
-        console.log(key);
-        
+      Object.keys(this.signupForm.controls).forEach((key) => {        
         if (key !== 'confirm') { // Skip the 'confirm' field
           const value = this.signupForm.get(key)?.value;
           if (value) {
@@ -60,7 +58,6 @@ handleRegistration(){
 
       this.httpService.postApiCall(`/api/v1/agent/register`, formData).subscribe({
       next: (res) => {
-        console.log(res)
         this.dialogRef.close();
         window.alert('Registration successfull');
       },

@@ -89,9 +89,7 @@ export class AdminDashboardComponent {
   fetchAllPlans(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/plan', header).subscribe({
-      next: (res: any) => {
-        console.log(res);
-        
+      next: (res: any) => {        
         this.plans = res.data;
       },
       error: (err: any) => {
@@ -147,7 +145,6 @@ export class AdminDashboardComponent {
   approveAgent(agentId: string): void {
     this.httpService.patchApiCall(`/api/v1/agent/${agentId}`, { status: 'Approved' }).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.pendingAgents = this.pendingAgents.filter(agent => agent._id !== agentId);
       },
       error: (err: any) => {
@@ -180,7 +177,6 @@ export class AdminDashboardComponent {
         const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken') || ''}`);
         this.httpService.getApiCall(`/api/v1/policy/${agentId}`, header).subscribe({
             next: (res: any) => {
-                console.log('Policies fetched:', res.data);
                 this.policies = res.data; // Populate the policies array
             },
             error: (err: any) => {
@@ -195,7 +191,6 @@ export class AdminDashboardComponent {
   approvePolicy(policyId: string) {
     this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Active'}).subscribe({
       next: (res: any) => {
-        console.log(res);
         this.pendingPolicies = this.pendingPolicies.filter((policy) => policy._id !== policyId);
       },
       error: (err: any) => {

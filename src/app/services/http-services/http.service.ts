@@ -9,11 +9,11 @@ export class HttpService {
 
   constructor(public http: HttpClient) { }
 
-  postApiCall(endpoint: string, data: any){
-    return this.http.post('http://localhost:4000'+endpoint, data)
+  postApiCall(endpoint: string, data: any, headers?: HttpHeaders) {
+    return this.http.post('http://localhost:4000' + endpoint, data, { headers });
   }
 
-  getApiCall(endpoint: string, headers: HttpHeaders, params?: any){
+  getApiCall(endpoint: string, headers?: HttpHeaders, params?: any){
     return this.http.get('http://localhost:4000'+endpoint, { headers, params })
   }
 
@@ -23,5 +23,12 @@ export class HttpService {
 
   getAgentById(endpoint:string,header:any){
     return this.http.get('http://localhost:4000'+endpoint,header)
+  }
+  getAgentRegion(endpoint:string){
+    return this.http.get('http://localhost:4000'+ endpoint);
+  }
+
+  getSearchScheme(endpoint:string,params:any){
+    return this.http.get('http://localhost:4000'+endpoint,params)
   }
 }
