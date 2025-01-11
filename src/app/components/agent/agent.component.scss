@@ -321,3 +321,11 @@ button:active{
     height: 400px;
     margin: 30px 40px;
 }
+.default-button{
+    display: flex    ;
+      flex-direction: column;
+        border: none;
+        justify-content: center;
+        align-items: center;
+        margin-left: 12px;
+}
