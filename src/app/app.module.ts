@@ -33,6 +33,7 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { AgentRegistrationComponent } from './components/login-and-signup/agent-registration/agent-registration.component';
 import { AuthInterceptor } from './services/interceptor/auth.interceptor';
 import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
+import { PendingPaymentPoliciesComponent } from './components/pending-payment-policies/pending-payment-policies.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { EmployeeDashboardComponent } from './components/employee-dashboard/empl
     AdminDashboardComponent,
     AdminLoginComponent,
     AgentRegistrationComponent,
-    EmployeeDashboardComponent
+    EmployeeDashboardComponent,
+    PendingPaymentPoliciesComponent,
   ],
   imports: [
     BrowserModule,

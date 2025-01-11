@@ -21,8 +21,6 @@
   <p>No Policies are found.</p>
 </div>
 
-
-  
   <div class="policy-container">
     <div *ngFor="let policy of filteredPolicies" class="policy-card">
       <!-- Header Section -->
@@ -65,22 +63,9 @@
       </div>
   
       <div *ngIf="policy.status==='Active'" class="pay-button">
-        <button [disabled]="!isPremiumDue(policy.createdAt, policy.premiumPaid)" (click)="showOverlay(policy)">Pay Premium</button>
       </div>
     </div>
   </div>
   
-  <!-- Pay Premium Overlay -->
-  <div *ngIf="isOverlayVisible" class="overlay">
-    <div class="overlay-content">
-      <h2>Pay Premium</h2>
-      <div>
-        <h3>Policy Name: {{ selectedPolicy?.policyName }}</h3>
-        <p>Premium Amount: {{ selectedPolicy?.premiumAmount | currency }}</p>
-      </div>
-      <div class="overlay-actions">
-        <button (click)="closeOverlay()">Close</button>
-        <button (click)="payPremium(selectedPolicy)">Pay Now</button>
-      </div>
-    </div>
-  </div>  
+
+ 
