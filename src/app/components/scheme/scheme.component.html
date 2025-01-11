@@ -1,8 +1,14 @@
+
 <div class="container">
   <div style="display: flex;
   justify-content: flex-end;
   width: 100%;">
     <div style="justify-content: flex-end;" class="scheme-header">
+      <div class="navigation-item">
+        <a routerLink="/dashboard/plans" class="navigation-link">Plan</a> / 
+        <span>{{ planDetails.planName }}</span> / 
+        <a (click)="handleSchemeClick()" class="navigation-link">Scheme</a> 
+      </div>
       <input type="text"[(ngModel)]="searchQuery"(input)="onSearchChange()"(blur)="onSearchBlur()"placeholder="Search for schemes..."class="search-bar"/>
       <mat-icon [matMenuTriggerFor]="filterMenu" class="filter-icon">filter_list</mat-icon>
       <mat-menu #filterMenu="matMenu">
