@@ -28,7 +28,7 @@ export class AdminDashboardComponent {
   showPlanForm: boolean = false;
   showSchemeForm: boolean = false;
 
-  isSchemesVisible: { [planId: string]: boolean } = {};
+  activePlanId: string | null = null;
   isViewingPolicies: { [agentId: string]: boolean } = {};
   isViewingCustomers: { [agentId: string]: boolean } = {};
   currentlyViewingAgent: string | null = null;
@@ -101,23 +101,27 @@ export class AdminDashboardComponent {
   }
 
   viewSchemes(planId: string): void {
-    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    if (!this.isSchemesVisible[planId]) {
-      this.httpService.getApiCall(`/api/v1/scheme/${planId}/getall`, header).subscribe({
-        next: (res: any) => {
-          const index = this.plans.findIndex(plan => plan._id === planId);
-          if (index !== -1) {
-            this.plans[index].schemes = res.data; // Attach schemes to the specific plan
-          }
-          this.isSchemesVisible[planId] = !this.isSchemesVisible[planId];
-        },
-        error: (err: any) => {
-          console.error('Error fetching schemes:', err);
-        },
-      });
-    } else {
-      this.isSchemesVisible[planId] = !this.isSchemesVisible[planId];
+    if (this.activePlanId === planId) {
+      // Clicking the same plan again - hide schemes
+      this.activePlanId = null;
+      return;
     }
+
+    // Show schemes for the new plan
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    this.httpService.getApiCall(`/api/v1/scheme/${planId}/getall`, header).subscribe({
+      next: (res: any) => {
+        const index = this.plans.findIndex(plan => plan._id === planId);
+        if (index !== -1) {
+          this.plans[index].schemes = res.data;
+        }
+        this.activePlanId = planId;
+      },
+      error: (err: any) => {
+        console.error('Error fetching schemes:', err);
+        this.activePlanId = null;
+      },
+    });
   }
 
   fetchAgents(): void {

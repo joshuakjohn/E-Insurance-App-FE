@@ -31,32 +31,33 @@
 
         <div *ngIf="tab === 'allPlans'" class="plans">
             <div class="plan" *ngFor="let plan of plans">
-              <p>Plan Name: {{ plan.planName }}</p>
-              <p>Description: {{ plan.description }}</p>
-              <p>Category: {{ plan.category }}</p>
-              
-              <button mat-raised-button (click)="viewSchemes(plan._id)">
-                {{ isSchemesVisible[plan._id] ? 'Hide Schemes' : 'View Schemes' }}
-              </button>
-              <div *ngIf="isSchemesVisible[plan._id] && (!plan.schemes || plan.schemes.length === 0)" style="text-align: center; margin-top: 20px;">
-                <h3>No schemes found for this plan</h3>
-              </div>
-              <div *ngIf="isSchemesVisible[plan._id]" class="scheme-cards">
-                <div class="scheme-card" *ngFor="let scheme of plan.schemes">
-                    <div class="scheme-card-header">
-                        <p>{{ scheme.schemeName }}</p>
+                <p>Plan Name: {{ plan.planName }}</p>
+                <p>Description: {{ plan.description }}</p>
+                <p>Category: {{ plan.category }}</p>
+                
+                <button mat-raised-button (click)="viewSchemes(plan._id)">
+                    {{ activePlanId === plan._id ? 'Hide Schemes' : 'View Schemes' }}
+                </button>
+        
+                <div *ngIf="activePlanId === plan._id" class="scheme-cards">
+                    <div *ngIf="!plan.schemes || plan.schemes.length === 0" class="no-schemes">
+                        <p>No schemes found for this plan</p>
                     </div>
-                    <div class="scheme-card-body">
-                        <p>{{ scheme.description }}</p>
-                        <p>Eligibility Criteria: {{ scheme.eligibilityCriteria }}</p>
-                        <p>Premium: {{ scheme.premium }}</p>
-                        <p>Maturity Period: {{ scheme.maturityPeriod }}</p>
-                        <p>Coverage: {{ scheme.coverage }}</p>
+                    <div class="scheme-card" *ngFor="let scheme of plan.schemes">
+                        <div class="scheme-card-header">
+                            <p>{{ scheme.schemeName }}</p>
+                        </div>
+                        <div class="scheme-card-body">
+                            <p>{{ scheme.description }}</p>
+                            <p>Eligibility Criteria: {{ scheme.eligibilityCriteria }}</p>
+                            <p>Premium: {{ scheme.premium }}</p>
+                            <p>Maturity Period: {{ scheme.maturityPeriod }}</p>
+                            <p>Coverage: {{ scheme.coverage }}</p>
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
-          </div>
+        </div>
           
           <div *ngIf="tab === 'agent'" class="agents">
             <div *ngFor="let agent of agents" class="agent">
