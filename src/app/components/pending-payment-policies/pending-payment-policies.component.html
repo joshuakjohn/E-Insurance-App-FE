@@ -1,0 +1,41 @@
+<div class="pending-payment-container">
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  
+    <!-- Loading Indicator -->
+    <div *ngIf="isLoading" class="loading-spinner">Loading...</div>
+  
+    <!-- No Pending Policies Message -->
+    <div *ngIf="!isLoading && pendingPolicies.length === 0" class="no-policies">
+      No pending payment policies available.
+    </div>
+  
+    <!-- Displaying Pending Policies -->
+    <div *ngIf="!isLoading && pendingPolicies.length > 0">
+      <div *ngFor="let policy of pendingPolicies" class="policy-item">
+        <div class="policy-details">
+          <h3>{{ policy.policyName }}</h3>
+          <p>Premium Paid: {{ policy.premiumPaid }}</p>
+          <p>Premium Amount: {{ policy.premiumAmount | currency }}</p>
+          <p>Status: {{ policy.status }}</p>
+          <button (click)="showOverlay(policy)" [disabled]="isPaymentDisabled">Pay Premium</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Overlay for Payment -->
+    <div *ngIf="isOverlayVisible" class="overlay">
+      <div class="overlay-content">
+        <h3>Pay Premium for {{ selectedPolicy.policyName }}</h3>
+        <p>Premium Amount: {{ selectedPolicy.premiumAmount | currency }}</p>
+        <div class="actions">
+          <button (click)="payPremium(selectedPolicy)">Proceed with Payment</button>
+          <button (click)="closeOverlay()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Go Back Button -->
+    <button class="back-button" (click)="onGoBack()">Go Back</button>
+  </div>
+  

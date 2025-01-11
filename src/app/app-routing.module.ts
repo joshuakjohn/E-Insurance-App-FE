@@ -13,6 +13,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
+import { PendingPaymentPoliciesComponent } from './components/pending-payment-policies/pending-payment-policies.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
       },
       {path:'profile',
         component:ProfileComponent
+      },
+      {
+        path:'pendingpayment',
+        component:PendingPaymentPoliciesComponent
       }
 
     ]

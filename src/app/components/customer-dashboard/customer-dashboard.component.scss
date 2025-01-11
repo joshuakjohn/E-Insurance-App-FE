@@ -61,3 +61,11 @@ button:active{
 ::ng-deep .mat-button-toggle-checked {
     background-color: #ecf2ff !important;
   }
+  .default-button{
+  display: flex ;
+        flex-direction: column;
+        border: none;
+        justify-content: center;
+        align-items: center;
+        margin-left: 12px;
+  }
