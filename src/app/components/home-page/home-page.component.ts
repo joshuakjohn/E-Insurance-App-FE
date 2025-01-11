@@ -6,6 +6,7 @@ import { AgentRegistrationComponent } from '../login-and-signup/agent-registrati
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PROFILE_ICON } from 'src/assets/svg-icons';
+import { LoginService } from 'src/app/services/data-services/login.service';
 
 @Component({
   selector: 'app-home-page',
@@ -19,11 +20,17 @@ export class HomePageComponent {
   email!: string | null
   username!: string | null
 
-  constructor(public dialog: MatDialog,public router:Router, public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, public cdr: ChangeDetectorRef){
+  constructor(public dialog: MatDialog,public router:Router, public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, public cdr: ChangeDetectorRef, private loginService: LoginService){
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
     this.profilePhotoBuffer = localStorage.getItem('profileImage');   
     this.email = localStorage.getItem('email')
     this.username = localStorage.getItem('username')
+  }
+
+  ngOnInit(): void {
+    this.loginService.loginTriggered$.subscribe(() => {
+      this.loginAndSignupDialog();
+    });
   }
 
   agentRegisterDialog(){

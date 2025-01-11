@@ -3,8 +3,8 @@
         <div class="outer_menu">
             <div class="menu">
                 <button class="button" (click)="this.router.navigate(['/dashboard/plans'])">Home</button>
-                <button class="button">About us</button>
-                <button class="button">Contact us</button>
+                <button class="button" (click)="this.router.navigate(['/about']);">About us</button>
+                <button class="button" (click)="this.router.navigate(['/contact']);">Contact us</button>
             </div>
             <div style="display: flex;
             align-items: center;
@@ -19,10 +19,14 @@
 
 
                 <mat-menu #menu="matMenu">
-                    <span style="margin: 16px 16px 16px 16px;">Hi, {{username}}!</span>
+                    <span style="margin: 0px 16px;">Hi, {{username}}!</span>
                     <div style="margin-top: 10px;">
-                        <button class="default-button" mat-menu-item (click)=goToDashboard()>Dashboard</button>
-                        <button class="default-button" mat-menu-item (click)=logout()>Logout</button>
+                        <button class="default-button" mat-menu-item (click)=goToDashboard()>
+                            <mat-icon>dashboard</mat-icon>
+                            Dashboard</button>
+                        <button class="default-button" mat-menu-item (click)=logout()>
+                            <mat-icon>logout</mat-icon>
+                            Logout</button>
                     </div>
                   </mat-menu>
             </div>
@@ -58,5 +62,11 @@
         <app-admin *ngIf="role === 'admin'"></app-admin>
          <router-outlet></router-outlet>
     </div>
+
+    <footer class="footer">
+        <div class="container">
+          <p>&copy; 2025 E-Insurance. All rights reserved.</p>
+        </div>
+      </footer>
 
 </div>
