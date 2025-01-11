@@ -1,34 +1,47 @@
 <div class="header">
     <div class="buttons">
         <button mat-button (click)="homeButtonEvent()">Home</button>
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu button" matTooltip="Menu" class="small-icon-button">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="menu button" matTooltip="Menu">
             <mat-icon style="transform: scale(2);" svgIcon="profile-icon"></mat-icon>
         </button>        
     </div>
 </div>
 
 <mat-menu #menu="matMenu">
-    <div class="account_menu">
-        <span>{{ adminEmail }}</span>
-        <span>Hi, {{ adminUsername }}!</span>
-        <button style="background-color: rgb(223, 223, 223); margin: 20px;" (click)="logout()" mat-raised-button>Logout</button>
+    <span style="margin: 16px 16px 16px 16px;">Hi, {{ adminUsername }}!</span><br>
+    <div style="margin-top: 10px;">
+        <button class="default-button" mat-menu-item (click)="revealTabs('plan')">Add New Plan</button>
+        <button class="default-button" mat-menu-item (click)="revealTabs('scheme')">Add Scheme</button>
+        <button class="default-button" mat-menu-item (click)="revealTabs('policy')">Approve Policies</button>
+        <button class="default-button" mat-menu-item (click)="logout()">Logout</button>
     </div>
 </mat-menu>
 
 <div class="main">
-
     <h1>Welcome {{ adminUsername }}!</h1>
 
     <div class="agents">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
-            <mat-button-toggle (click)="tabSwitch('allPlans')" checked="true" class="toggle">Browse plans</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('agent')" [checked]="tab === 'agent'" class="toggle">Browse Agents</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('policy')" class="toggle">Approve Policies</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('plan')" [checked]="tab === 'plan'" class="toggle">Add New Plan</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('scheme')" [checked]="tab === 'scheme'" class="toggle">Add New Scheme</mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('approveAgent')" [checked]="tab === 'approveAgent'" class="toggle">Approve Agents</mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('allPlans')" checked="true" class="toggle">
+                Browse plans
+            </mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('agent')" [checked]="tab === 'agent'" class="toggle">
+                Browse Agents
+            </mat-button-toggle>
+            <mat-button-toggle *ngIf="showAdminTabs['plan']" (click)="tabSwitch('plan')" [checked]="tab === 'plan'" class="toggle">
+                Add New Plan
+            </mat-button-toggle>
+            <mat-button-toggle *ngIf="showAdminTabs['scheme']" (click)="tabSwitch('scheme')" [checked]="tab === 'scheme'" class="toggle">
+                Add New Scheme
+            </mat-button-toggle>
+            <mat-button-toggle *ngIf="showAdminTabs['policy']" (click)="tabSwitch('policy')" class="toggle">
+                Approve Policies
+            </mat-button-toggle>
+            <mat-button-toggle (click)="tabSwitch('approveAgent')" [checked]="tab === 'approveAgent'" class="toggle">
+                Approve Agents
+            </mat-button-toggle>
         </mat-button-toggle-group>
-
+        
         <div *ngIf="tab === 'allPlans'" class="plans">
             <div class="plan" *ngFor="let plan of plans">
                 <p>Plan Name: {{ plan.planName }}</p>
@@ -164,8 +177,12 @@
             </div>
         </div>
     </div>
+</div>
+
+
+    <!-- </div>
 
     <div class="footer">
 
     </div>
-</div>
+</div> -->

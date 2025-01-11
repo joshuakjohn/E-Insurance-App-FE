@@ -22,6 +22,8 @@ export class AdminDashboardComponent {
   pendingPolicies: any[] = [];
   pendingAgents: any[] = [];
 
+  showAdminTabs: { [key: string]: boolean } = { plan: false, scheme: false, policy: false };
+
   adminEmail: string = '';
   adminUsername: string = '';
 
@@ -45,6 +47,11 @@ export class AdminDashboardComponent {
     this.tabSwitch('allPlans');
   }
 
+  revealTabs(tabName: string): void {
+    this.showAdminTabs[tabName] = true;
+    this.tabSwitch(tabName);
+  }
+  
   tabSwitch(input: string) {
     this.tab = input;
   

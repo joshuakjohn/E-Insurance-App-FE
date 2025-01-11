@@ -8,10 +8,9 @@
 </div>
 
 <mat-menu #menu="matMenu">
-    <div class="account_menu">
-        <span>Hi, {{ employeeUsername }}!</span>
-        <span>{{ employeeEmail }}</span>
-        <button [matMenuTriggerFor]="menu" style="background-color: rgb(223, 223, 223); margin: 20px;" (click)="logout()" mat-button>Logout</button>
+    <span style="margin: 16px 16px 16px 16px;">Hi, {{ employeeUsername }}!</span><br>
+    <div style="margin-top: 10px;">
+        <button class="default-button" mat-menu-item (click)=logout()>Logout</button>
     </div>
 </mat-menu>
 
