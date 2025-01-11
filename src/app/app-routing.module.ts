@@ -12,12 +12,20 @@ import { CustomerDashboardComponent } from './components/customer-dashboard/cust
 import { ProfileComponent } from './components/profile/profile.component';
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   {
     path: '',
     redirectTo: '/dashboard/plans',
     pathMatch: 'full', 
+  },
+  { path: 'contact', 
+    component: ContactComponent 
+  },
+  { path: 'about', 
+    component: AboutComponent 
   },
   {
     path: 'customerdashboard', 
