@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/services/http-services/http.service';
 import { HttpHeaders } from '@angular/common/http';
-import { ChangeDetectorRef } from '@angular/core';  // Added for cdr.detectChanges()
-import { Location } from '@angular/common';  // Import Location for navigation
+import { ChangeDetectorRef } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-pending-payment-policies',
@@ -12,16 +12,14 @@ import { Location } from '@angular/common';  // Import Location for navigation
 export class PendingPaymentPoliciesComponent implements OnInit {
   authToken: string | null = '';
   headers: HttpHeaders;
-  allPolicies: any[] = [];  // Store all policies
-  pendingPolicies: any[] = [];  // Store pending policies after filtering
+  allPolicies: any[] = [];
+  pendingPolicies: any[] = [];
   errorMessage: string = '';
   isLoading: boolean = false;
-
-  // New properties for overlay and button states
   isPaymentDisabled: boolean = false;
-  isOverlayVisible: boolean = false; // Fix: define isOverlayVisible
-  selectedPolicy: any;  // Fix: initialize selectedPolicy
-  customerData: any;  // Fix: initialize customerData
+  isOverlayVisible: boolean = false;
+  selectedPolicy: any;
+  customerData: any;
 
   constructor(private httpService: HttpService, private cdr: ChangeDetectorRef, private location: Location) {
     this.authToken = localStorage.getItem('authToken');
@@ -33,7 +31,7 @@ export class PendingPaymentPoliciesComponent implements OnInit {
   ngOnInit(): void {
     if (this.authToken) {
       this.fetchAllPolicies();
-      this.fetchCustomerDetails();  // Fetch customer details when component initializes
+      this.fetchCustomerDetails();
     } else {
       this.errorMessage = 'Authorization token is missing.';
     }
@@ -47,12 +45,11 @@ export class PendingPaymentPoliciesComponent implements OnInit {
       return;
     }
 
-    // Fetch all policies from the existing endpoint
     this.httpService.getApiCall('/api/v1/policy', this.headers).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          this.allPolicies = res.data;  // Store all policies
-          this.filterPendingPolicies();  // Filter pending policies
+          this.allPolicies = res.data;
+          this.filterPendingPolicies();
         } else {
           this.errorMessage = 'Unable to fetch policy details.';
         }
@@ -67,12 +64,10 @@ export class PendingPaymentPoliciesComponent implements OnInit {
   }
 
   filterPendingPolicies(): void {
-    // Filter policies based on premium due date and premium paid less than the duration
     this.pendingPolicies = this.allPolicies.filter(policy => {
-      return this.isPremiumDue(policy.createdAt, policy.premiumPaid, policy.duration);
+      return policy.status === 'Active' && this.isPremiumDue(policy.updatedAt, policy.premiumPaid, policy.duration);
     });
   }
-  
 
   fetchCustomerDetails(): void {
     if (!this.headers.has('Authorization')) {
@@ -93,88 +88,92 @@ export class PendingPaymentPoliciesComponent implements OnInit {
   }
 
   onGoBack(): void {
-    this.location.back();  // Use the Location service to navigate back
+    this.location.back();
   }
 
-  getOtherPolicies(): any[] {
-    // Return policies that are NOT 'Pending'
-    return this.allPolicies.filter(policy => policy.status !== 'Pending');
-  }
-
- isPremiumDue(createdAt: Date, premiumPaid: number, duration: number): boolean {
-    // Step 1: Validate premiumPaid and duration
+  isPremiumDue(nextPremiumDue: Date, premiumPaid: number, duration: number): boolean {
     if (premiumPaid <= 0 || duration <= 0) {
       console.error('Invalid premiumPaid or duration value');
       return false;
     }
   
-    // Step 2: Validate the createdAt date
-    const startDate = new Date(createdAt);
-    if (isNaN(startDate.getTime())) {
-      console.error('Invalid createdAt date');
+    const nextDueDate = new Date(nextPremiumDue);
+    nextDueDate.setDate(nextDueDate.getDate() + 30); 
+    if (isNaN(nextDueDate.getTime())) {
+      console.error('Invalid nextPremiumDue date');
       return false;
     }
   
-    // Step 3: Calculate the difference in months from the createdAt date to the current date
-    const currentDate = new Date();
-    const diffTime = currentDate.getTime() - startDate.getTime(); // Time difference in milliseconds
-    const diffMonths = diffTime / (1000 * 60 * 60 * 24 * 30); // Convert milliseconds to months (approx. 30 days per month)
+    const currentDate = new Date(); // Corrected here
+    const diffTime = currentDate.getTime() - nextDueDate.getTime();
+    const diffMonths = diffTime / (1000 * 60 * 60 * 24 * 30); // Convert milliseconds to months
   
-    // Step 4: Calculate the expected premium for the elapsed months
-    const expectedPremiumPerMonth = 100;  // Example premium per month, adjust as needed
+    const expectedPremiumPerMonth = premiumPaid * 1;
     const expectedPremium = diffMonths * expectedPremiumPerMonth;
   
-    // Step 5: Check if the premium is due (paid less than expected)
-    const premiumDue = premiumPaid < expectedPremium;
-  
-    // Step 6: Check if the policy duration has been exceeded
-    const durationExceeded = diffMonths >= duration;
-  
-    // Step 7: Return true if both conditions are met
-    return premiumDue && !durationExceeded;
+    return premiumPaid < expectedPremium && diffMonths > 0;
   }
   
-  // Method to close overlay
+
   closeOverlay(): void {
     this.isOverlayVisible = false;
   }
 
-  // Method to proceed with payment
   proceedWithPayment(): void {
-    // Implement payment logic here
     console.log('Payment proceeding...');
   }
 
-  payPremium(policy: any): void {
+  payPremium(policy: any, monthsToPay: number): void {
     const paymentData = {
       policyId: policy._id,
       agentId: this.customerData?.agentId,
-      paymentAmount: policy.premiumAmount,
+      paymentAmount: policy.premiumAmount * monthsToPay,
     };
   
     this.httpService.postApiCall('/api/v1/customer/paypremium/', paymentData, this.headers).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          // Remove the paid policy from the pending list
+          // Step 1: Take the updatedAt from the response
+          const nextPayment = new Date(res.data.paymentDate);
+          this.updateNextDueDate(policy, nextPayment);
+  
+          // Step 2: Remove the paid policy from pendingPolicies
           this.pendingPolicies = this.pendingPolicies.filter(p => p._id !== policy._id);
   
-          // Refresh the policies if needed
-          this.fetchAllPolicies();
-  
-          // Close the overlay and update the UI
-          this.closeOverlay();
+          // Step 3: Manually trigger change detection
           this.cdr.detectChanges();
+  
+          // Step 4: Optionally, re-filter pending policies in case any changes were missed
+          this.filterPendingPolicies();
+  
+          // Step 5: Close the overlay
+          this.closeOverlay();
         }
       },
-      error: () => {
-       
+      error: (err) => {
+        console.error('Error during payment:', err);
       },
     });
   }
   
 
+  updateNextDueDate(policy: any, updatedAt: Date): void {
+    const currentDate = new Date();
+
+    let updatedDueDate = new Date(updatedAt);
+
+    // Add the policy duration (in months) to the updated date
+    updatedDueDate.setMonth(updatedDueDate.getMonth() + policy.duration);
+
+    // Now update the policy with the new nextDueDate and updatedAt
+    const updateData = {
+      nextPremiumDue: updatedDueDate,
+      updatedAt: currentDate, 
+    };
+    }
+
   showOverlay(policy: any): void {
-    this.selectedPolicy = policy; 
+    this.selectedPolicy = policy;
     this.isOverlayVisible = true;
   }
 }

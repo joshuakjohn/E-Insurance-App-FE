@@ -70,8 +70,8 @@
         <h3>Pay Premium for {{ selectedPolicy?.policyName }}</h3>
         <p>Premium Amount: {{ selectedPolicy?.premiumAmount | currency: 'INR' }}</p>
         <div class="popup-button">
-          <button (click)="payPremium(selectedPolicy)" class="overlay-button">Proceed Payment</button>
-          <button (click)="closeOverlay()" class="overlay-buttons">Cancel</button>
+            <button (click)="payPremium(selectedPolicy, selectedPolicy.pendingPremium)" class="overlay-button">Proceed Payment</button>
+            <button (click)="closeOverlay()" class="overlay-buttons">Cancel</button>
         </div>
       </div>
     </div>
