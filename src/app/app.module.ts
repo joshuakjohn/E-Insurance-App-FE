@@ -11,7 +11,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core'; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,6 +34,8 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { AgentRegistrationComponent } from './components/login-and-signup/agent-registration/agent-registration.component';
 import { AuthInterceptor } from './services/interceptor/auth.interceptor';
+import { AboutComponent } from './components/about/about.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,9 @@ import { AuthInterceptor } from './services/interceptor/auth.interceptor';
     ProfileComponent,
     AdminDashboardComponent,
     AdminLoginComponent,
-    AgentRegistrationComponent
+    AgentRegistrationComponent,
+    AboutComponent,
+    ContactComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +73,9 @@ import { AuthInterceptor } from './services/interceptor/auth.interceptor';
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [  {
     provide: HTTP_INTERCEPTORS,
