@@ -26,3 +26,17 @@ button:active{
 	display: flex;
 	gap: 5px;
 }
+
+.form-container{
+    display: flex;
+}
+
+.overlay {
+	background: linear-gradient(to right, #557fba, #214c87);
+	color: #FFFFFF;
+	height: 100%;
+    width: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
