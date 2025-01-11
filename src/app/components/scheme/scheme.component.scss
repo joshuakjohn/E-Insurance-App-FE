@@ -14,47 +14,54 @@
   word-wrap: break-word;
   border: 0.5px solid #d4d6d3;
   height: auto;
+  transition: all 0.3s ease;
 }
 
 .details {
   overflow: hidden;
-  transition: height .2s ease, margin-top .2s ease;
+  transition: height 0.2s ease, margin-top 0.2s ease;
   height: 0; /* Initial hidden state */
 }
 
 h1 {
   color: #214c87;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
 }
 
 p {
   text-align: justify;
   text-justify: inter-word;
+  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
-button{
+button {
   height: 40px;
   width: 100px;
   border-radius: 30px;
   background-color: transparent;
   color: rgb(0, 0, 0);
   border: 1px solid #214c87;
-
   margin-top: 10px;
+  font-size: 1rem;
 }
 
-button:hover{
-  transition: background-color ease .5s;
+button:hover {
+  transition: background-color ease 0.5s;
   background-color: #557fba;
 }
+
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100px;
 }
+
 .search-bar {
   width: 100%;
-  max-width: 500px; /* Optional: set a max width */
+  max-width: 500px;
   padding: 10px 15px;
   border-radius: 25px;
   border: 1px solid #214c87;
@@ -73,27 +80,70 @@ button:hover{
   color: #b0b0b0;
   font-style: italic;
 }
-.scheme-header{
+
+.scheme-header {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
+
 .filter-icon {
   cursor: pointer;
   font-size: 24px;
-  color: #555; 
+  color: #555;
   padding: 10px;
 }
- ::ng-deep .mat-mdc-menu-content{
+
+::ng-deep .mat-mdc-menu-content {
   display: flex;
   flex-direction: column;
   padding: 10px;
   padding-left: 3px;
 }
-.filter-button{
-border: none;
-font-size: 16px;
- margin-left: 5px;
+
+.filter-button {
+  border: none;
+  font-size: 16px;
+  margin-left: 5px;
 }
-.filter-button:hover{
-  background-color:#ccc;
+
+.filter-button:hover {
+  background-color: #ccc;
   border-radius: 2px;
+}
+
+/* Navigation styles */
+.navigation-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.navigation-link {
+  color: #214c87;
+  text-decoration: none;
+  font-size: 1rem;
+  margin-right: 10px;
+}
+
+.navigation-link:hover {
+  text-decoration: underline;
+}
+
+.navigation-item span {
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .scheme-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
 }

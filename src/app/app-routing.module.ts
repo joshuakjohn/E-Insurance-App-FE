@@ -14,6 +14,8 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
+import { PendingPaymentPoliciesComponent } from './components/pending-payment-policies/pending-payment-policies.component';
 
 const routes: Routes = [
   {
@@ -37,6 +39,10 @@ const routes: Routes = [
       },
       {path:'profile',
         component:ProfileComponent
+      },
+      {
+        path:'pendingpayment',
+        component:PendingPaymentPoliciesComponent
       }
 
     ]
@@ -67,6 +73,23 @@ const routes: Routes = [
           { path: 'browse-agents', component: AdminDashboardComponent }, 
           { path: 'pending-policies', component: AdminDashboardComponent }, 
           { path: 'approve-agents', component: AdminDashboardComponent }
+        ]
+      },
+    ]
+  },
+  {
+    path: 'employee',
+    children: [
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'login', component: AdminLoginComponent },
+      { 
+        path: 'dashboard', 
+        component: EmployeeDashboardComponent,
+        children: [
+          { path: '', redirectTo: 'browse-plans', pathMatch: 'full' }, // Default tab route
+          { path: 'browse-plans', component: EmployeeDashboardComponent}, 
+          { path: 'browse-agents', component: EmployeeDashboardComponent }, 
+          { path: 'approve-agents', component: EmployeeDashboardComponent }
         ]
       },
     ]

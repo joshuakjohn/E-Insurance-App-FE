@@ -13,7 +13,14 @@
       </mat-button-toggle>
     </mat-button-toggle-group>
 </div>
-  
+<div *ngIf="isLoading" class="no-policies">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!isLoading && filteredPolicies.length === 0" class="no-policies">
+  <p>No Policies are found.</p>
+</div>
+
   <div class="policy-container">
     <div *ngFor="let policy of filteredPolicies" class="policy-card">
       <!-- Header Section -->
@@ -54,24 +61,8 @@
         <h3>Benefits</h3>
         <p>{{ policy.description }}</p>
       </div>
-  
-      <div *ngIf="policy.status==='Active'" class="pay-button">
-        <button [disabled]="!isPremiumDue(policy.createdAt, policy.premiumPaid)" (click)="showOverlay(policy)">Pay Premium</button>
-      </div>
     </div>
   </div>
   
-  <!-- Pay Premium Overlay -->
-  <div *ngIf="isOverlayVisible" class="overlay">
-    <div class="overlay-content">
-      <h2>Pay Premium</h2>
-      <div>
-        <h3>Policy Name: {{ selectedPolicy?.policyName }}</h3>
-        <p>Premium Amount: {{ selectedPolicy?.premiumAmount | currency }}</p>
-      </div>
-      <div class="overlay-actions">
-        <button (click)="closeOverlay()">Close</button>
-        <button (click)="payPremium(selectedPolicy)">Pay Now</button>
-      </div>
-    </div>
-  </div>  
+
+ 

@@ -221,5 +221,10 @@ filter(sortOrder: 'asc' | 'desc' = 'asc') {
     }
 
   }
+  handleSchemeClick(){
+    console.log(this.selectedScheme)
+  }
+
+ 
 
 }

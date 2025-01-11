@@ -15,37 +15,39 @@ export class AdminLoginComponent {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
+      signin_role: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  // Convenience getter for easy access to form fields
-  get loginFormControls() { return this.loginForm.controls; }
+  get loginFormControls() {
+    return this.loginForm.controls;
+  }
 
   handleLogin() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
+      const { signin_role, email, password } = this.loginForm.value;
+      const role_lower = signin_role.toLowerCase();
 
-      this.httpService.postApiCall('/api/v1/admin', { email, password }).subscribe({
-        next: (res:any) => {
+      this.httpService.postApiCall(`/api/v1/${role_lower}`, { email, password }).subscribe({
+        next: (res: any) => {
+          console.log('Login successful:', res);
           localStorage.setItem('authToken', res.token);
           localStorage.setItem('username', res.username);
           localStorage.setItem('email', res.email);
-          this.router.navigate(['/admin/dashboard']);
+          localStorage.setItem('role', role_lower);
+
+          if (role_lower === 'admin') {
+            this.router.navigate(['/admin/dashboard']);
+          } else if (role_lower === 'employee') {
+            this.router.navigate(['/employee/dashboard']);
+          }
         },
         error: (err) => {
-          console.error(err);
+          console.error('Login error:', err);
         }
       });
     }
   }
-}
-
-interface LoginResponse {
-  code: number;
-  token: string;
-  email: string;
-  username: string; 
-  message: string;
 }

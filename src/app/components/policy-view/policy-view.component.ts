@@ -16,9 +16,8 @@ export class PolicyViewComponent implements OnInit {
   authToken: string | null = '';
   headers: HttpHeaders;
   activeTab: string = 'active';
-  isOverlayVisible: boolean = false;
   selectedPolicy: any = null;
-  customerData: any;
+  isLoading: boolean = false;
   tabs = [
     { key: 'active', label: 'Active' },
     { key: 'pending', label: 'Pending' }
@@ -42,10 +41,10 @@ export class PolicyViewComponent implements OnInit {
     } else {
       this.errorMessage = 'Authorization token is missing.';
     }
-    this.fetchCustomerDetails();
   }
 
   fetchPolicyDetails(): void {
+    this.isLoading = true;
     if (!this.authToken) {
       this.errorMessage = 'Authorization token is missing.';
       return;
@@ -54,6 +53,8 @@ export class PolicyViewComponent implements OnInit {
       next: (res: any) => {
         if (res.code === 200) {
           this.policyDetails = res.data;
+          this.isLoading = false;
+         
         } else {
           this.errorMessage = 'Unable to fetch policy details.';
         }
@@ -61,24 +62,7 @@ export class PolicyViewComponent implements OnInit {
       error: (err: any) => {
         this.errorMessage = 'An error occurred while fetching policy details.';
         console.error('Error fetching policy:', err);
-      }
-    });
-  }
-
-  fetchCustomerDetails(): void {
-    if (!this.headers.has('Authorization')) {
-      console.error('Authorization token is missing');
-      return;
-    }
-
-    this.httpService.getApiCall('/api/v1/customer/getcustomer', this.headers).subscribe({
-      next: (res: any) => {
-        if (res.code === 200) {
-          this.customerData = res.data;
-        }
-      },
-      error: (err: any) => {
-        console.error('Error fetching customer details:', err);
+        this.isLoading = false;
       }
     });
   }
@@ -98,50 +82,6 @@ export class PolicyViewComponent implements OnInit {
 
   switchTab(tab: string) {
     this.activeTab = tab;
-  }
-
-  isPremiumDue(createdAt: Date, premiumPaid: number): boolean {
-    const startDate = new Date(createdAt)
-    const currentDate = new Date()
-    const diffTime = currentDate.getTime() - startDate.getTime();
-    const diffDays = diffTime / (1000 * 60 * 60 * 24); // Total days
-    const approxMonths = diffDays / 30.436875; // Average days in a month (365.25/12)   
-     
-    return approxMonths>premiumPaid;
-  }
-
-  showOverlay(policy: any): void {
-    this.selectedPolicy = policy;
-    this.isOverlayVisible = true;
-  }
-
-  closeOverlay(): void {
-    this.isOverlayVisible = false;
-  }
-
-  payPremium(policy: any): void {
-    const data = {
-      policyId: policy._id,
-      agentId: this.customerData.agentId,
-      paymentAmount: policy.premiumAmount
-    };
-
-    this.httpService.postApiCall('/api/v1/customer/paypremium/', data, this.headers).subscribe({
-      next: (res: any) => {
-        if (res.code === 200) {
-          this.fetchPolicyDetails();
-  
-          setTimeout(() => this.cdr.detectChanges(), 0);
-          this.closeOverlay();
-          policy.lastPaymentDate = new Date().toISOString();
-        } else {
-          console.error('Payment failed:', res.message);
-        }
-      },
-      error: (err: any) => {
-        console.error('Error making payment:', err);
-      }
-    });
   }
 
   setActiveTab(tabKey: string): void {

@@ -36,6 +36,8 @@ import { AgentRegistrationComponent } from './components/login-and-signup/agent-
 import { AuthInterceptor } from './services/interceptor/auth.interceptor';
 import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
+import { PendingPaymentPoliciesComponent } from './components/pending-payment-policies/pending-payment-policies.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,9 @@ import { ContactComponent } from './components/contact/contact.component';
     AdminLoginComponent,
     AgentRegistrationComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    EmployeeDashboardComponent,
+    PendingPaymentPoliciesComponent,
   ],
   imports: [
     BrowserModule,

@@ -15,9 +15,9 @@ export class CustomerDashboardComponent implements OnInit {
   email: string | null;
 
   tabs = [
-    { key: 'policies', label: 'Policies' },
     { key: 'profile', label: 'Profile' },
-    { key: 'reports', label: 'Reports' },
+    { key: 'policies', label: 'Policies' },
+    { key: 'paymentpendingpolices', label: 'Pending Payments' }
   ];
 
   constructor(
@@ -54,8 +54,8 @@ export class CustomerDashboardComponent implements OnInit {
       this.activeTab = 'profile';
     } else if (url.includes('/customerdashboard/policy')) {
       this.activeTab = 'policies';
-    } else if (url.includes('/customerdashboard/reports')) {
-      this.activeTab = 'reports';
+    } else if (url.includes('/customerdashboard/pendingpayment')) {
+      this.activeTab = 'paymentpendingpolices';
     } else {
       this.activeTab = 'policies'; // Fallback to default tab
     }
@@ -73,8 +73,8 @@ export class CustomerDashboardComponent implements OnInit {
       this.goToProfile();
     } else if (tab === 'policies') {
       this.router.navigate(['/customerdashboard/policy']);
-    } else if (tab === 'reports') {
-      this.router.navigate(['/customerdashboard/reports']);
+    } else if (tab === 'paymentpendingpolices') {
+      this.router.navigate(['/customerdashboard/pendingpayment']);
     }
   }
 
