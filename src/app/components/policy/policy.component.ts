@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { lastValueFrom } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-policy',
@@ -30,11 +31,11 @@ export class PolicyComponent {
     ageproof: null,
     incomeproof: null
   };
+  policyForm!: FormGroup
 
   constructor(
     private httpService: HttpService,
-
-  ) {
+    public formBuilder: FormBuilder) {
     const authToken = localStorage.getItem('authToken');
     this.headers = authToken
       ? new HttpHeaders().set('Authorization', `Bearer ${authToken}`)
@@ -43,6 +44,26 @@ export class PolicyComponent {
       console.error('Authorization token is missing');
     }
   }
+
+  ngOnInit(){
+    this.policyForm = this.formBuilder.group({
+      fullname: ['', [Validators.required]],
+      address: ['', [Validators.required]],
+      dob: ['', [Validators.required]],
+      gender: ['', [Validators.required]],
+      income: ['', [Validators.required]],
+      education: ['', [Validators.required]],
+      incomeproof: ['', [Validators.required]],
+      ageproof: ['', [Validators.required]],
+      idproof: ['', [Validators.required]],
+      incomeproofupload: ['', [Validators.required]],
+      ageproofupload: ['', [Validators.required]],
+      idproofupload: ['', [Validators.required]],
+      photoupload: ['', [Validators.required]]
+    })
+  }
+
+  get policyFormControls() { return this.policyForm.controls; }
 
   async fetchCustomerDetails(): Promise<void> {
     try {
