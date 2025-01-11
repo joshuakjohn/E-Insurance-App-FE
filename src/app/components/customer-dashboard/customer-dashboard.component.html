@@ -8,16 +8,11 @@
   </div>
 </div>
 <mat-menu #menu="matMenu">
-  <div class="account-menu">
-    <span>{{ email }}</span>
-    <img src="../../../assets/pngegg.png"alt="User Avatar" width="100px" height="100px" style="padding: 20px;"/>
-    <span>Hi, {{ username }}!</span>
-    <button mat-raised-button color="warn"style="background-color: rgb(223, 223, 223); margin: 20px;"(click)="logout()">
-      Logout
-    </button>
+  <span style="margin: 16px 16px 16px 16px;">Hi, {{username}}!</span>
+  <div style="margin-top: 10px;">
+      <button class="default-button" mat-menu-item (click)=logout()>Logout</button>
   </div>
 </mat-menu>
-
 <div class="customer-dashboard">
   <div class="welcome">
     <h1>Welcome, {{ username }}!</h1>
