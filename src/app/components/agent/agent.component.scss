@@ -322,10 +322,10 @@ button:active{
     margin: 30px 40px;
 }
 .default-button{
-    display: flex    ;
-      flex-direction: column;
-        border: none;
-        justify-content: center;
-        align-items: center;
-        margin-left: 12px;
+    height: 40px;
+    width: 100px;
+    border-radius: 30px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    border: 1px solid #214c87;
 }

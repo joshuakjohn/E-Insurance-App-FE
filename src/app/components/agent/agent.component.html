@@ -9,9 +9,11 @@
 </div>
 
 <mat-menu #menu="matMenu">
-    <span style="margin: 16px 16px 16px 16px;">Hi, {{username}}!</span>
+    <span style="margin: 0px 16px;">Hi, {{username}}!</span>
     <div style="margin-top: 10px;">
-        <button class="default-button" mat-menu-item (click)=logout()>Logout</button>
+        <button class="default-button" mat-menu-item (click)=logout()>
+            <mat-icon>logout</mat-icon>
+            Logout</button>
     </div>
   </mat-menu>
 
