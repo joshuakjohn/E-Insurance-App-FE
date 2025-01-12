@@ -6,6 +6,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PROFILE_ICON } from 'src/assets/svg-icons';
 import { Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 
 
 @Component({
@@ -29,7 +30,9 @@ export class AgentComponent {
   isEditing: boolean = false;
 
   currentPage: number = 1;
+  pendingCurrentPage: number = 1;
   totalPages: number = 1;
+  pendingTotalPages: number = 1;
   limit: number = 3;
   customerLoader:string = 'flex' 
   pendingPoliciesLoader = 'flex'
@@ -107,20 +110,14 @@ export class AgentComponent {
       this.tab = 'profile'
   }
 
-
   fetchAgentPolicies(): void {    
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);  
     const params = { page: this.currentPage.toString(), limit: this.limit.toString() };
    
     this.httpService.getApiCall(`/api/v1/policy/agent`, header, params).subscribe({
       next: (res: any) => {
-        this.agentPolices = res.data 
-        this.totalPages = res.totalPages;
-        this.pendingPolicies = this.agentPolices.filter((policy: any) => {
-          if(policy.status === 'submitted')
-            return true
-          return false
-        })
+        this.pendingPolicies = res.data 
+        this.pendingTotalPages = res.totalPages;
         this.pendingPolicies.map(policy => {
           const customer = this.customers.find(customer => {
             return customer._id === policy.customerId
@@ -128,6 +125,7 @@ export class AgentComponent {
           policy.customerName = customer.username
           policy.customerEmail = customer.email
         })
+        
         this.pendingPoliciesLoader = 'none'
       },
       error: (err: any) => {
@@ -137,17 +135,22 @@ export class AgentComponent {
     });
   }
 
-  viewCustomerPolicies(id: number){
-      this.customerPolicies = this.agentPolices.filter((policy: any) => {        
-        if(policy.customerId === id)
-          return true
-        return false
-      })
-      if(this.customerPolicies.length === 0)
+  async viewCustomerPolicies(id: number){
+    if(this.extendedCard !== id){
+      try {
+        const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);  
+        const response: any = await lastValueFrom(
+          this.httpService.getApiCall(`/api/v1/policy/${id}/getall/agent`, header)
+        );
+        this.customerPolicies = response.data;
+        this.height = this.customerPolicies.length*390+'px' 
+      } catch (error) {
+        this.customerPolicies = []
         this.height = 50+'px'
-      else
-      this.height = this.customerPolicies.length*390+'px'      
-      this.extendedCard = this.extendedCard === id ? null : id; 
+        console.error('Error fetching plans:', error);
+      }
+    }     
+    this.extendedCard = this.extendedCard === id ? null : id; 
   }
 
   forwardButton(policyId: string){
@@ -255,15 +258,15 @@ export class AgentComponent {
   }
 
   prevPage2(): void {
-    if (this.currentPage > 1) {
-        this.currentPage--;
+    if (this.pendingCurrentPage > 1) {
+        this.pendingCurrentPage--;
         this.fetchAgentPolicies();
     }
   }
 
   nextPage2(): void {
-    if (this.currentPage < this.totalPages) {
-        this.currentPage++;
+    if (this.pendingCurrentPage < this.totalPages) {
+        this.pendingCurrentPage++;
         this.fetchAgentPolicies();
     }
   }
