@@ -62,10 +62,9 @@ button:active{
     background-color: #ecf2ff !important;
   }
   .default-button{
-  display: flex ;
-        flex-direction: column;
-        border: none;
-        justify-content: center;
-        align-items: center;
-        margin-left: 12px;
-  }
+    height: 40px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+   border: none;
+   width: 100%;
+}
