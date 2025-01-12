@@ -1,118 +1,157 @@
 <div class="main" id="policy-form">
   <div class="policy-form">
-    <h1>Policy Application</h1>
-    <h2>Applicant details</h2>
-    <div class="horizontal">
-      <mat-form-field appearance="outline">
-        <mat-label>Full name</mat-label>
-        <input matInput id="fullName">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Address</mat-label>
-        <input matInput id="address">
-      </mat-form-field>
-    </div>
-    
-    <div class="horizontal">
-      <mat-form-field appearance="outline">
-        <mat-label>Date of Birth</mat-label>
-        <input matInput id="dob">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Gender</mat-label>
-        <input matInput id="gender">
-      </mat-form-field>
-    </div>
-    
-    <div class="horizontal">
-      <mat-form-field appearance="outline">
-        <mat-label>Annual Income</mat-label>
-        <input matInput id="income">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Educational Qualification</mat-label>
-        <input matInput id="education">
-      </mat-form-field>
-    </div>
-    
-
-    <h2>Nominee details</h2>
-    <div class="horizontal">
-      <mat-form-field appearance="outline">
-        <mat-label>Nominee name</mat-label>
-        <input matInput id="nomineename">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Nominee Realation</mat-label>
-        <input matInput id="nomineerel">
-      </mat-form-field>
-    </div>
-    
-    <div class="horizontal">
-      <mat-form-field appearance="outline">
-        <mat-label>Nominee Address</mat-label>
-        <input matInput id="nomineeadd">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Nominee contact number</mat-label>
-        <input matInput id="nomineecon">
-      </mat-form-field>
-    </div>
-    
-
-    <h2>Documents</h2>
-
-    <div style="display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 20px;">
-
+    <form action="" [formGroup]="policyForm">
+      <h1>Policy Application</h1>
+      <h2>Applicant details</h2>
       <div class="horizontal">
+        <mat-form-field appearance="outline">
+          <mat-label>Full name</mat-label>
+          <input matInput id="fullName" formControlName="fullname">
+          <mat-error *ngIf="policyFormControls['fullname']['errors']?.['required']">This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <input matInput id="address" formControlName="address">
+          <mat-error *ngIf="policyFormControls['address']['errors']?.['required']">This field is required</mat-error>
+        </mat-form-field>
+      </div>
       
-        <div>
-          <h4>Income proof</h4>
-          <mat-form-field appearance="outline">
-            <mat-label>Document type</mat-label>
-            <input matInput id="incomeproof">
-          </mat-form-field>
-          <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'incomeproof')">
-        </div>
-  
-        <div>
-          <h4>Identity proof</h4>
-          <mat-form-field appearance="outline">
-            <mat-label>Document type</mat-label>
-            <input matInput id="idproof">
-          </mat-form-field>
-          <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'idproof')">
-        </div>
-  
-      </div>
-  
       <div class="horizontal">
-        <div>
-          <h4>Age proof</h4>
-          <mat-form-field appearance="outline">
-            <mat-label>Document type</mat-label>
-            <input matInput id="ageproof">
-          </mat-form-field>
-          <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'ageproof')">
-        </div>
-  
-        <div>
-          <h4>Photograph</h4>
-          <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'photograph')">
-        </div>
-        
+        <mat-form-field appearance="outline">
+          <mat-label>Date of Birth</mat-label>
+          <input matInput [matDatepicker]="picker" id="dob" formControlName="dob">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="policyFormControls['dob']['errors']?.['required']">This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Gender</mat-label>
+          <mat-select formControlName="gender">
+            <mat-option value="Male">Male</mat-option>
+            <mat-option value="Female">Female</mat-option>
+            <mat-error *ngIf="policyFormControls['gender']['errors']?.['required']">This field is required</mat-error>
+          </mat-select>
+        </mat-form-field>
       </div>
+      
+      <div class="horizontal">
+        <mat-form-field appearance="outline">
+          <mat-label>Annual Income</mat-label>
+          <input matInput id="income" formControlName="income">
+          <mat-error *ngIf="policyFormControls['income']['errors']?.['required']">This field is required</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Educational Qualification</mat-label>
+          <mat-select formControlName="education">
+            <mat-option value="10th">10th</mat-option>
+            <mat-option value="PU">PU</mat-option>
+            <mat-option value="UG">UG</mat-option>
+            <mat-option value="PG">PG</mat-option>
+          </mat-select>
+          <mat-error *ngIf="policyFormControls['education']['errors']?.['required']">This field is required</mat-error>
+        </mat-form-field>
+      </div>
+      
 
-    </div>
+      <h2>Nominee details</h2>
+      <div class="horizontal">
+        <mat-form-field appearance="outline">
+          <mat-label>Nominee name</mat-label>
+          <input matInput id="nomineename">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nominee Realation</mat-label>
+          <input matInput id="nomineerel">
+        </mat-form-field>
+      </div>
+      
+      <div class="horizontal">
+        <mat-form-field appearance="outline">
+          <mat-label>Nominee Address</mat-label>
+          <input matInput id="nomineeadd">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nominee contact number</mat-label>
+          <input matInput id="nomineecon">
+        </mat-form-field>
+      </div>
+      
+
+      <h2>Documents</h2>
+
+      <div style="display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 20px;">
+
+        <div class="horizontal">
+        
+          <div>
+            <h4>Income proof</h4>
+            <mat-form-field appearance="outline">
+              <mat-label>Document type</mat-label>
+              <mat-select formControlName="incomeproof">
+                <mat-option value="Income certificate">Income certificate</mat-option>
+                <mat-option value="Salary certificate">Salary certificate</mat-option>
+                <mat-option value="Income tax return">Income tax return</mat-option>
+                <mat-option value="Bank statement">Bank statement</mat-option>
+              </mat-select>
+              <mat-error *ngIf="policyFormControls['incomeproof']['errors']?.['required']">This field is required</mat-error>
+            </mat-form-field>
+            <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'incomeproof')" formControlName="incomeproofupload">
+            <mat-error *ngIf="policyFormControls['incomeproofupload']['errors']?.['required']">*Document needs to be uploaded</mat-error>
+          </div>
     
-    <span>Your application will be sent to your agent for verification and further processing.</span>
+          <div>
+            <h4>Identity proof</h4>
+            <mat-form-field appearance="outline">
+              <mat-label>Document type</mat-label>
+              <mat-select formControlName="idproof">
+                <mat-option value="Aadhar">Aadhar</mat-option>
+                <mat-option value="Voter ID">Voter ID</mat-option>
+                <mat-option value="Drivers License">Drivers License</mat-option>
+                <mat-option value="PAN card">PAN card</mat-option>
+              </mat-select>
+              <mat-error *ngIf="policyFormControls['idproof']['errors']?.['required']">This field is required</mat-error>
+            </mat-form-field>
+            <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'idproof')" formControlName="idproofupload">
+            <mat-error *ngIf="policyFormControls['idproofupload']['errors']?.['required']">*Document needs to be uploaded</mat-error>
+          </div>
+    
+        </div>
+    
+        <div class="horizontal">
+          <div>
+            <h4>Age proof</h4>
+            <mat-form-field appearance="outline">
+              <mat-label>Document type</mat-label>
+              <mat-select formControlName="ageproof">
+                <mat-option value="Aadhar">Aadhar</mat-option>
+                <mat-option value="Voter ID">Voter ID</mat-option>
+                <mat-option value="Drivers License">Drivers License</mat-option>
+              </mat-select>
+              <mat-error *ngIf="policyFormControls['ageproof']['errors']?.['required']">This field is required</mat-error>
+            </mat-form-field>
+            <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'ageproof')" formControlName="ageproofupload">
+            <mat-error *ngIf="policyFormControls['ageproofupload']['errors']?.['required']">*Document needs to be uploaded</mat-error>
+          </div>
+    
+          <div>
+            <h4>Photograph</h4>
+            <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event, 'photograph')" formControlName="photoupload">
+            <mat-error *ngIf="policyFormControls['photoupload']['errors']?.['required']">*Document needs to be uploaded</mat-error>
+          </div>
+          
+        </div>
 
-    <div style="display: flex; justify-content: center; margin-top: 10px; gap: 30px">
-      <button (click)="policyApplication.emit('close')">Cancel</button>
-      <button (click)="onSubmitClick()">Submit</button>
-    </div>
+      </div>
+      
+      <span>Your application will be sent to your agent for verification and further processing.</span>
+
+      <div style="display: flex; justify-content: center; margin-top: 10px; gap: 30px">
+        <button (click)="policyApplication.emit('close')">Cancel</button>
+        <button (click)="onSubmitClick()">Submit</button>
+      </div>
+    </form>
   </div>
 </div>

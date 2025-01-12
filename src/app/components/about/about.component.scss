@@ -1,0 +1,165 @@
+/* General Reset */
+body, h1, h2, p, ul {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  body {
+    width: 100vw;
+    background-color: #f8faff;
+  }
+  
+  /* Header */
+  .header {
+    background-color: #ffffff; /* Light Blue */
+    color: white;
+    padding: 15px 0;
+  }
+  
+  .header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+  }
+  
+  .header .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .header .nav-links {
+    list-style: none;
+    display: flex;
+  }
+  
+  .header .nav-links li {
+    margin-left: 20px;
+  }
+  
+  .header .nav-links a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .header .nav-links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    background-color: #cad4e5; /* Lightest Blue */
+    text-align: center;
+    padding: 60px 20px;
+  }
+  
+  .hero-section h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #214c87;
+  }
+  
+  .hero-section p {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  /* Content Section */
+  .content-section {
+    background-color: white;
+    padding: 40px 20px;
+  }
+  
+  .content-section .container {
+    max-width: 1000px;
+    margin: auto;
+  }
+  
+  .content-section h2 {
+    color: #214c87;
+    margin-bottom: 15px;
+  }
+  
+  .content-section p {
+    margin-bottom: 20px;
+  }
+  
+  .benefits-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .benefits-list li {
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  /* CTA Section */
+  .cta-section {
+    background-color: #f1f4f9;
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .cta-section .cta-content {
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  .cta-section h2 {
+    margin-bottom: 20px;
+  }
+  
+  .cta-section .cta-button {
+    display: inline-block;
+    background-color: #fff;
+    color: #214c87;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+  
+  .cta-section .cta-button:hover {
+    background-color: #e1f5fe;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #f1f4f9;
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
+  }
+  
+  .footer p {
+    font-size: 14px;
+  }
+
+  button{
+    height: 40px;
+    width: 100px;
+    border-radius: 30px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    border: 1px solid #214c87;
+}
+
+button:hover{
+    transition: background-color ease .5s;
+    background-color: #557fba;
+}
+
+button:active{
+	transform: scale(0.95);
+}
+  
+  
