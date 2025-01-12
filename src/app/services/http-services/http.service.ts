@@ -28,7 +28,7 @@ export class HttpService {
     return this.http.get('http://localhost:4000'+ endpoint);
   }
 
-  getSearchScheme(endpoint:string,params:any){
+  getSearchFilterScheme(endpoint:string,params:any){
     return this.http.get('http://localhost:4000'+endpoint,params)
   }
 }
