@@ -112,7 +112,7 @@ export class AgentComponent {
 
   fetchAgentPolicies(): void {    
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);  
-    const params = { page: this.currentPage.toString(), limit: this.limit.toString() };
+    const params = { page: this.pendingCurrentPage.toString(), limit: this.limit.toString() };
    
     this.httpService.getApiCall(`/api/v1/policy/agent`, header, params).subscribe({
       next: (res: any) => {
