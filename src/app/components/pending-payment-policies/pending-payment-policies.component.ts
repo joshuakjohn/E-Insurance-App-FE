@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/services/http-services/http.service';
 import { HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
-import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-pending-payment-policies',
@@ -10,18 +9,21 @@ import { Location } from '@angular/common';
   styleUrls: ['./pending-payment-policies.component.scss']
 })
 export class PendingPaymentPoliciesComponent implements OnInit {
+  policyId!: string | null;
+  policyDetails: any[] = []; 
+  errorMessage: string = '';
   authToken: string | null = '';
   headers: HttpHeaders;
-  allPolicies: any[] = [];
-  pendingPolicies: any[] = [];
-  errorMessage: string = '';
-  isLoading: boolean = false;
-  isPaymentDisabled: boolean = false;
   isOverlayVisible: boolean = false;
-  selectedPolicy: any;
+  selectedPolicy: any = null;
   customerData: any;
+  isLoading: boolean = true;
 
-  constructor(private httpService: HttpService, private cdr: ChangeDetectorRef, private location: Location) {
+
+  constructor(
+    private httpService: HttpService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.authToken = localStorage.getItem('authToken');
     this.headers = this.authToken
       ? new HttpHeaders().set('Authorization', `Bearer ${this.authToken}`)
@@ -30,42 +32,32 @@ export class PendingPaymentPoliciesComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authToken) {
-      this.fetchAllPolicies();
-      this.fetchCustomerDetails();
+      this.fetchPolicyDetails();
     } else {
       this.errorMessage = 'Authorization token is missing.';
     }
+    this.fetchCustomerDetails()
   }
 
-  fetchAllPolicies(): void {
-    this.isLoading = true;
+  fetchPolicyDetails(): void {
     if (!this.authToken) {
       this.errorMessage = 'Authorization token is missing.';
-      this.isLoading = false;
       return;
     }
-
     this.httpService.getApiCall('/api/v1/policy', this.headers).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          this.allPolicies = res.data;
-          this.filterPendingPolicies();
+          this.policyDetails = res.data;
+          this.filterPolicies();
+          this.isLoading = false
         } else {
           this.errorMessage = 'Unable to fetch policy details.';
         }
-        this.isLoading = false;
       },
       error: (err: any) => {
         this.errorMessage = 'An error occurred while fetching policy details.';
-        console.error('Error fetching policies:', err);
-        this.isLoading = false;
+        console.error('Error fetching policy:', err);
       }
-    });
-  }
-
-  filterPendingPolicies(): void {
-    this.pendingPolicies = this.allPolicies.filter(policy => {
-      return policy.status === 'Active' && this.isPremiumDue(policy.updatedAt, policy.premiumPaid, policy.duration);
     });
   }
 
@@ -87,93 +79,57 @@ export class PendingPaymentPoliciesComponent implements OnInit {
     });
   }
 
-  onGoBack(): void {
-    this.location.back();
-  }
-
-  isPremiumDue(nextPremiumDue: Date, premiumPaid: number, duration: number): boolean {
-    if (premiumPaid <= 0 || duration <= 0) {
-      console.error('Invalid premiumPaid or duration value');
-      return false;
-    }
-  
-    const nextDueDate = new Date(nextPremiumDue);
-    nextDueDate.setDate(nextDueDate.getDate() + 30); 
-    if (isNaN(nextDueDate.getTime())) {
-      console.error('Invalid nextPremiumDue date');
-      return false;
-    }
-  
-    const currentDate = new Date(); // Corrected here
-    const diffTime = currentDate.getTime() - nextDueDate.getTime();
-    const diffMonths = diffTime / (1000 * 60 * 60 * 24 * 30); // Convert milliseconds to months
-  
-    const expectedPremiumPerMonth = premiumPaid * 1;
-    const expectedPremium = diffMonths * expectedPremiumPerMonth;
-  
-    return premiumPaid < expectedPremium && diffMonths > 0;
-  }
-  
-
-  closeOverlay(): void {
-    this.isOverlayVisible = false;
-  }
-
-  proceedWithPayment(): void {
-    console.log('Payment proceeding...');
-  }
-
-  payPremium(policy: any, monthsToPay: number): void {
-    const paymentData = {
-      policyId: policy._id,
-      agentId: this.customerData?.agentId,
-      paymentAmount: policy.premiumAmount * monthsToPay,
-    };
-  
-    this.httpService.postApiCall('/api/v1/customer/paypremium/', paymentData, this.headers).subscribe({
-      next: (res: any) => {
-        if (res.code === 200) {
-          // Step 1: Take the updatedAt from the response
-          const nextPayment = new Date(res.data.paymentDate);
-          this.updateNextDueDate(policy, nextPayment);
-  
-          // Step 2: Remove the paid policy from pendingPolicies
-          this.pendingPolicies = this.pendingPolicies.filter(p => p._id !== policy._id);
-  
-          // Step 3: Manually trigger change detection
-          this.cdr.detectChanges();
-  
-          // Step 4: Optionally, re-filter pending policies in case any changes were missed
-          this.filterPendingPolicies();
-  
-          // Step 5: Close the overlay
-          this.closeOverlay();
-        }
-      },
-      error: (err) => {
-        console.error('Error during payment:', err);
-      },
+  filterPolicies() {
+    this.policyDetails = this.policyDetails.filter(policy => {
+      return policy.status === 'Active' && this.isPremiumDue(policy.createdAt, policy.premiumPaid) 
     });
   }
-  
 
-  updateNextDueDate(policy: any, updatedAt: Date): void {
-    const currentDate = new Date();
-
-    let updatedDueDate = new Date(updatedAt);
-
-    // Add the policy duration (in months) to the updated date
-    updatedDueDate.setMonth(updatedDueDate.getMonth() + policy.duration);
-
-    // Now update the policy with the new nextDueDate and updatedAt
-    const updateData = {
-      nextPremiumDue: updatedDueDate,
-      updatedAt: currentDate, 
-    };
-    }
+  isPremiumDue(createdAt: Date, premiumPaid: number): boolean {
+    const startDate = new Date(createdAt)
+    const currentDate = new Date()
+    const diffTime = currentDate.getTime() - startDate.getTime();
+    const diffDays = diffTime / (1000 * 60 * 60 * 24); // Total days
+    const approxMonths = diffDays / 30.436875; // Average days in a month (365.25/12)   
+     
+    return approxMonths>premiumPaid;
+  }
 
   showOverlay(policy: any): void {
     this.selectedPolicy = policy;
     this.isOverlayVisible = true;
   }
+
+  closeOverlay(): void {
+    this.isOverlayVisible = false;
+  }
+
+  payPremium(policy: any): void {
+    const data = {
+      policyId: policy._id,
+      agentId: this.customerData.agentId,
+      paymentAmount: policy.premiumAmount
+    };
+
+    this.httpService.postApiCall('/api/v1/customer/paypremium/', data, this.headers).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.policyDetails.map(policy => {
+            if(policy.policyId === this.policyId){
+              policy.premiumPaid++;
+              policy.pendingPremium--;
+            }
+          })
+          this.closeOverlay()
+          this.filterPolicies()
+        } else {
+          console.error('Payment failed:', res.message);
+        }
+      },
+      error: (err: any) => {
+        console.error('Error making payment:', err);
+      }
+    });
+  }
+
 }

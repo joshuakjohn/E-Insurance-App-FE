@@ -6,9 +6,8 @@
   width: 100%;">
     <div  class="scheme-header">
       <div class="navigation-item">
-        <a routerLink="/dashboard/plans" class="navigation-link">Plan</a> / 
-        <span>{{ planDetails.planName }}</span> / 
-        <a (click)="handleSchemeClick()" class="navigation-link">Scheme</a> 
+        <a routerLink="/dashboard/plans" class="navigation-link">Plan</a>
+        <pre> / {{ planDetails.planName }}</pre> 
       </div>
      <span class="search-filter"> <input type="text"[(ngModel)]="searchQuery"(input)="onSearchChange()"(blur)="onSearchBlur()"placeholder="Search for schemes..."class="search-bar"/>
       <mat-icon [matMenuTriggerFor]="filterMenu" class="filter-icon">filter_list</mat-icon>

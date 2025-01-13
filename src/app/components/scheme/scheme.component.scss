@@ -32,7 +32,6 @@ h1 {
 p {
   text-align: justify;
   text-justify: inter-word;
-  font-size: 1rem;
   margin-bottom: 10px;
 }
 
@@ -44,7 +43,6 @@ button {
   color: rgb(0, 0, 0);
   border: 1px solid #214c87;
   margin-top: 10px;
-  font-size: 1rem;
 }
 
 button:hover {
@@ -68,8 +66,6 @@ button:hover {
   font-size: 16px;
   outline: none;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 20px;
-
 }
 
 .search-bar:focus {
@@ -118,14 +114,13 @@ button:hover {
 .navigation-item {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
 }
 
 .navigation-link {
   color: #214c87;
   text-decoration: none;
-  font-size: 1rem;
-  margin-right: 10px;
+  font-size: 1.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .navigation-link:hover {
@@ -151,4 +146,11 @@ button:hover {
 
 .search-filter{
   display: flex;
+  align-items: center;
+}
+
+pre{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #214c87;
+  font-size: 1.5rem;
 }

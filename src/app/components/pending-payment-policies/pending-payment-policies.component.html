@@ -1,84 +1,67 @@
-<div class="pending-payment-container">
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="error-message" aria-live="polite">
-      {{ errorMessage }}
-    </div>
-  
-    <!-- Loading Indicator -->
-    <div *ngIf="isLoading" class="loading-spinner" aria-live="polite">
-      Loading...
-    </div>
-  
-    <!-- No Pending Policies Message -->
-    <div *ngIf="!isLoading && pendingPolicies.length === 0" class="no-policies">
-      No pending payment policies available.
-    </div>
-  
-    <!-- Displaying Pending Policies -->
-    <div *ngIf="!isLoading && pendingPolicies.length > 0">
-      <div *ngFor="let policy of pendingPolicies" class="policy-item">
-        <div class="policy">
-            <div class="policy-card-header">
-                <div class="title">
-                  <h2>{{ policy.policyName }}</h2>
-                  <p class="status">Status: {{ policy.status }}</p>
-                </div>
-              </div>        
-        <div class="policy-card-details">
-          <div class="detail-card">
-            <h3>Coverage</h3>
-            <p>{{ policy.coverage | currency: 'INR' }}</p>
-          </div>
-          <div class="detail-card">
-            <h3>Duration</h3>
-            <p>{{ policy.duration }} Months</p>
-          </div>
-          <div class="detail-card">
-            <h3>Premium</h3>
-            <p>{{ policy.premiumAmount | currency: 'INR' }}</p>
-          </div>
-          <div class="detail-card">
-            <h3>Premium Paid</h3>
-            <p>{{ policy.premiumPaid }}</p>
-          </div>
-          <div class="detail-card">
-            <h3>Pending Premium</h3>
-            <p>{{ policy.pendingPremium }}</p>
-          </div>
-        </div>
-  
-        <!-- Benefits Section -->
-        <div class="policy-card-benefits">
-          <h3>Benefits</h3>
-          <p>{{ policy.description }}</p>
-        </div>
-  
-        <!-- Pay Button -->
-        <button 
-        (click)="showOverlay(policy)" 
-        [disabled]="isPaymentDisabled" 
-        class="pay-button"
-        [attr.aria-label]="'Pay premium for ' + policy.policyName">
-        Pay Premium
-      </button>
-      </div>
-    </div>
-    </div>
-    <!-- Overlay for Payment -->
-    <div *ngIf="isOverlayVisible" class="overlay" role="dialog" aria-modal="true">
-      <div class="overlay-content">
-        <h3>Pay Premium for {{ selectedPolicy?.policyName }}</h3>
-        <p>Premium Amount: {{ selectedPolicy?.premiumAmount | currency: 'INR' }}</p>
-        <div class="popup-button">
-            <button (click)="payPremium(selectedPolicy, selectedPolicy.pendingPremium)" class="overlay-button">Proceed Payment</button>
-            <button (click)="closeOverlay()" class="overlay-buttons">Cancel</button>
-        </div>
-      </div>
-    </div>
-  
-   <span class="backButton"><button class="back-button" (click)="onGoBack()" aria-label="Go back">
-    Go Back
-  </button></span>
-    
+<div class="policy-container">
+  <div *ngIf="isLoading" class="no-policies">
+    <mat-spinner></mat-spinner>
   </div>
-  
+  <div *ngIf="policyDetails.length === 0" class="no-policies">
+    No pending payment policies available.
+  </div>
+  <div *ngFor="let policy of policyDetails" class="policy-card">
+    <!-- Header Section -->
+    <div class="policy-card-header">
+      <div class="title">
+        <h2>{{ policy.policyName }}</h2>
+        <p class="status">Status: {{ policy.status }}</p>
+      </div>
+    </div>
+
+
+    <!-- Details Section -->
+    <div class="policy-card-details">
+      <div class="detail-card">
+        <h3>Coverage</h3>
+        <p>{{ policy.coverage | currency:'INR' }}</p>
+      </div>
+      <div class="detail-card">
+        <h3>Duration</h3>
+        <p>{{ policy.duration }} Months</p>
+      </div>
+      <div class="detail-card">
+        <h3>Premium</h3>
+        <p>{{ policy.premiumAmount | currency:'INR' }}</p>
+      </div>
+      <div class="detail-card">
+        <h3>Premium Paid</h3>
+        <p>{{ policy.premiumPaid }}</p>
+      </div>
+      <div class="detail-card">
+        <h3>Pending Premium</h3>
+        <p>{{ policy.pendingPremium }}</p>
+      </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div class="policy-card-benefits">
+      <h3>Benefits</h3>
+      <p>{{ policy.description }}</p>
+    </div>
+
+    <div *ngIf="policy.status==='Active'" class="pay-button">
+      <button [disabled]="!isPremiumDue(policy.createdAt, policy.premiumPaid)" (click)="showOverlay(policy)">Pay Premium</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pay Premium Overlay -->
+<div *ngIf="isOverlayVisible" class="overlay">
+  <div class="overlay-content">
+    <h2>Pay Premium</h2>
+    <div>
+      <h3>Policy Name: {{ selectedPolicy?.policyName }}</h3>
+      <p>Premium Amount: {{ selectedPolicy?.premiumAmount | currency }}</p>
+    </div>
+    <div class="overlay-actions">
+      <button (click)="closeOverlay()">Close</button>
+      <button (click)="payPremium(selectedPolicy)">Pay Now</button>
+    </div>
+  </div>
+</div>  
