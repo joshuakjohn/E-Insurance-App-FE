@@ -16,9 +16,8 @@ export class EmployeeDashboardComponent {
   tab: string = 'plans';
   agents: any[] = [];
   plans: any[] = [];
-  policies: any[] = [];
-  pendingPolicies: any[] = [];
   pendingAgents: any[] = [];
+  customers: any[] = []; 
 
   employeeEmail: string = '';
   employeeUsername: string = '';
@@ -32,8 +31,7 @@ export class EmployeeDashboardComponent {
 
   ngOnInit(): void {
     this.fetchAgents();
-    this.loadAdminDetails();
-    this.fetchPendingAgents();
+    this.loadEmployeeDetails();
     this.fetchPendingAgents();
     this.tabSwitch('allPlans');
   }
@@ -53,14 +51,14 @@ export class EmployeeDashboardComponent {
   
     if (input === 'allPlans') {
       this.fetchAllPlans();
-    } else if (input === 'agent') {
+    } else if (input === 'agent'  && this.agents.length === 0) {
       this.fetchAgents();
-    } else if (input === 'approveAgent') {
+    } else if (input === 'approveAgent' && this.pendingAgents.length === 0) {
       this.fetchPendingAgents();
     }
   }
 
-  loadAdminDetails(): void {
+  loadEmployeeDetails(): void {
     this.employeeEmail = localStorage.getItem('email') || 'employee@example.com';
     this.employeeUsername = localStorage.getItem('username') || 'Employee';
   }
@@ -69,8 +67,6 @@ export class EmployeeDashboardComponent {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/plan', header).subscribe({
       next: (res: any) => {
-        console.log(res);
-        
         this.plans = res.data;
       },
       error: (err: any) => {
@@ -99,6 +95,27 @@ export class EmployeeDashboardComponent {
     }
   }
 
+  viewAgentCustomers(agentId: string): void {
+    if (this.expandedAgentId === agentId) {
+        // Collapse customer list
+        this.expandedAgentId = null;
+        this.customers = [];
+    } else {
+        // Expand and fetch customers
+        this.expandedAgentId = agentId;
+        const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+        this.httpService.getApiCall(`/api/v1/customer/${agentId}/employee`, header).subscribe({
+            next: (res: any) => {
+                this.customers = res.data; // Populate customers array
+            },
+            error: (err: any) => {
+                console.error('Error fetching customers:', err);
+                this.customers = []; // Reset customers on error
+            },
+        });
+    }
+}
+
   fetchAgents(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall('/api/v1/agent/employee', header).subscribe({
@@ -110,10 +127,10 @@ export class EmployeeDashboardComponent {
       },
     });
   }
-
+  
   fetchPendingAgents(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall('/api/v1/agent', header).subscribe({
+    this.httpService.getApiCall('/api/v1/agent/employee', header).subscribe({
         next: (res: any) => {
             this.pendingAgents = res.data.filter((agent: any) => agent.status === 'Waiting for approval');
         },
@@ -134,28 +151,6 @@ export class EmployeeDashboardComponent {
       },
     });
   }
-  
-  viewAgentPolicies(agentId: string): void {
-    if (this.expandedAgentId === agentId) {
-        // Collapse the policies if the agent is already expanded
-        this.expandedAgentId = null;
-        this.policies = [];
-    } else {
-        // Fetch and expand policies for the selected agent
-        this.expandedAgentId = agentId;
-        const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken') || ''}`);
-        this.httpService.getApiCall(`/api/v1/policy/${agentId}`, header).subscribe({
-            next: (res: any) => {
-                console.log('Policies fetched:', res.data);
-                this.policies = res.data; // Populate the policies array
-            },
-            error: (err: any) => {
-                console.error('Error fetching policies:', err);
-                this.policies = []; // Reset policies on error
-            },
-        });
-    }
-}
 
   homeButtonEvent() {
     this.router.navigate([`/dashboard/plans`]);

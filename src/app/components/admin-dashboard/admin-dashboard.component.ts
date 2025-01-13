@@ -17,9 +17,12 @@ export class AdminDashboardComponent {
   tab: string = 'plans';
   agents: any[] = [];
   plans: any[] = [];
+  customers: any[] = [];
   policies: any[] = [];
   pendingPolicies: any[] = [];
   pendingAgents: any[] = [];
+
+  showAdminTabs: { [key: string]: boolean } = { plan: false, scheme: false, policy: false };
 
   adminEmail: string = '';
   adminUsername: string = '';
@@ -27,8 +30,10 @@ export class AdminDashboardComponent {
   showPlanForm: boolean = false;
   showSchemeForm: boolean = false;
 
-  isSchemesVisible: { [planId: string]: boolean } = {};
-  expandedAgentId: string | null = null; 
+  activePlanId: string | null = null;
+  isViewingPolicies: { [agentId: string]: boolean } = {};
+  isViewingCustomers: { [agentId: string]: boolean } = {};
+  currentlyViewingAgent: string | null = null;
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router) {
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
@@ -38,11 +43,14 @@ export class AdminDashboardComponent {
     this.fetchAgents();
     this.fetchPendingPolicies();
     this.loadAdminDetails();
-    this.fetchPendingAgents();
-    this.fetchPendingAgents();
     this.tabSwitch('allPlans');
   }
 
+  revealTabs(tabName: string): void {
+    this.showAdminTabs[tabName] = true;
+    this.tabSwitch(tabName);
+  }
+  
   tabSwitch(input: string) {
     this.tab = input;
   
@@ -65,9 +73,7 @@ export class AdminDashboardComponent {
       this.fetchPendingPolicies();
     } else if (input === 'agent') {
       this.fetchAgents();
-    } else if (input === 'approveAgent') {
-      this.fetchPendingAgents();
-    }
+    } 
   }
   
 
@@ -99,23 +105,27 @@ export class AdminDashboardComponent {
   }
 
   viewSchemes(planId: string): void {
-    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    if (!this.isSchemesVisible[planId]) {
-      this.httpService.getApiCall(`/api/v1/scheme/${planId}/getall`, header).subscribe({
-        next: (res: any) => {
-          const index = this.plans.findIndex(plan => plan._id === planId);
-          if (index !== -1) {
-            this.plans[index].schemes = res.data; // Attach schemes to the specific plan
-          }
-          this.isSchemesVisible[planId] = !this.isSchemesVisible[planId];
-        },
-        error: (err: any) => {
-          console.error('Error fetching schemes:', err);
-        },
-      });
-    } else {
-      this.isSchemesVisible[planId] = !this.isSchemesVisible[planId];
+    if (this.activePlanId === planId) {
+      // Clicking the same plan again - hide schemes
+      this.activePlanId = null;
+      return;
     }
+
+    // Show schemes for the new plan
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    this.httpService.getApiCall(`/api/v1/scheme/${planId}/getall`, header).subscribe({
+      next: (res: any) => {
+        const index = this.plans.findIndex(plan => plan._id === planId);
+        if (index !== -1) {
+          this.plans[index].schemes = res.data;
+        }
+        this.activePlanId = planId;
+      },
+      error: (err: any) => {
+        console.error('Error fetching schemes:', err);
+        this.activePlanId = null;
+      },
+    });
   }
 
   fetchAgents(): void {
@@ -126,29 +136,6 @@ export class AdminDashboardComponent {
       },
       error: (err: any) => {
         console.error('Error fetching agents:', err);
-      },
-    });
-  }
-
-  fetchPendingAgents(): void {
-    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall('/api/v1/agent', header).subscribe({
-        next: (res: any) => {
-            this.pendingAgents = res.data.filter((agent: any) => agent.status === 'Waiting for approval');
-        },
-        error: (err: any) => {
-            console.error('Error fetching pending agents:', err);
-        },
-    });
-  }
-
-  approveAgent(agentId: string): void {
-    this.httpService.patchApiCall(`/api/v1/agent/${agentId}`, { status: 'Approved' }).subscribe({
-      next: (res: any) => {
-        this.pendingAgents = this.pendingAgents.filter(agent => agent._id !== agentId);
-      },
-      error: (err: any) => {
-        console.error('Error approving agent:', err);
       },
     });
   }
@@ -167,26 +154,74 @@ export class AdminDashboardComponent {
   }
   
   viewAgentPolicies(agentId: string): void {
-    if (this.expandedAgentId === agentId) {
-        // Collapse the policies if the agent is already expanded
-        this.expandedAgentId = null;
-        this.policies = [];
-    } else {
-        // Fetch and expand policies for the selected agent
-        this.expandedAgentId = agentId;
-        const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken') || ''}`);
-        this.httpService.getApiCall(`/api/v1/policy/${agentId}`, header).subscribe({
-            next: (res: any) => {
-                this.policies = res.data; // Populate the policies array
-            },
-            error: (err: any) => {
-                console.error('Error fetching policies:', err);
-                this.policies = []; // Reset policies on error
-            },
-        });
+    // If already viewing policies for this agent, hide them
+    if (this.isViewingPolicies[agentId]) {
+      this.isViewingPolicies[agentId] = false;
+      this.policies = [];
+      this.currentlyViewingAgent = null;
+      return;
     }
-}
 
+    // If viewing anything for another agent, hide it
+    if (this.currentlyViewingAgent && this.currentlyViewingAgent !== agentId) {
+      this.isViewingPolicies[this.currentlyViewingAgent] = false;
+      this.isViewingCustomers[this.currentlyViewingAgent] = false;
+    }
+
+    // Hide customers if they're being shown for this agent
+    this.isViewingCustomers[agentId] = false;
+    this.customers = [];
+
+    // Show policies
+    this.isViewingPolicies[agentId] = true;
+    this.currentlyViewingAgent = agentId;
+
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken') || ''}`);
+    this.httpService.getApiCall(`/api/v1/policy/${agentId}`, header).subscribe({
+      next: (res: any) => {
+        this.policies = res.data;
+      },
+      error: (err: any) => {
+        console.error('Error fetching policies:', err);
+        this.policies = [];
+      },
+    });
+  }
+
+  viewAgentCustomers(agentId: string): void {
+    // If already viewing customers for this agent, hide them
+    if (this.isViewingCustomers[agentId]) {
+      this.isViewingCustomers[agentId] = false;
+      this.customers = [];
+      this.currentlyViewingAgent = null;
+      return;
+    }
+
+    // If viewing anything for another agent, hide it
+    if (this.currentlyViewingAgent && this.currentlyViewingAgent !== agentId) {
+      this.isViewingPolicies[this.currentlyViewingAgent] = false;
+      this.isViewingCustomers[this.currentlyViewingAgent] = false;
+    }
+
+    // Hide policies if they're being shown for this agent
+    this.isViewingPolicies[agentId] = false;
+    this.policies = [];
+
+    // Show customers
+    this.isViewingCustomers[agentId] = true;
+    this.currentlyViewingAgent = agentId;
+
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    this.httpService.getApiCall(`/api/v1/customer/${agentId}/admin`, header).subscribe({
+      next: (res: any) => {
+        this.customers = res.data;
+      },
+      error: (err: any) => {
+        console.error('Error fetching customers:', err);
+        this.customers = [];
+      },
+    });
+  }
   
   approvePolicy(policyId: string) {
     this.httpService.patchApiCall(`/api/v1/policy/${policyId}`, {status: 'Active'}).subscribe({
