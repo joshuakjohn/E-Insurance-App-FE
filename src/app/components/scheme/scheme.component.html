@@ -1,14 +1,21 @@
+
+
 <div class="container">
   <div style="display: flex;
   justify-content: flex-end;
   width: 100%;">
-    <div style="justify-content: flex-end;" class="scheme-header">
-      <input type="text"[(ngModel)]="searchQuery"(input)="onSearchChange()"(blur)="onSearchBlur()"placeholder="Search for schemes..."class="search-bar"/>
+    <div  class="scheme-header">
+      <div class="navigation-item">
+        <a routerLink="/dashboard/plans" class="navigation-link">Plan</a> / 
+        <span>{{ planDetails.planName }}</span> / 
+        <a (click)="handleSchemeClick()" class="navigation-link">Scheme</a> 
+      </div>
+     <span class="search-filter"> <input type="text"[(ngModel)]="searchQuery"(input)="onSearchChange()"(blur)="onSearchBlur()"placeholder="Search for schemes..."class="search-bar"/>
       <mat-icon [matMenuTriggerFor]="filterMenu" class="filter-icon">filter_list</mat-icon>
       <mat-menu #filterMenu="matMenu">
-      <button class="filter-button" (click)="filter('asc')">Low-High</button>
-      <button class="filter-button" (click)="filter('desc')">High-Low</button>
-      </mat-menu>
+      <button class="filter-button" (click)="filter('asc')">Low-High Premium</button>
+      <button class="filter-button" (click)="filter('desc')">High-Low Premium</button>
+      </mat-menu></span>
     </div>
   </div>
 
@@ -50,7 +57,7 @@
       [ngStyle]="{display: policyApplication ? 'none': 'flex'}">
         <button (click)="buyScheme(scheme); $event.stopPropagation();">Buy now</button>
       </div>
-      <div [ngStyle]="{display: policyApplication ? 'block': 'none'}">
+      <div class="policyApplication" [ngStyle]="{display: policyApplication ? 'block': 'none'}">
         <app-policy (policyApplication)="applicationToggle($event)" [data]="{planId: this.planId, schemeDetails: this.selectedScheme, planDetails: this.planDetails}"></app-policy>
       </div>
     </div>

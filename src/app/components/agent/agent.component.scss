@@ -321,3 +321,11 @@ button:active{
     height: 400px;
     margin: 30px 40px;
 }
+.default-button{
+    height: 40px;
+    width: 100px;
+    border-radius: 30px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    border: 1px solid #214c87;
+}

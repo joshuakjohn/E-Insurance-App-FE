@@ -1,12 +1,12 @@
 .header{
-    width: calc(100vw - 15px);
+    width: auto;
     height: 60px;
     background-color: #ecf2ff;
     display: flex;
 
     .buttons{
         margin: 0 50px;
-        width: 100vw;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -61,3 +61,10 @@ button:active{
 ::ng-deep .mat-button-toggle-checked {
     background-color: #ecf2ff !important;
   }
+  .default-button{
+    height: 40px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+   border: none;
+   width: 100%;
+}

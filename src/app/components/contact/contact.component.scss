@@ -1,0 +1,147 @@
+/* General Reset */
+body, h1, h2, p, label, input, textarea, button {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  body {
+    width: 100vw;
+    background-color: #f8faff;
+  }
+  
+  /* Header */
+  .header {
+    background-color: #ffffff; /* Light Blue */
+    color: white;
+    padding: 15px 0;
+  }
+  
+  .header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+  }
+  
+  .header .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Hero Section */
+  .hero-section {
+    background-color: #cad4e5; /* Lightest Blue */
+    text-align: center;
+    padding: 60px 20px;
+  }
+  
+  .hero-section h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #214c87;
+  }
+  
+  .hero-section p {
+    font-size: 18px;
+    color: #555;
+  }
+  
+  /* Form Section */
+  .form-section {
+    background-color: white;
+    padding: 40px 0px;
+  }
+  
+  .form-section .container {
+    max-width: 1000px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 150px;
+  }
+  
+  .form-container, .contact-info {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .form-container h2, .contact-info h2 {
+    color: #214c87;
+    margin-bottom: 15px;
+  }
+  
+  form label {
+    display: block;
+    margin: 10px 0 5px;
+    font-weight: bold;
+  }
+  
+  form input, form textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8faff;
+  }
+  
+  form input:focus, form textarea:focus {
+    border-color: #214c87;
+    outline: none;
+  }
+  
+  .submit-button {
+    background-color: #214c87;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #0269a1;
+  }
+  
+  /* Contact Info */
+  .contact-info p {
+    margin-bottom: 10px;
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #cad4e5;
+    color: white;
+    text-align: center;
+    padding: 15px 20px;
+  }
+  
+  .footer p {
+    font-size: 14px;
+  }
+
+  button{
+    height: 40px;
+    width: 100px;
+    border-radius: 30px;
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    border: 1px solid #214c87;
+}
+
+button:hover{
+    transition: background-color ease .5s;
+    background-color: #557fba;
+}
+
+button:active{
+	transform: scale(0.95);
+}
+  

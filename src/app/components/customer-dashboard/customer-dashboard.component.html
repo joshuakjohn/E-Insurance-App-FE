@@ -8,27 +8,23 @@
   </div>
 </div>
 <mat-menu #menu="matMenu">
-  <div class="account-menu">
-    <span>{{ email }}</span>
-    <img src="../../../assets/pngegg.png"alt="User Avatar" width="100px" height="100px" style="padding: 20px;"/>
-    <span>Hi, {{ username }}!</span>
-    <button mat-raised-button color="warn"style="background-color: rgb(223, 223, 223); margin: 20px;"(click)="logout()">
-      Logout
-    </button>
+  <span style="margin: 0px 16px;">Hi, {{username}}!</span>
+  <div style="margin-top: 10px; display: flex;" >
+      <button class="default-button" mat-menu-item (click)=logout()>
+          <mat-icon>logout</mat-icon>
+          Logout</button>
   </div>
 </mat-menu>
-
 <div class="customer-dashboard">
   <div class="welcome">
     <h1>Welcome, {{ username }}!</h1>
   </div>
-  <mat-button-toggle-group class="toggle-group"[value]="activeTab"(change)="setActiveTab($event.value)" >
-    <mat-button-toggle
-      class="toggle" *ngFor="let tab of tabs" [value]="tab.key">
+  <mat-button-toggle-group class="toggle-group" [value]="activeTab" (change)="setActiveTab($event.value)">
+    <mat-button-toggle class="toggle" *ngFor="let tab of tabs" [value]="tab.key">
       {{ tab.label }}
     </mat-button-toggle>
   </mat-button-toggle-group>
-
+  
   <div class="dashboard-content">
     <ng-container [ngSwitch]="activeTab">
       <div *ngSwitchCase="'profile'">
@@ -38,14 +34,14 @@
         <h2>Policy Details</h2>
         <router-outlet></router-outlet>
       </div>
-      <div *ngSwitchCase="'reports'">
-        <h2>Reports</h2>
-        <p>Reports and analytics will be available soon.</p>
+      <div *ngSwitchCase="'paymentpendingpolices'">
+        <h2>Payment Pending Policies</h2>
+       <router-outlet></router-outlet>
       </div>
       <div *ngSwitchDefault>
         <h2>Tab not found</h2>
         <p>Please select a valid tab.</p>
       </div>
     </ng-container>
-  </div>
+  </div>  
 </div>

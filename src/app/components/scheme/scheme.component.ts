@@ -10,6 +10,7 @@ import { PolicyComponent } from '../policy/policy.component';
 import { HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { LoginService } from 'src/app/services/data-services/login.service';
 
 @Component({
   selector: 'app-scheme',
@@ -34,6 +35,7 @@ export class SchemeComponent implements OnInit {
   totalPages!: number;
   private searchSubject: Subject<string> = new Subject<string>();
   sortOrder: 'asc' | 'desc' = 'asc'; // Default sort order
+  extendedCard: number | null = null;
 
   constructor(
     public iconRegistry: MatIconRegistry, 
@@ -41,7 +43,8 @@ export class SchemeComponent implements OnInit {
     private httpService: HttpService,
     public router: Router,
     private route: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private loginService: LoginService
   ) {
     iconRegistry.addSvgIconLiteral('dropdown-icon', sanitizer.bypassSecurityTrustHtml(DROPDOWN_ICON));
   }
@@ -105,32 +108,14 @@ export class SchemeComponent implements OnInit {
       });
     }
   }
-  getPlanImage(): string {
-    if (!this.planDetails.category) {
-      return 'assets/images/default-scheme.jpg'; 
-    }
 
-    const lowerCaseCategory = this.planDetails.category.toLowerCase();
-    switch (lowerCaseCategory) {
-      case 'health':
-        return 'assets/health_scheme.png';
-      case 'life':
-        return 'assets/images/life_scheme.jpeg';
-      case 'vehicle':
-        return 'assets/images/vehicle_scheme.jpeg';
-      case 'travel':
-        return 'assets/images/travel_scheme.jpeg';
-      default:
-        return 'assets/images/default-scheme.jpg';
-    }
-  }
   buyScheme(scheme: any): void { 
     this.selectedScheme = scheme;         
     if(localStorage.getItem('role') === 'customer'){
       this.policyApplication = true
-      this.height = 1150+'px'
+      this.height = 'auto'
     } else {
-      this.openLoginDialog();
+      this.loginService.triggerAction();
     }
   }
 
@@ -158,25 +143,6 @@ export class SchemeComponent implements OnInit {
     return token ? true : false;
   }
 
-  // Open login/signup dialog
-  openLoginDialog(): void {
-    const currentUrl = this.router.url;
-  localStorage.setItem('redirectUrl', currentUrl);
-    const dialogRef = this.dialog.open(LoginAndSignupComponent, {
-      height: 'auto',
-      width: 'auto',
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (localStorage.getItem('role') === 'customer') {
-        this.policyApplication = true
-        this.height = 1150+'px'
-      }
-    });
-  }
-
-  extendedCard: number | null = null;
-
   extendToggle(id: number): void {
     this.applicationToggle('close')
     this.extendedCard = this.extendedCard === id ? null : id;
@@ -200,9 +166,10 @@ export class SchemeComponent implements OnInit {
         search: query,
         page: this.currentPage.toString(),
         limit: this.itemsPerPage.toString(),
-        sortOrder: this.sortOrder 
+        sortOrder: this.sortOrder ,
+        planId:this.planId
     };
-    this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
+    this.httpService.getSearchFilterScheme('/api/v1/scheme/search', { params }).subscribe({
         next: (res: any) => {
             this.schemes = res.data.results || [];
             this.totalResults = res.total || 0;
@@ -216,36 +183,38 @@ export class SchemeComponent implements OnInit {
     });
 }
 
-filter(sortOrder: 'asc' | 'desc' = 'asc') {
-  if (this.sortOrder === sortOrder) {
-      return; 
-  }
+filter(sortOrder: 'asc' | 'desc') {
   this.isLoading = true;
   this.sortOrder = sortOrder; 
-  const query = this.searchQuery.trim();
-  if (query) {
-      this.performSearch(query); 
-  } else {
-      this.httpService.getApiCall(`/api/v1/scheme/filter?sortOrder=${sortOrder}`).subscribe({
-          next: (res: any) => {
-              if (res.code === 200) {
-                  this.schemes = res.data || [];
-                  this.totalResults = res.total || 0;
-                  this.currentPage = res.page || 1;
-                  this.totalPages = res.totalPages || 1;
-              } else {
-                  console.warn('Unexpected response:', res);
-                  this.schemes = [];
-              }
 
-              this.isLoading = false;
-          },
-          error: (err: any) => {
-              console.error('Error fetching filtered schemes:', err);
-              this.schemes = [];
-              this.isLoading = false;
-          }
-      });
+  const query = this.searchQuery.trim(); 
+  const params = {
+    sortOrder: this.sortOrder,
+    planId: this.planId,
+  };
+
+  if (query) {
+    this.performSearch(query); 
+  } else {
+    this.httpService.getSearchFilterScheme('/api/v1/scheme/filter', { params }).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.schemes = res.data || [];
+          this.totalResults = res.total || 0;
+          this.currentPage = res.page || 1;
+          this.totalPages = res.totalPages || 1;
+        } else {
+          console.warn('Unexpected response:', res);
+          this.schemes = [];
+        }
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Error fetching filtered schemes:', err);
+        this.schemes = [];
+        this.isLoading = false;
+      }
+    });
   }
 }
   applicationToggle(event: string){
@@ -255,5 +224,10 @@ filter(sortOrder: 'asc' | 'desc' = 'asc') {
     }
 
   }
+  handleSchemeClick(){
+    console.log(this.selectedScheme)
+  }
+
+ 
 
 }
