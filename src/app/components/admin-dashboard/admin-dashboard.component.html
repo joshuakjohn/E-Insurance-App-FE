@@ -37,9 +37,6 @@
             <mat-button-toggle *ngIf="showAdminTabs['policy']" (click)="tabSwitch('policy')" class="toggle">
                 Approve Policies
             </mat-button-toggle>
-            <mat-button-toggle (click)="tabSwitch('approveAgent')" [checked]="tab === 'approveAgent'" class="toggle">
-                Approve Agents
-            </mat-button-toggle>
         </mat-button-toggle-group>
         
         <div *ngIf="tab === 'allPlans'" class="plans">
@@ -163,26 +160,6 @@
         <div *ngIf="tab === 'scheme'" class="section">
             <app-scheme-form></app-scheme-form>
         </div>
-
-        <div *ngIf="tab === 'approveAgent'" class="agents">
-            <div *ngIf="pendingAgents.length === 0" class="no-agents">
-                <p>No pending agents for approval.</p>
-            </div>
-            <div *ngFor="let agent of pendingAgents" class="agent">
-                <p>Name: {{ agent.username }}</p>
-                <p>Email: {{ agent.email }}</p>
-                <p>Region: {{ agent.region }}</p>
-                <p>Phone number: {{ agent.phno }}</p>
-                <button mat-raised-button (click)="approveAgent(agent._id)">Approve Agent</button>
-            </div>
-        </div>
     </div>
 </div>
 
-
-    <!-- </div>
-
-    <div class="footer">
-
-    </div>
-</div> -->

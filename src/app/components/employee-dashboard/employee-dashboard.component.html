@@ -85,16 +85,17 @@
                 <p>No pending agents for approval.</p>
             </div>
             <div *ngFor="let agent of pendingAgents" class="agent">
-                <p>Name: {{ agent.username }}</p>
-                <p>Email: {{ agent.email }}</p>
-                <p>Region: {{ agent.region }}</p>
-                <p>Phone number: {{ agent.phno }}</p>
-                <button mat-raised-button (click)="approveAgent(agent._id)">Approve Agent</button>
+                <div class="agent-info">
+                    <div>
+                        <p>Name: {{ agent.username }}</p>
+                        <p>Email: {{ agent.email }}</p>
+                        <p>Region: {{ agent.region }}</p>
+                        <p>Phone number: {{ agent.phno }}</p>
+                    </div>
+                    <button mat-raised-button (click)="approveAgent(agent._id)" class="approve-button">
+                        Approve Agent
+                    </button>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <div class="footer">
-
     </div>
 </div>

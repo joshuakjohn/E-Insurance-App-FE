@@ -1,33 +1,46 @@
 <body>
-    <div class="container">
-        <h1>Login</h1>
-        <form [formGroup] = "loginForm">
-            <mat-form-field appearance="outline">
-                <mat-label>Role</mat-label>
-                <mat-select formControlName="signin_role">
-                  <mat-option value="Admin">Admin</mat-option>
-                  <mat-option value="Employee">Employee</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Email or phone</mat-label>
-                <input matInput formControlName = "email">
-                <mat-error *ngIf="loginFormControls['email']['errors']?.['required']">Email is required</mat-error>
-                <mat-error *ngIf="loginFormControls['email']['errors']?.['email']">Incorrect Email Format</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Password</mat-label>
-                <input matInput formControlName = "password" type="password">
-                <mat-error *ngIf="loginFormControls['password']['errors']?.['required']">Password is required</mat-error>
-                <mat-error *ngIf="loginFormControls['password']['errors']?.['minlength']">Password must be at least 6 characters</mat-error>
-            </mat-form-field>
-            <div class="links">
-                <a mat-button href="#">Forgot password</a>
-            </div>
-            <div class = "links">
-                <a mat-button href="/signup">Create account</a>
-                <button mat-raised-button color="primary" (click) = "handleLogin()">Login</button>
-            </div>
-        </form>
+   <div class="login">
+    <div class="login-container">
+      <h1>Admin & Employee Login</h1>
+      <form [formGroup]="loginForm">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="signin_role">
+            <mat-option value="Admin">Admin</mat-option>
+            <mat-option value="Employee">Employee</mat-option>
+          </mat-select>
+          <mat-error *ngIf="loginFormControls['signin_role']['errors']?.['required']">
+            Role is required
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email or Phone</mat-label>
+          <input matInput formControlName="email">
+          <mat-error *ngIf="loginFormControls['email']['errors']?.['required']">
+            This field is required
+          </mat-error>
+          <mat-error *ngIf="loginFormControls['email']['errors']?.['email']">
+            Invalid email format
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" type="password">
+          <mat-error *ngIf="loginFormControls['password']['errors']?.['required']">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="loginFormControls['password']['errors']?.['minlength']">
+            Password must be at least 6 characters
+          </mat-error>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button color="primary" class="login-button" (click)="handleLogin()">
+          LOGIN
+        </button>
+      </form>
     </div>
-</body>
+    </div>
+  </body>
+  

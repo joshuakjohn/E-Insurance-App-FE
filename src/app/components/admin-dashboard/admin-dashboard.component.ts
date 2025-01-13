@@ -43,7 +43,6 @@ export class AdminDashboardComponent {
     this.fetchAgents();
     this.fetchPendingPolicies();
     this.loadAdminDetails();
-    this.fetchPendingAgents();
     this.tabSwitch('allPlans');
   }
 
@@ -74,9 +73,7 @@ export class AdminDashboardComponent {
       this.fetchPendingPolicies();
     } else if (input === 'agent') {
       this.fetchAgents();
-    } else if (input === 'approveAgent') {
-      this.fetchPendingAgents();
-    }
+    } 
   }
   
 
@@ -139,29 +136,6 @@ export class AdminDashboardComponent {
       },
       error: (err: any) => {
         console.error('Error fetching agents:', err);
-      },
-    });
-  }
-
-  fetchPendingAgents(): void {
-    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    this.httpService.getApiCall('/api/v1/agent', header).subscribe({
-        next: (res: any) => {
-            this.pendingAgents = res.data.filter((agent: any) => agent.status === 'Waiting for approval');
-        },
-        error: (err: any) => {
-            console.error('Error fetching pending agents:', err);
-        },
-    });
-  }
-
-  approveAgent(agentId: string): void {
-    this.httpService.patchApiCall(`/api/v1/agent/${agentId}`, { status: 'Approved' }).subscribe({
-      next: (res: any) => {
-        this.pendingAgents = this.pendingAgents.filter(agent => agent._id !== agentId);
-      },
-      error: (err: any) => {
-        console.error('Error approving agent:', err);
       },
     });
   }
