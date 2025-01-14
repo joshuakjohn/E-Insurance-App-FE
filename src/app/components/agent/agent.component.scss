@@ -49,9 +49,19 @@
         box-sizing: border-box;
         border-radius: 30px;
         margin: 10px;
-        padding: 20px 30px 20px 30px;
+        // padding: 20px 30px 20px 30px;
     }
 
+}
+
+.pending{
+  width: calc(100% - 20px);
+  height: auto;
+  background-color: #f1f4f9;
+  box-sizing: border-box;
+  border-radius: 30px;
+  margin: 10px;
+  padding: 20px 30px 20px 30px;
 }
 
 .details {
@@ -73,7 +83,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Profile header styles */
+// /* Profile header styles */
 .profile-header {
     text-align: center;
     margin-bottom: 30px;
@@ -88,8 +98,8 @@
     margin-bottom: 10px;
 }
 
-/* Profile section styles */
-.profile-section {
+// /* Profile section styles */
+.profiletab-section {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,7 +108,7 @@
 }
 
 /* Profile picture styles */
-.profile-picture {
+.profiletab-picture {
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -107,20 +117,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px;
 }
 
-.profile-picture img {
+.profiletab-picture img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-.profile-picture p {
+.profiletab-picture p {
     font-size: 14px;
     color: #888;
     text-align: center;
   }
-.profile-info {
+.profiletab-info {
     width: 100%;
     max-width: 650px;
     margin-top: 20px;
@@ -129,6 +138,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 form {
     display: flex;
     flex-direction: column;
@@ -150,11 +160,12 @@ form {
     font-size: 16px;
   }
 
-.profile-info h2 {
+.profiletab-info h2 {
     font-size: 22px;
     color: #333;
     margin-bottom: 10px;
 }
+
 .form-group span {
     font-size: 16px;
     color: #555;
@@ -323,7 +334,7 @@ button:active{
 }
 .default-button{
     border: none;
-    width: auto;
+    width: 100%;
     border-radius: 1px;
 }
 .gender{
@@ -334,3 +345,169 @@ button:active{
     background-color: #f0f0f0;
     transition: all 0.3s ease;
 }
+
+.card {
+  border-radius: 1.5rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 2rem;
+  background: linear-gradient(135deg, #a1b5d0 0%, #557fba 50%, #214c87 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.1) 0%, transparent 60%);
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-picture-wrapper {
+  position: relative;
+}
+
+.profile-picture {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.profile-info {
+  color: white;
+}
+
+.profile-info h2 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.card-body {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f1f4f9;
+}
+
+.details-grid {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background-color: #f8fafc;
+  border-radius: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.detail-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label svg {
+  color: #214c87;
+}
+
+.value {
+  font-size: 1.125rem;
+  color: #214c87;
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .card-header {
+    padding: 1.5rem;
+  }
+
+  .profile-section {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .profile-info h2 {
+    font-size: 1.5rem;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .details-grid {
+    gap: 1rem;
+  }
+}
+
+.status{
+    width: auto;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #214c87; /* Muted tone to match background */
+    padding: 5px 10px;
+    border-radius: 20px;
+    color: white;
+}
+
+// .customer-policy-button{
+//   width: 20%;
+//   height: 100px;
+//   background-color: white;
+//   border-radius: 5px;
+//   border: none;
+// }

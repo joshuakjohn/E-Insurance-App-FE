@@ -143,7 +143,7 @@ export class AgentComponent {
           this.httpService.getApiCall(`/api/v1/policy/${id}/getall/agent`, header)
         );
         this.customerPolicies = response.data;
-        this.height = this.customerPolicies.length*390+'px' 
+        this.height = this.customerPolicies.length*340+'px' 
       } catch (error) {
         this.customerPolicies = []
         this.height = 50+'px'
