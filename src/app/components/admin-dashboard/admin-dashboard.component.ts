@@ -47,8 +47,19 @@ export class AdminDashboardComponent {
   }
 
   revealTabs(tabName: string): void {
+    if (tabName === 'plan') {
+        this.showPlanForm = true;
+        this.showSchemeForm = false;
+    } else if (tabName === 'scheme') {
+        this.showSchemeForm = true;
+        this.showPlanForm = false;
+    }
     this.showAdminTabs[tabName] = true;
-    this.tabSwitch(tabName);
+}
+  
+  closeForm(): void {
+    this.showPlanForm = false;
+    this.showSchemeForm = false;
   }
   
   tabSwitch(input: string) {
