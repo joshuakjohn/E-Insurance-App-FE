@@ -8,11 +8,9 @@
 </div>
 
 <mat-menu #menu="matMenu">
-    <div class="account_menu">
-        <span>{{ employeeEmail }}</span>
-        <img style="padding: 20px;" src="../../../assets/admin-avatar.png" width="100px" height="100px">
-        <span>Hi, {{ employeeUsername }}!</span>
-        <button style="background-color: rgb(223, 223, 223); margin: 20px;" (click)="logout()" mat-raised-button>Logout</button>
+    <span style="margin: 16px 16px 16px 16px;">Hi, {{ employeeUsername }}!</span><br>
+    <div style="margin-top: 10px;">
+        <button class="default-button" mat-menu-item (click)=logout()>Logout</button>
     </div>
 </mat-menu>
 
@@ -56,43 +54,30 @@
             </div>
           </div>
           
-        <div *ngIf="tab === 'agent'" class="agents">
+          <div *ngIf="tab === 'agent'" class="agents">
             <div *ngFor="let agent of agents" class="agent">
                 <div class="agent-card-header">
                     <p class="agent-name">Name: {{ agent.username }}</p>
                     <p>Email: {{ agent.email }}</p>
                     <p>Region: {{ agent.region }}</p>
                     <p>Phone number: {{ agent.phno }}</p>
+                    <button mat-raised-button (click)="viewAgentCustomers(agent._id)">
+                        {{ expandedAgentId === agent._id ? 'Hide Customers' : 'View Customers' }}
+                    </button>
                 </div>
-                
-                <button mat-raised-button (click)="viewAgentPolicies(agent._id)">
-                    {{ expandedAgentId === agent._id ? 'Hide Policies' : 'View Policies' }}
-                </button>
-            
-                <!-- Policy Cards -->
-                <div *ngIf="expandedAgentId === agent._id">
-                    <div *ngIf="policies.length > 0" class="policy-cards">
-                        <div *ngFor="let policy of policies" class="policy-card">
-                            <div class="policy-card-header">
-                                <h3>{{ policy.policyName }}</h3>
-                            </div>
-                            <div class="policy-card-body">
-                                <p>Description: {{ policy.description }}</p>
-                                <p>Premium Amount: {{ policy.premiumAmount }}</p>
-                                <p>Policy Duration: {{ policy.duration }}</p>
-                                <p>Policy Coverage: {{ policy.coverage }}</p>
-                                <p>Premium Paid: {{ policy.premiumPaid }}</p>
-                                <p>Policy Start Date: {{ policy.policyStartDate | date: 'yyyy-MM-dd' }}</p>
-                                <p>Policy Status: {{ policy.status }}</p>
-                                <p>Pending Premium: {{ policy.pendingPremium }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="policies.length === 0" style="text-align: center; margin-top: 20px;">
-                        <h3>No policy found for this agent</h3>
+                <div *ngIf="expandedAgentId === agent._id && customers.length === 0" class="no-customers">
+                    <p>No customers found for this agent.</p>
+                </div>
+                <div *ngIf="expandedAgentId === agent._id && customers.length > 0" class="customer-cards">
+                    <div class="customer-card" *ngFor="let customer of customers">
+                        <p>Customer Name: {{ customer.username }}</p>
+                        <p>Email: {{ customer.email }}</p>
+                        <p>Phone: {{ customer.phno }}</p>
+                        <p>Age: {{ customer.age }}</p>
+                        <p>Address: {{ customer.address }}</p>
                     </div>
                 </div>
-            </div>            
+            </div>
         </div>
 
         <div *ngIf="tab === 'approveAgent'" class="agents">
@@ -100,16 +85,17 @@
                 <p>No pending agents for approval.</p>
             </div>
             <div *ngFor="let agent of pendingAgents" class="agent">
-                <p>Name: {{ agent.username }}</p>
-                <p>Email: {{ agent.email }}</p>
-                <p>Region: {{ agent.region }}</p>
-                <p>Phone number: {{ agent.phno }}</p>
-                <button mat-raised-button (click)="approveAgent(agent._id)">Approve Agent</button>
+                <div class="agent-info">
+                    <div>
+                        <p>Name: {{ agent.username }}</p>
+                        <p>Email: {{ agent.email }}</p>
+                        <p>Region: {{ agent.region }}</p>
+                        <p>Phone number: {{ agent.phno }}</p>
+                    </div>
+                    <button mat-raised-button (click)="approveAgent(agent._id)" class="approve-button">
+                        Approve Agent
+                    </button>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <div class="footer">
-
     </div>
 </div>

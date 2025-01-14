@@ -166,9 +166,10 @@ export class SchemeComponent implements OnInit {
         search: query,
         page: this.currentPage.toString(),
         limit: this.itemsPerPage.toString(),
-        sortOrder: this.sortOrder 
+        sortOrder: this.sortOrder ,
+        planId:this.planId
     };
-    this.httpService.getSearchScheme('/api/v1/scheme/search', { params }).subscribe({
+    this.httpService.getSearchFilterScheme('/api/v1/scheme/search', { params }).subscribe({
         next: (res: any) => {
             this.schemes = res.data.results || [];
             this.totalResults = res.total || 0;
@@ -182,36 +183,38 @@ export class SchemeComponent implements OnInit {
     });
 }
 
-filter(sortOrder: 'asc' | 'desc' = 'asc') {
-  if (this.sortOrder === sortOrder) {
-      return; 
-  }
+filter(sortOrder: 'asc' | 'desc') {
   this.isLoading = true;
   this.sortOrder = sortOrder; 
-  const query = this.searchQuery.trim();
-  if (query) {
-      this.performSearch(query); 
-  } else {
-      this.httpService.getApiCall(`/api/v1/scheme/filter?sortOrder=${sortOrder}`).subscribe({
-          next: (res: any) => {
-              if (res.code === 200) {
-                  this.schemes = res.data || [];
-                  this.totalResults = res.total || 0;
-                  this.currentPage = res.page || 1;
-                  this.totalPages = res.totalPages || 1;
-              } else {
-                  console.warn('Unexpected response:', res);
-                  this.schemes = [];
-              }
 
-              this.isLoading = false;
-          },
-          error: (err: any) => {
-              console.error('Error fetching filtered schemes:', err);
-              this.schemes = [];
-              this.isLoading = false;
-          }
-      });
+  const query = this.searchQuery.trim(); 
+  const params = {
+    sortOrder: this.sortOrder,
+    planId: this.planId,
+  };
+
+  if (query) {
+    this.performSearch(query); 
+  } else {
+    this.httpService.getSearchFilterScheme('/api/v1/scheme/filter', { params }).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.schemes = res.data || [];
+          this.totalResults = res.total || 0;
+          this.currentPage = res.page || 1;
+          this.totalPages = res.totalPages || 1;
+        } else {
+          console.warn('Unexpected response:', res);
+          this.schemes = [];
+        }
+        this.isLoading = false;
+      },
+      error: (err: any) => {
+        console.error('Error fetching filtered schemes:', err);
+        this.schemes = [];
+        this.isLoading = false;
+      }
+    });
   }
 }
   applicationToggle(event: string){
