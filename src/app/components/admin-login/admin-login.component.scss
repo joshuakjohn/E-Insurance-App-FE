@@ -1,51 +1,146 @@
-body {
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+
+* {
+  box-sizing: border-box;
+}
+
+:host {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Montserrat', sans-serif;
   background: linear-gradient(to right, #214c87, #ffffff);
-  height: 100vh;
-}
-
-.login-container {
-    margin-left: 60px;
+  padding: 20px;
 }
 
 h1 {
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: #214c87;
 }
 
-mat-form-field {
-  width: 85%;
-  margin-bottom: 20px;
+p {
+  font-size: 14px;
+  font-weight: 100;
+  line-height: 20px;
+  letter-spacing: 0.5px;
+  margin: 20px 0 30px;
 }
 
 button {
   border-radius: 20px;
-  border: none;
-  font-size: 14px;
+  border: 1px solid #214c87;
+  background-color: #214c87;
+  color: #FFFFFF;
+  font-size: 12px;
   font-weight: bold;
   padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   transition: transform 80ms ease-in;
   cursor: pointer;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: #557fba;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus {
+    outline: none;
+  }
 }
 
-button:hover {
-  background-color: #557fba;
+.container {
+  background-color: #FFFFFF;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(182, 182, 182, 0.25), 0 10px 10px rgba(0,0,0,0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
 }
 
-button:active {
-  transform: scale(0.95);
+.form-container {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
 }
 
-button:focus {
-  outline: none;
+.sign-in-container {
+  left: 0;
+  width: 60%;
+  z-index: 2;
 }
-.login{
-  border: 1px solid #ccc;
-  padding: 25px;
-  border-radius: 21px;
-  background: #f4e5da;
+
+.signin-form {
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+.overlay-container {
+  position: absolute;
+  top: 0;
+  left: 60%;
+  width: 40%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.overlay {
+  background: #214c87;
+  background: -webkit-linear-gradient(to right, #214c87, #557fba);
+  background: linear-gradient(to right, #214c87, #557fba);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #FFFFFF;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+}
+
+.overlay-panel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transform: translateX(0);
+}
+
+.overlay-right {
+  right: 0;
+  transform: translateX(0);
+}
+
+::ng-deep {
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: #214c87;
+  }
+
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #214c87;
+  }
 }

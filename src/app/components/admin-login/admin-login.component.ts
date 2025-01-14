@@ -32,7 +32,7 @@ export class AdminLoginComponent {
 
       this.httpService.postApiCall(`/api/v1/${role_lower}`, { email, password }).subscribe({
         next: (res: any) => {
-          console.log('Login successful:', res);
+          window.alert('Signin successfull')
           localStorage.setItem('authToken', res.token);
           localStorage.setItem('username', res.username);
           localStorage.setItem('email', res.email);
