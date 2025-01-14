@@ -1,77 +1,100 @@
 <body>
-    <div class="container" id="container">
-        <div class="form-container sign-up-container">
-          <form action="#" class="signup-form" [formGroup]="signupForm">
-            <h1>Create customer account</h1>
-            <div>
-              <div class="horizontal">
-                <mat-form-field appearance="outline">
-                    <mat-label>Name</mat-label>
-                    <input matInput formControlName="username">
-                    <mat-error *ngIf="signupFormControls['username']['errors']?.['required']">This field is required</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <mat-label>Email</mat-label>
-                    <input matInput formControlName="email">
-                    <mat-error *ngIf="signupFormControls['email']['errors']?.['required']">This field is required</mat-error>
-                    <mat-error *ngIf="signupFormControls['email']['errors']?.['email']">Invalid email format</mat-error>
-                </mat-form-field>
-              </div>
-              <mat-form-field appearance="outline" style="width: 100%;" *ngIf="role !== 'Customer'; else agentPhone">
-                <mat-label>Phone No.</mat-label>
-                <input matInput formControlName="phno">
-                <mat-error *ngIf="signupFormControls['phno']['errors']?.['required']">This field is required</mat-error>
-                <mat-error *ngIf="signupFormControls['phno']['errors']?.['pattern']">Invalid phone number format</mat-error>
-              </mat-form-field>
-              <ng-template #agentPhone>
-                <div style="display: flex;
-                gap: 5px;">
-                <mat-form-field appearance="outline">
-                  <mat-label>Phone No.</mat-label>
-                  <input matInput formControlName="phno">
-                  <mat-error *ngIf="signupFormControls['phno']['errors']?.['required']">This field is required</mat-error>
-                  <mat-error *ngIf="signupFormControls['phno']['errors']?.['pattern']">Invalid phone number format</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline" *ngIf="role === 'Customer'">
-                  <mat-label>Age</mat-label>
-                  <input matInput formControlName="age">
-                  <mat-error *ngIf="signupFormControls['age']['errors']?.['required']">This field is required</mat-error>
-                  <mat-error *ngIf="signupFormControls['age']['errors']?.['pattern']">Invalid age format</mat-error>
-                </mat-form-field>
-              </div>
-              </ng-template>
-              <div>
-                <mat-form-field appearance="outline" style="width: 100%;">
-                  <mat-label>Region</mat-label>
-                  <mat-select formControlName="region">
-                    <mat-option *ngFor="let region of filteredRegions" [value]="region">
-                      {{ region }}
-                    </mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="signupForm.controls['region'].hasError('required')">This field is required</mat-error>
-                </mat-form-field>
-                <div class="horizontal" *ngIf="role === 'Customer'">
-                  <span>Upload your image</span>
-                  <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event)">
-                </div>
-              </div>
-              <div class="horizontal">
-                <mat-form-field appearance="outline">
-                  <mat-label>Password</mat-label>
-                  <input type="password" matInput formControlName="password">
-                  <mat-error *ngIf="signupFormControls['password']['errors']?.['required']">This field is required</mat-error>
-                  <mat-error *ngIf="signupFormControls['password']['errors']?.['pattern']">Example: Example&#64;123</mat-error>
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                  <mat-label>Confirm password</mat-label>
-                  <input type="password" matInput formControlName="confirm">
-                  <mat-error *ngIf="signupFormControls['confirm']['errors']?.['required']">This field is required</mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <button style="margin-top: 10px;" type="submit" (click)="handleRegistration()">Sign Up</button>
-          </form>
+  <div class="container" id="container">
+    <div class="form-container sign-up-container">
+      <form action="#" class="signup-form" [formGroup]="signupForm">
+        <h1>Create Customer Account</h1>
+        <div>
+          <div class="horizontal">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="username">
+              <mat-error *ngIf="signupFormControls['username'].hasError('required')">
+                This field is required
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email">
+              <mat-error *ngIf="signupFormControls['email'].hasError('required')">
+                This field is required
+              </mat-error>
+              <mat-error *ngIf="signupFormControls['email'].hasError('email')">
+                Invalid email format
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="horizontal">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Phone No.</mat-label>
+              <input matInput formControlName="phno">
+              <mat-error *ngIf="signupFormControls['phno'].hasError('required')">
+                This field is required
+              </mat-error>
+              <mat-error *ngIf="signupFormControls['phno'].hasError('pattern')">
+                Invalid phone number format
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field *ngIf="role === 'Customer'" appearance="outline" style="width: 100%;">
+              <mat-label>Age</mat-label>
+              <input matInput formControlName="age">
+              <mat-error *ngIf="signupFormControls['age'].hasError('required')">
+                This field is required
+              </mat-error>
+              <mat-error *ngIf="signupFormControls['age'].hasError('pattern')">
+                Invalid age format
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="horizontal">
+            <mat-form-field *ngIf="role === 'Customer'" appearance="outline" style="width: 100%;margin-top: 20px;">
+              <mat-label>Gender</mat-label>
+              <mat-select formControlName="gender">
+                <mat-option value="Male">Male</mat-option>
+                <mat-option value="Female">Female</mat-option>
+                <mat-option value="Other">Other</mat-option>
+              </mat-select>
+              <mat-error *ngIf="signupFormControls['gender'].hasError('required')">
+                This field is required
+              </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" style="width: 100%; margin-top: 20px;">
+              <mat-label>Region</mat-label>
+              <mat-select formControlName="region">
+                <mat-option *ngFor="let region of filteredRegions" [value]="region">{{ region }}</mat-option>
+              </mat-select>
+              <mat-error *ngIf="signupFormControls['region'].hasError('required')">
+                This field is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="horizontal" *ngIf="role === 'Customer'" style="margin-top: 20px;">
+            <span>Upload Your Image</span>
+            <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event)">
+          </div>
+          <div class="horizontal" style="margin-top: 20px;">
+            <mat-form-field appearance="outline">
+              <mat-label>Password</mat-label>
+              <input type="password" matInput formControlName="password">
+              <mat-error *ngIf="signupFormControls['password'].hasError('required')">
+                This field is required
+              </mat-error>
+              <mat-error *ngIf="signupFormControls['password'].hasError('pattern')"></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm Password</mat-label>
+              <input type="password" matInput formControlName="confirm">
+              <mat-error *ngIf="signupFormControls['confirm'].hasError('required')">
+                This field is required
+              </mat-error>
+            </mat-form-field>
+          </div>
         </div>
+        <button mat-raised-button color="primary" style="margin-top: 20px;" type="submit" (click)="handleRegistration()">
+          Sign Up
+        </button>
+      </form>
+    </div>    
         <div class="form-container sign-in-container">
           <form action="#" class="signin-form" [formGroup]="signinForm">
             <h1>Sign in</h1>

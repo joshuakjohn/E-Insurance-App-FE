@@ -157,7 +157,21 @@
                             required
                           />
                         </div>
-              
+                        <div class="form-group">
+                          <label for="gender">Gender:</label>
+                          <span *ngIf="!isEditing">{{ agent?.gender || 'No gender provided' }}</span>
+                          <select 
+                            *ngIf="isEditing" 
+                            id="gender" 
+                            [(ngModel)]="agent.gender" 
+                            name="gender" class="gender">
+                            <option *ngIf="agent?.gender" [value]="agent.gender">{{ agent.gender }}</option>
+                            <option *ngIf="!agent.gender" value="">Select Gender</option>
+                            <option value="Male" *ngIf="agent?.gender !== 'Male'">Male</option>
+                            <option value="Female" *ngIf="agent?.gender !== 'Female'">Female</option>
+                            <option value="Other" *ngIf="agent?.gender !== 'Other'">Other</option>
+                          </select>
+                        </div>                
                         <!-- Email Field -->
                         <div class="form-group">
                           <label for="email">Email:</label>

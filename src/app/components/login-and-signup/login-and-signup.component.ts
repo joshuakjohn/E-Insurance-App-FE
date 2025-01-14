@@ -37,6 +37,7 @@ export class LoginAndSignupComponent {
         email: ['', [Validators.required, Validators.email]],
         phno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
         age: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+        gender:['',[Validators.required]],
         region: ['', [Validators.required]],
         password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/)]],
         confirm: ['', [Validators.required]]
@@ -50,7 +51,8 @@ export class LoginAndSignupComponent {
     })
 }
 
-get signupFormControls() { return this.signupForm.controls; }
+get signupFormControls() {
+   return this.signupForm.controls; }
 
 get signinFormControls() { return this.signinForm.controls; }
 
@@ -89,9 +91,8 @@ get signinFormControls() { return this.signinForm.controls; }
     });
   }
   handleRegistration(){
-    
     if(this.signupForm.valid){
-
+      console.log(this.signinFormControls)
         const formData = new FormData();
         // Append the file
         if (this.uploadedFile) {
