@@ -1,5 +1,4 @@
 <div class="customer-profile">
-
   <section class="profile-section">
     <!-- Profile Picture -->
     <div class="profile-picture">
@@ -21,6 +20,23 @@
             name="username" 
             required
           />
+        </div>
+
+        <!-- Gender Field -->
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <span *ngIf="!isEditing">{{ customerData?.gender || 'No gender provided' }}</span>
+          <select 
+            *ngIf="isEditing" 
+            id="gender" 
+            [(ngModel)]="customerData.gender" 
+            name="gender" class="gender">
+            <option *ngIf="customerData?.gender" [value]="customerData.gender">{{ customerData.gender }}</option>
+            <option *ngIf="!customerData?.gender" value="">Select Gender</option>
+            <option value="Male" *ngIf="customerData?.gender !== 'Male'">Male</option>
+            <option value="Female" *ngIf="customerData?.gender !== 'Female'">Female</option>
+            <option value="Other" *ngIf="customerData?.gender !== 'Other'">Other</option>
+          </select>
         </div>
 
         <!-- Email Field -->
@@ -71,7 +87,7 @@
       {{ isEditing ? 'Cancel' : 'Edit' }}
     </button>
 
-  <!-- Save Changes Button -->
+    <!-- Save Changes Button -->
     <button class="save" *ngIf="isEditing"
       [disabled]="!profileForm.valid" 
       (click)="saveChanges()">

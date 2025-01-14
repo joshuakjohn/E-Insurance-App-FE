@@ -20,13 +20,23 @@
                 <mat-error *ngIf="signupFormControls['email']['errors']?.['email']">Invalid email format</mat-error>
             </mat-form-field>
           </div>
+         
           <mat-form-field appearance="outline" style="width: 100%;">
             <mat-label>Phone No.</mat-label>
             <input matInput formControlName="phno">
             <mat-error *ngIf="signupFormControls['phno']['errors']?.['required']">This field is required</mat-error>
             <mat-error *ngIf="signupFormControls['phno']['errors']?.['pattern']">Invalid phone number format</mat-error>
           </mat-form-field>
-          <div>
+          <div class="horizontal">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Gender</mat-label>
+              <mat-select formControlName="gender">
+                <mat-option value="Male">Male</mat-option>
+                <mat-option value="Female">Female</mat-option>
+                <mat-option value="Other">Other</mat-option>
+              </mat-select>
+              <mat-error *ngIf="signupFormControls['gender'].hasError('required')">This field is required</mat-error>
+            </mat-form-field>
             <mat-form-field appearance="outline" style="width: 100%;">
               <mat-label>Region</mat-label>
               <input matInput formControlName="region">
