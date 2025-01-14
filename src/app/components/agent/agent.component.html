@@ -127,19 +127,15 @@
                         <button (click)="downloadPdf(policy.idProof.data)">Identity Proof</button>
                     </div>
                 </div>
-                <div class="pagination" *ngIf="pendingPoliciesLoader === 'none' && totalPages>1">              
-                  <button mat-button (click)="prevPage2()" [disabled]="currentPage === 1">Previous</button>
-                  <span>Page {{currentPage}} of {{totalPages}}</span>
-                  <button mat-button (click)="nextPage2()" [disabled]="currentPage === totalPages">Next</button>
+                <div class="pagination" *ngIf="pendingPoliciesLoader === 'none' && pendingTotalPages>1">              
+                  <button mat-button (click)="prevPage2()" [disabled]="pendingCurrentPage === 1">Previous</button>
+                  <span>Page {{pendingCurrentPage}} of {{pendingTotalPages}}</span>
+                  <button mat-button (click)="nextPage2()" [disabled]="pendingCurrentPage === pendingTotalPages">Next</button>
               </div>
             </div>
             
             <ng-template #profile>
                 <div class="customer-profile">
-                  <!-- Header -->
-                  <header class="profile-header">
-                    <h1>Agent Profile</h1>
-                  </header>
               
                   <section class="profile-section">
                     <div class="profile-picture">
@@ -161,7 +157,21 @@
                             required
                           />
                         </div>
-              
+                        <div class="form-group">
+                          <label for="gender">Gender:</label>
+                          <span *ngIf="!isEditing">{{ agent?.gender || 'No gender provided' }}</span>
+                          <select 
+                            *ngIf="isEditing" 
+                            id="gender" 
+                            [(ngModel)]="agent.gender" 
+                            name="gender" class="gender">
+                            <option *ngIf="agent?.gender" [value]="agent.gender">{{ agent.gender }}</option>
+                            <option *ngIf="!agent.gender" value="">Select Gender</option>
+                            <option value="Male" *ngIf="agent?.gender !== 'Male'">Male</option>
+                            <option value="Female" *ngIf="agent?.gender !== 'Female'">Female</option>
+                            <option value="Other" *ngIf="agent?.gender !== 'Other'">Other</option>
+                          </select>
+                        </div>                
                         <!-- Email Field -->
                         <div class="form-group">
                           <label for="email">Email:</label>

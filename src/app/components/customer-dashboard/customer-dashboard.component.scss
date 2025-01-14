@@ -56,15 +56,15 @@ button:active{
 
 .toggle-group{
     border: 1px solid #214c87;
+    margin-bottom: 40px;
 }
 
 ::ng-deep .mat-button-toggle-checked {
     background-color: #ecf2ff !important;
   }
-  .default-button{
-    height: 40px;
-    background-color: transparent;
-    color: rgb(0, 0, 0);
-   border: none;
-   width: 100%;
+  
+.default-button{
+    border: none;
+    width: auto;
+    border-radius: 1px;
 }

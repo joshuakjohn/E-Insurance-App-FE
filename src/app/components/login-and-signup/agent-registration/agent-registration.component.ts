@@ -27,6 +27,7 @@ export class AgentRegistrationComponent {
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       phno: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      gender:['',[Validators.required]],
       region: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])/)]],
       confirm: ['', [Validators.required]]
