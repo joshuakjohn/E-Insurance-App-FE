@@ -32,6 +32,10 @@ button:hover{
   background-color: #557fba;
 }
 
+button:active {
+	transform: scale(0.95);
+}
+
 .horizontal{
 	display: flex;
   justify-content: space-between;

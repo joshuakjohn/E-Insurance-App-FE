@@ -107,6 +107,8 @@ export class PolicyComponent {
     this.httpService.postApiCall('/api/v1/policy', formData, this.headers).subscribe({
       next: (res) => {
         alert('Your policy has been submitted successfully!');
+        this.policyApplication.emit('close')
+        this.policyForm.reset();
       },
       error: (err) => {
         console.error('Error creating policy', err);
