@@ -160,7 +160,7 @@ get signinFormControls() { return this.signinForm.controls; }
             if(err.error.message === 'Agent not approved')
               this.loginErrorMessage = '*Agent not approved'
             else
-              this.loginErrorMessage = '*invalid email or password'
+              this.loginErrorMessage = '*Invalid email or password'
         }
       });
     }
