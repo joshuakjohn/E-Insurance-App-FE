@@ -12,8 +12,7 @@
     <div style="margin-top: 10px;">
         <button class="default-button" mat-menu-item (click)="revealTabs('plan')">Add New Plan</button>
         <button class="default-button" mat-menu-item (click)="revealTabs('scheme')">Add Scheme</button>
-        <button class="default-button" mat-menu-item (click)="revealTabs('policy')">Approve Policies</button>
-        <button class="default-button" mat-menu-item (click)="logout()">Logout</button>
+        <button class="default-button" mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon>Logout</button>
     </div>
 </mat-menu>
 
@@ -28,13 +27,7 @@
             <mat-button-toggle (click)="tabSwitch('agent')" [checked]="tab === 'agent'" class="toggle">
                 Browse Agents
             </mat-button-toggle>
-            <mat-button-toggle *ngIf="showAdminTabs['plan']" (click)="tabSwitch('plan')" [checked]="tab === 'plan'" class="toggle">
-                Add New Plan
-            </mat-button-toggle>
-            <mat-button-toggle *ngIf="showAdminTabs['scheme']" (click)="tabSwitch('scheme')" [checked]="tab === 'scheme'" class="toggle">
-                Add New Scheme
-            </mat-button-toggle>
-            <mat-button-toggle *ngIf="showAdminTabs['policy']" (click)="tabSwitch('policy')" class="toggle">
+            <mat-button-toggle (click)="tabSwitch('policy')" [checked]="tab === 'policy'" class="toggle">
                 Approve Policies
             </mat-button-toggle>
         </mat-button-toggle-group>
@@ -72,10 +65,10 @@
           <div *ngIf="tab === 'agent'" class="agents">
             <div *ngFor="let agent of agents" class="agent">
                 <div class="agent-card-header">
-                    <p class="agent-name">Name: {{ agent.username }}</p>
-                    <p>Email: {{ agent.email }}</p>
-                    <p>Region: {{ agent.region }}</p>
-                    <p>Phone number: {{ agent.phno }}</p>
+                    <p class="agent-name"><span><mat-icon>person</mat-icon></span>Agent name: {{ agent.username }}</p>
+                    <p><span><mat-icon>email</mat-icon></span>Email: {{ agent.email }}</p>
+                    <p><span><mat-icon>location_on</mat-icon></span>Region: {{ agent.region }}</p>
+                    <p><span><mat-icon>phone</mat-icon></span>Phone number: {{ agent.phno }}</p>
                 </div>
                 
                 <div class="agent-buttons">
@@ -98,6 +91,8 @@
                                 <h3>{{ policy.policyName }}</h3>
                             </div>
                             <div class="policy-card-body">
+                                <p>Customer name: {{ policy.customerName}}</p>
+                                <p>Customer email: {{ policy.customerEmail }} </p>
                                 <p>Description: {{ policy.description }}</p>
                                 <p>Premium Amount: {{ policy.premiumAmount }}</p>
                                 <p>Policy Duration: {{ policy.duration }}</p>
@@ -117,13 +112,21 @@
                         <p>No customers found for this agent</p>
                     </div>
                     <div *ngIf="customers.length > 0" class="customer-cards">
-                        <div class="customer-card" *ngFor="let customer of customers">
-                            <p>Customer Name: {{ customer.username }}</p>
-                            <p>Email: {{ customer.email }}</p>
-                            <p>Phone: {{ customer.phno }}</p>
-                            <p>Age: {{ customer.age }}</p>
-                            <p>Address: {{ customer.address }}</p>
-                        </div>
+                        <div class="customer-cards">
+                            <div class="customer-card" *ngFor="let customer of customers">
+                              <div class="customer-header">
+                                <div class="avatar">
+                                    <img [src]="customer.profilePicUrl" alt="Profile Picture" class="customer-avatar" (error)="customer.profilePicUrl = 'assets/default-profile.png'" />
+                                </div>
+                                <p class="customer-name">{{ customer.username }}</p>
+                              </div>
+                              <div class="customer-details">
+                                <p><span class="label"><mat-icon>email</mat-icon>Email:</span> {{ customer.email }}</p>
+                                <p><span class="label"><mat-icon>phone</mat-icon>Phone:</span> {{ customer.phno }}</p>
+                                <p><span class="label"><mat-icon>location_on</mat-icon>Region:</span> {{ customer.region }}</p>
+                              </div>
+                            </div>
+                        </div>                          
                     </div>
                 </div>
             </div>            
@@ -143,7 +146,7 @@
                     <p>Policy duration: {{policy.duration}}</p>
                     <p>Policy coverage: {{policy.coverage}}</p>
                     <p>Premium paid: {{policy.premiumPaid}}</p>
-                    <p>Policy start date: {{policy.policyStartDate}}</p>
+                    <p>Policy start date: {{policy.policyStartDate  | date: 'yyyy-MM-dd'}}</p>
                     <p>Policy status: {{policy.status}}</p>
                     <p>Pending Premium: {{policy.pendingPremium}}</p>
                 </div>
@@ -153,12 +156,15 @@
             </div>
         </div>
 
-        <div *ngIf="tab === 'plan'" class="section">
-          <router-outlet></router-outlet>
-        </div>
-        
-        <div *ngIf="tab === 'scheme'" class="section">
-            <app-scheme-form></app-scheme-form>
+        <div class="form-overlay" *ngIf="showPlanForm || showSchemeForm">
+            <div class="navigation-item">
+              <a (click)="closeForm()" class="navigation-link">Dashboard</a>
+              <span> / {{ showPlanForm ? 'Add New Plan' : 'Add New Scheme' }}</span>
+            </div>
+            <div class="form-container">
+              <app-plan-form *ngIf="showPlanForm"></app-plan-form>
+              <app-scheme-form *ngIf="showSchemeForm"></app-scheme-form>
+            </div>
         </div>
     </div>
 </div>
