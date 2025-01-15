@@ -48,7 +48,7 @@
         background-color: #f1f4f9;
         box-sizing: border-box;
         border-radius: 30px;
-        margin: 10px;
+        margin: 30px 10px;
         // padding: 20px 30px 20px 30px;
     }
 
@@ -60,8 +60,9 @@
   background-color: #f1f4f9;
   box-sizing: border-box;
   border-radius: 30px;
-  margin: 10px;
+  margin: 30px 10px;
   padding: 20px 30px 20px 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .details {
