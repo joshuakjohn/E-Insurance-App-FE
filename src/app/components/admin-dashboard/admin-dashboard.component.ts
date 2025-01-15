@@ -35,6 +35,9 @@ export class AdminDashboardComponent {
   isViewingCustomers: { [agentId: string]: boolean } = {};
   currentlyViewingAgent: string | null = null;
 
+  errorMessage: string = '';
+  profilePicUrl: string = '';
+
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, private httpService: HttpService, public dialog: MatDialog, public router: Router) {
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
   }
@@ -225,13 +228,50 @@ export class AdminDashboardComponent {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
     this.httpService.getApiCall(`/api/v1/customer/${agentId}/admin`, header).subscribe({
       next: (res: any) => {
-        this.customers = res.data;
+        this.customers = res.data.map((customer: any) => ({
+          ...customer,
+          profilePicUrl: customer.profilePhoto
+            ? this.createImageFromBuffer(customer.profilePhoto)
+            : 'assets/default-profile.png',
+         }));
       },
       error: (err: any) => {
         console.error('Error fetching customers:', err);
         this.customers = [];
       },
     });
+  }
+
+  createImageFromBuffer(buffer: any): string | null {
+    if (!buffer || !Array.isArray(buffer.data)) {
+      console.error('Invalid buffer data');
+      return null;
+    }
+
+    try {
+      const base64String = this.bufferToBase64(buffer.data);
+      const imageBlob = this.base64ToBlob(base64String);
+      return URL.createObjectURL(imageBlob);
+    } catch (error) {
+      console.error('Error in createImageFromBuffer:', error);
+      return null;
+    }
+  }
+
+  bufferToBase64(buffer: number[]): string {
+    return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+  }
+
+  base64ToBlob(base64: string): Blob {
+    const binaryString = window.atob(base64);
+    const length = binaryString.length;
+    const uintArray = new Uint8Array(length);
+
+    for (let i = 0; i < length; i++) {
+      uintArray[i] = binaryString.charCodeAt(i);
+    }
+
+    return new Blob([uintArray]);
   }
   
   approvePolicy(policyId: string) {
