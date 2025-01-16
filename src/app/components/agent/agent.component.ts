@@ -270,7 +270,7 @@ export class AgentComponent {
   }
 
   nextPage2(): void {
-    if (this.pendingCurrentPage < this.totalPages) {
+    if (this.pendingCurrentPage < this.pendingTotalPages) {
         this.pendingCurrentPage++;
         this.fetchAgentPolicies();
     }

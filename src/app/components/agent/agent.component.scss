@@ -351,6 +351,7 @@ button:active{
   border-radius: 1.5rem;
   width: 100%;
   overflow: hidden;
+  display: flex;
 }
 
 .card-header {
@@ -358,6 +359,7 @@ button:active{
   background: linear-gradient(135deg, #a1b5d0 0%, #557fba 50%, #214c87 100%);
   position: relative;
   overflow: hidden;
+  width: 300px;
 }
 
 .card-header::before {
@@ -373,9 +375,12 @@ button:active{
 .profile-section {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .profile-picture-wrapper {
@@ -393,6 +398,9 @@ button:active{
 
 .profile-info {
   color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .profile-info h2 {
@@ -422,6 +430,7 @@ button:active{
   flex-direction: column;
   align-items: center;
   background-color: #f1f4f9;
+  width: 100%;
 }
 
 .details-grid {
@@ -503,6 +512,10 @@ button:active{
     padding: 5px 10px;
     border-radius: 20px;
     color: white;
+}
+
+.view-policies-btn{
+  margin-top: 50px;
 }
 
 // .customer-policy-button{
