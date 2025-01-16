@@ -59,7 +59,11 @@ export class PolicyComponent {
       incomeproofupload: ['', [Validators.required]],
       ageproofupload: ['', [Validators.required]],
       idproofupload: ['', [Validators.required]],
-      photoupload: ['', [Validators.required]]
+      photoupload: ['', [Validators.required]],
+      nomineerel: [''],
+      nomineecon: [''],
+      nomineename: [''],
+      nomineeadd: ['']
     })
   }
 
@@ -103,17 +107,19 @@ export class PolicyComponent {
       if (file) {
         formData.append(proofType, file, file.name);
       }
-    }    
-    this.httpService.postApiCall('/api/v1/policy', formData, this.headers).subscribe({
-      next: (res) => {
-        alert('Your policy has been submitted successfully!');
-        this.policyApplication.emit('close')
-        this.policyForm.reset();
-      },
-      error: (err) => {
-        console.error('Error creating policy', err);
-      }
-    });
+    }
+    if(this.policyForm.valid){
+      this.httpService.postApiCall('/api/v1/policy', formData, this.headers).subscribe({
+        next: (res) => {
+          alert('Your policy has been submitted successfully!');
+          this.policyApplication.emit('close')
+          this.policyForm.reset();
+        },
+        error: (err) => {
+          console.error('Error creating policy', err);
+        }
+      });
+    }
   }
 
   generatePDF(): any {
@@ -121,19 +127,19 @@ export class PolicyComponent {
     const pdf = new jsPDF();
 
     // Extract form values
-    const fullName = (document.getElementById('fullName') as HTMLInputElement).value;
-    const address = (document.getElementById('address') as HTMLInputElement).value;
-    const dob = (document.getElementById('dob') as HTMLInputElement).value;
-    const gender = (document.getElementById('gender') as HTMLInputElement).value;
-    const income = (document.getElementById('income') as HTMLInputElement).value;
-    const education = (document.getElementById('education') as HTMLInputElement).value;
-    const nomineeName = (document.getElementById('nomineename') as HTMLInputElement).value;
-    const nomineeRelation = (document.getElementById('nomineerel') as HTMLInputElement).value;
-    const nomineeAddress = (document.getElementById('nomineeadd') as HTMLInputElement).value;
-    const nomineeContact = (document.getElementById('nomineecon') as HTMLInputElement).value;
-    const idProof = (document.getElementById('idproof') as HTMLInputElement).value;
-    const ageProof = (document.getElementById('ageproof') as HTMLInputElement).value;
-    const incomeProof = (document.getElementById('incomeproof') as HTMLInputElement).value;
+    const fullName = this.policyForm.get('fullname')?.value;
+    const address = this.policyForm.get('address')?.value;
+    const dob = this.policyForm.get('dob')?.value;
+    const gender = this.policyForm.get('gender')?.value;
+    const income = this.policyForm.get('income')?.value;
+    const education = this.policyForm.get('education')?.value;
+    const idProof = this.policyForm.get('idproof')?.value;
+    const ageProof = this.policyForm.get('ageproof')?.value;
+    const incomeProof = this.policyForm.get('incomeproof')?.value;
+    const nomineeName = this.policyForm.get('nomineename')?.value;
+    const nomineeRelation = this.policyForm.get('nomineerel')?.value;
+    const nomineeAddress = this.policyForm.get('nomineeadd')?.value;
+    const nomineeContact = this.policyForm.get('nomineecon')?.value;
 
 
     // Add content to the PDF
@@ -141,11 +147,11 @@ export class PolicyComponent {
     pdf.text('Applicant Details', 10, 35);
     pdf.line(10, 36, 52, 36);
     pdf.text(`Name: ${fullName}`, 10, 50);
-    pdf.text(`Address: ${address}`, 10, 60);
-    pdf.text(`Date of Birth: ${dob}`, 10, 70);
+    pdf.text(`Address: ${address}`, 10, 60);    
+    pdf.text(`Date of Birth: ${dob.toLocaleDateString('en-CA')}`, 10, 70);
     pdf.text(`Gender: ${gender}`, 10, 80);
     pdf.text(`Annual Income: ${income}`, 10, 90);
-    pdf.text(`Educational Qualification: ${education}`, 10, 100);
+    pdf.text(`Educational Qualification: ${education}`, 10, 100);    
     pdf.text('Nominee Details', 10, 115);
     pdf.line(10, 116, 52, 116);
     pdf.text(`Nominee Name: ${nomineeName}`, 10, 130);
@@ -154,7 +160,7 @@ export class PolicyComponent {
     pdf.text(`Nominee Contact: ${nomineeContact}`, 10, 160);
     pdf.text('Uploaded Document Details', 10, 175);
     pdf.line(10, 176, 81, 176);
-    pdf.text(`Id Proof: ${idProof}`, 10, 190);
+    pdf.text(`Id Proof: ${idProof}`, 10, 190);    
     pdf.text(`Age Proof: ${ageProof}`, 10, 200);
     pdf.text(`Income Proof: ${incomeProof}`, 10, 210);
 
