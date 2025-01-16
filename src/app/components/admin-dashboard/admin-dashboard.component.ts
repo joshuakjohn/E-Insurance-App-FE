@@ -156,17 +156,46 @@ export class AdminDashboardComponent {
 
   fetchPendingPolicies(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    
+    // Check if customers are already loaded
+    if (!this.customers.length) {
+      this.httpService.getApiCall('/api/v1/customer/admin', header).subscribe({
+        next: (res: any) => {
+          console.log(res);
+          
+          this.customers = res.data;
+          this.loadPolicies(header);
+        },
+        error: (err: any) => {
+          console.error('Error fetching customers:', err);
+          this.customers = [];
+        },
+      });
+    } else {
+      this.loadPolicies(header);
+    }
+  }
+  
+  private loadPolicies(header: HttpHeaders): void {
     this.httpService.getApiCall('/api/v1/policy/admin', header).subscribe({
       next: (res: any) => {
         this.pendingPolicies = res.data.filter((policy: any) => policy.status === 'Waiting for approval');
+        
+        // Map customer details to each policy
+        this.pendingPolicies.map(policy => {
+          const customer = this.customers.find(cust => cust._id === policy.customerId);
+          if (customer) {
+            policy.customerName = customer.username;
+            policy.customerEmail = customer.email;
+          }
+        });
       },
-      
       error: (err: any) => {
         console.error('Error fetching pending policies:', err);
       },
     });
   }
-  
+
   viewAgentPolicies(agentId: string): void {
     // If already viewing policies for this agent, hide them
     if (this.isViewingPolicies[agentId]) {
@@ -233,7 +262,7 @@ export class AdminDashboardComponent {
           profilePicUrl: customer.profilePhoto
             ? this.createImageFromBuffer(customer.profilePhoto)
             : 'assets/default-profile.png',
-         }));
+        }));            
       },
       error: (err: any) => {
         console.error('Error fetching customers:', err);

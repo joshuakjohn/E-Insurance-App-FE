@@ -91,8 +91,6 @@
                                 <h3>{{ policy.policyName }}</h3>
                             </div>
                             <div class="policy-card-body">
-                                <p>Customer name: {{ policy.customerName}}</p>
-                                <p>Customer email: {{ policy.customerEmail }} </p>
                                 <p>Description: {{ policy.description }}</p>
                                 <p>Premium Amount: {{ policy.premiumAmount }}</p>
                                 <p>Policy Duration: {{ policy.duration }}</p>
@@ -140,6 +138,8 @@
                 justify-content: space-between;
                 align-items: center;">
                 <div>
+                    <p>Customer name: {{ policy.customerName}}</p>
+                    <p>Customer email: {{ policy.customerEmail }} </p>
                     <p>Policy name: {{policy.policyName}}</p>
                     <p>Description: {{policy.description}}</p>
                     <p>Premium amount: {{policy.premiumAmount}}</p>
