@@ -262,7 +262,7 @@ export class AdminDashboardComponent {
           profilePicUrl: customer.profilePhoto
             ? this.createImageFromBuffer(customer.profilePhoto)
             : 'assets/default-profile.png',
-        }));            
+         }));
       },
       error: (err: any) => {
         console.error('Error fetching customers:', err);
