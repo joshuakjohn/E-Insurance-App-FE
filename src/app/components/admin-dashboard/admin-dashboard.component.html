@@ -19,7 +19,18 @@
 <div class="main">
     <h1>Welcome {{ adminUsername }}!</h1>
 
-    <div class="agents">
+    <div *ngIf="showPlanForm || showSchemeForm" class="form-container">
+        <div class="navigation-item">
+          <a (click)="closeForm()" class="navigation-link">Dashboard</a>
+          <span> / {{ showPlanForm ? 'Add New Plan' : 'Add New Scheme' }}</span>
+        </div>
+        <div class="form-content">
+          <app-plan-form *ngIf="showPlanForm"></app-plan-form>
+          <app-scheme-form *ngIf="showSchemeForm"></app-scheme-form>
+        </div>
+    </div>
+
+    <div class="agents" *ngIf="!showPlanForm && !showSchemeForm">
         <mat-button-toggle-group name="fontStyle" aria-label="Font Style" class="tabs">
             <mat-button-toggle (click)="tabSwitch('allPlans')" checked="true" class="toggle">
                 Browse plans
@@ -62,7 +73,7 @@
             </div>
         </div>
           
-          <div *ngIf="tab === 'agent'" class="agents">
+        <div *ngIf="tab === 'agent'" class="agents">
             <div *ngFor="let agent of agents" class="agent">
                 <div class="agent-card-header">
                     <p class="agent-name"><span><mat-icon>person</mat-icon></span>Agent name: {{ agent.username }}</p>
@@ -116,7 +127,7 @@
                             <div class="customer-card" *ngFor="let customer of customers">
                               <div class="customer-header">
                                 <div class="avatar">
-                                    <img [src]="customer.profilePicUrl" alt="Profile Picture" class="customer-avatar" (error)="customer.profilePicUrl = 'assets/default-profile.png'" />
+                                    <img [src]="customer.profilePicUrl" alt="Profile Picture" class="customer-avatar" (error)="customer.profilePicUrl = 'assets/pngegg.png'" />
                                 </div>
                                 <p class="customer-name">{{ customer.username }}</p>
                               </div>
@@ -147,27 +158,12 @@
                     <p>Premium amount: {{policy.premiumAmount}}</p>
                     <p>Policy duration: {{policy.duration}}</p>
                     <p>Policy coverage: {{policy.coverage}}</p>
-                    <p>Premium paid: {{policy.premiumPaid}}</p>
                     <p>Policy start date: {{policy.policyStartDate  | date: 'yyyy-MM-dd'}}</p>
-                    <p>Policy status: {{policy.status}}</p>
-                    <p>Pending Premium: {{policy.pendingPremium}}</p>
                 </div>
                 <div>
                     <button mat-raised-button (click)="approvePolicy(policy._id)">Approve Policy</button>
                 </div>
             </div>
         </div>
-
-        <div class="form-overlay" *ngIf="showPlanForm || showSchemeForm">
-            <div class="navigation-item">
-              <a (click)="closeForm()" class="navigation-link">Dashboard</a>
-              <span> / {{ showPlanForm ? 'Add New Plan' : 'Add New Scheme' }}</span>
-            </div>
-            <div class="form-container">
-              <app-plan-form *ngIf="showPlanForm"></app-plan-form>
-              <app-scheme-form *ngIf="showSchemeForm"></app-scheme-form>
-            </div>
-        </div>
     </div>
 </div>
-
