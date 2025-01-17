@@ -28,7 +28,6 @@ export class AgentComponent {
   agent: any
   profilePicUrl: string = '';
   isEditing: boolean = false;
-
   currentPage: number = 1;
   pendingCurrentPage: number = 1;
   totalPages: number = 1;
@@ -36,8 +35,8 @@ export class AgentComponent {
   limit: number = 3;
   customerLoader:string = 'flex' 
   pendingPoliciesLoader = 'flex'
-
   originalAgentData: any;
+  viewPolicies = 'View Policies'
 
   constructor(public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, 
     private httpService: HttpService, public dialog: MatDialog, public router: Router, private cdr: ChangeDetectorRef){
@@ -69,7 +68,8 @@ export class AgentComponent {
       next: (res: any) => {
         this.agent = res.data
         this.originalAgentData={...res.data};
-        this.createImageFromBuffer(res.data.profilePhoto);
+        if(res.data.profilephoto !== null)
+        this.profilePicUrl = this.createImageFromBuffer(res.data.profilePhoto);
       },
       error: (err: any) => {
         console.error('Error fetching agent:', err);
@@ -83,6 +83,10 @@ export class AgentComponent {
     this.httpService.getApiCall('/api/v1/customer', header, params).subscribe({
         next: (res: any) => {
             this.customers = res.data;
+            this.customers.map(customer => {
+              if(customer.profilePhoto !== null)              
+                customer.profilePhoto = this.createImageFromBuffer(customer.profilePhoto)
+            })
             this.totalPages = res.totalPages;
             this.customerLoader = 'none'
         },
@@ -143,13 +147,17 @@ export class AgentComponent {
           this.httpService.getApiCall(`/api/v1/policy/${id}/getall/agent`, header)
         );
         this.customerPolicies = response.data;
-        this.height = this.customerPolicies.length*390+'px' 
+        this.height = this.customerPolicies.length*340+'px' 
+        this.viewPolicies = 'View less'
       } catch (error) {
         this.customerPolicies = []
         this.height = 50+'px'
+        this.viewPolicies = 'View less'
         console.error('Error fetching plans:', error);
       }
-    }     
+    }
+    if(this.extendedCard !== null)
+      this.viewPolicies = 'View policies'     
     this.extendedCard = this.extendedCard === id ? null : id; 
   }
 
@@ -201,17 +209,14 @@ export class AgentComponent {
     window.URL.revokeObjectURL(url);
   }
 
-  createImageFromBuffer(buffer: any): void {
+  createImageFromBuffer(buffer: any): any {
   
     const base64String = this.bufferToBase64(buffer.data);
   
-    // Ensure that the base64 string has the proper prefix for image type (e.g., PNG or JPEG)
-    let dataUrl = 'data:image/png;base64,' + base64String; // Change 'image/png' to the correct type if needed
-    
     try {
       const imageBlob = this.base64ToBlob(base64String);  // Convert the base64 part to a Blob
       const imageUrl = URL.createObjectURL(imageBlob);  // Generate an object URL for the image
-      this.profilePicUrl = imageUrl;  
+      return imageUrl
     } catch (error) {
       console.error('Error in createImageFromBuffer:', error);
     }
@@ -265,7 +270,7 @@ export class AgentComponent {
   }
 
   nextPage2(): void {
-    if (this.pendingCurrentPage < this.totalPages) {
+    if (this.pendingCurrentPage < this.pendingTotalPages) {
         this.pendingCurrentPage++;
         this.fetchAgentPolicies();
     }

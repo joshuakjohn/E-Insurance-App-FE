@@ -26,11 +26,11 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Gender</mat-label>
-          <mat-select formControlName="gender">
+          <mat-select formControlName="gender" id="gender">
             <mat-option value="Male">Male</mat-option>
             <mat-option value="Female">Female</mat-option>
-            <mat-error *ngIf="policyFormControls['gender']['errors']?.['required']">This field is required</mat-error>
           </mat-select>
+          <mat-error *ngIf="policyFormControls['gender']['errors']?.['required']">This field is required</mat-error>
         </mat-form-field>
       </div>
       
@@ -42,7 +42,7 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Educational Qualification</mat-label>
-          <mat-select formControlName="education">
+          <mat-select formControlName="education" id="education">
             <mat-option value="10th">10th</mat-option>
             <mat-option value="PU">PU</mat-option>
             <mat-option value="UG">UG</mat-option>
@@ -57,22 +57,22 @@
       <div class="horizontal">
         <mat-form-field appearance="outline">
           <mat-label>Nominee name</mat-label>
-          <input matInput id="nomineename">
+          <input matInput formControlName="nomineename" id="nomineename">
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Nominee Realation</mat-label>
-          <input matInput id="nomineerel">
+          <mat-label>Nominee Relation</mat-label>
+          <input matInput formControlName="nomineerel" id="nomineerel">
         </mat-form-field>
       </div>
       
       <div class="horizontal">
         <mat-form-field appearance="outline">
           <mat-label>Nominee Address</mat-label>
-          <input matInput id="nomineeadd">
+          <input matInput formControlName="nomineeadd" id="nomineeadd">
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Nominee contact number</mat-label>
-          <input matInput id="nomineecon">
+          <input matInput formControlName="nomineecon" id="nomineecon">
         </mat-form-field>
       </div>
       
@@ -90,7 +90,7 @@
             <h4>Income proof</h4>
             <mat-form-field appearance="outline">
               <mat-label>Document type</mat-label>
-              <mat-select formControlName="incomeproof">
+              <mat-select formControlName="incomeproof" id="incomeproof">
                 <mat-option value="Income certificate">Income certificate</mat-option>
                 <mat-option value="Salary certificate">Salary certificate</mat-option>
                 <mat-option value="Income tax return">Income tax return</mat-option>
@@ -106,7 +106,7 @@
             <h4>Identity proof</h4>
             <mat-form-field appearance="outline">
               <mat-label>Document type</mat-label>
-              <mat-select formControlName="idproof">
+              <mat-select formControlName="idproof" id="idproof">
                 <mat-option value="Aadhar">Aadhar</mat-option>
                 <mat-option value="Voter ID">Voter ID</mat-option>
                 <mat-option value="Drivers License">Drivers License</mat-option>
@@ -125,7 +125,7 @@
             <h4>Age proof</h4>
             <mat-form-field appearance="outline">
               <mat-label>Document type</mat-label>
-              <mat-select formControlName="ageproof">
+              <mat-select formControlName="ageproof" id="ageproof">
                 <mat-option value="Aadhar">Aadhar</mat-option>
                 <mat-option value="Voter ID">Voter ID</mat-option>
                 <mat-option value="Drivers License">Drivers License</mat-option>

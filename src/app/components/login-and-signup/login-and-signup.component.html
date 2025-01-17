@@ -5,14 +5,14 @@
         <h1>Create Customer Account</h1>
         <div>
           <div class="horizontal">
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" style="width: 100%;">
               <mat-label>Name</mat-label>
               <input matInput formControlName="username">
               <mat-error *ngIf="signupFormControls['username'].hasError('required')">
                 This field is required
               </mat-error>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" style="width: 100%;">
               <mat-label>Email</mat-label>
               <input matInput formControlName="email">
               <mat-error *ngIf="signupFormControls['email'].hasError('required')">
@@ -46,7 +46,7 @@
             </mat-form-field>
           </div>
           <div class="horizontal">
-            <mat-form-field *ngIf="role === 'Customer'" appearance="outline" style="width: 100%;margin-top: 20px;">
+            <mat-form-field *ngIf="role === 'Customer'" appearance="outline" style="width: 100%;">
               <mat-label>Gender</mat-label>
               <mat-select formControlName="gender">
                 <mat-option value="Male">Male</mat-option>
@@ -58,7 +58,7 @@
               </mat-error>
             </mat-form-field>
             
-            <mat-form-field appearance="outline" style="width: 100%; margin-top: 20px;">
+            <mat-form-field appearance="outline" style="width: 100%">
               <mat-label>Region</mat-label>
               <mat-select formControlName="region">
                 <mat-option *ngFor="let region of filteredRegions" [value]="region">{{ region }}</mat-option>
@@ -68,9 +68,9 @@
               </mat-error>
             </mat-form-field>
           </div>
-          <div class="horizontal" *ngIf="role === 'Customer'" style="margin-top: 20px;">
+          <div class="horizontal" *ngIf="role === 'Customer'">
             <span>Upload Your Image</span>
-            <input type="file" style="margin: 0 0 22.4px 30px;" (change)="onFileChange($event)">
+            <input type="file" style="margin: 0 0 12.4px 30px;" (change)="onFileChange($event)">
           </div>
           <div class="horizontal" style="margin-top: 20px;">
             <mat-form-field appearance="outline">
@@ -90,7 +90,7 @@
             </mat-form-field>
           </div>
         </div>
-        <button mat-raised-button color="primary" style="margin-top: 20px;" type="submit" (click)="handleRegistration()">
+        <button type="submit" (click)="handleRegistration()">
           Sign Up
         </button>
       </form>
