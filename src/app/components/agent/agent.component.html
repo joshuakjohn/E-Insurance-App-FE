@@ -39,38 +39,153 @@
             </div>
             
             <div class="customer" *ngFor="let customer of customers">
-                <pre>Name           :       {{customer.username}}</pre>
-                <pre>Email          :       {{customer.email}}</pre>
-                <pre>Age            :       {{customer.age}}</pre>
-                <pre>Region         :       {{customer.region}}</pre>
-                <pre>Phone number   :       {{customer.phno}}</pre>
-                <button (click)="viewCustomerPolicies(customer._id)">View policies</button>
+                <div>
+                  <div class="container">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="profile-section">
+                          <div class="profile-picture-wrapper">
+                            <img [src]="customer.profilePhoto? customer.profilePhoto: '../../../assets/pngegg.png'" alt="Profile picture" class="profile-picture">
+                          </div>
+                          <div class="profile-info">
+                            <h2>{{ customer.username | uppercase }}</h2>
+                            <span class="badge badge-blue">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                              </svg>
+                              Premium Customer
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="card-body">
+                        <div class="details-grid">
+                          <div class="detail-item">
+                            <span class="label">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                              </svg>
+                              Email
+                            </span>
+                            <span class="value">{{ customer.email }}</span>
+                          </div>
+                          <div class="detail-item">
+                            <span class="label">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                              </svg>
+                              Phone
+                            </span>
+                            <span class="value">{{ customer.phno }}</span>
+                          </div>
+                          <div class="detail-item">
+                            <span class="label">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                <path d="M2 12h20"/>
+                              </svg>
+                              Age
+                            </span>
+                            <span class="value">{{ customer.age }} years</span>
+                          </div>
+                          <div class="detail-item">
+                            <span class="label">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                <circle cx="12" cy="7" r="4"/>
+                              </svg>
+                              Gender
+                            </span>
+                            <span class="value">{{ customer.gender }}</span>
+                          </div>
+                          <div class="detail-item">
+                            <span class="label">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                              </svg>
+                              Region
+                            </span>
+                            <span class="value">{{ customer.region }}</span>
+                          </div>
+                        </div>
+                        
+                        <button class="view-policies-btn" (click)="viewCustomerPolicies(customer._id)">
+                          {{ extendedCard === customer._id ? 'View less' : 'View policies' }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="details"
-                [ngStyle]="{ 
-                  'height': extendedCard === customer._id ? height : '0', 
-                }">
+                [ngStyle]="{'height': extendedCard === customer._id ? height : '0'}">
                     <div *ngIf="customerPolicies.length !== 0; else noPolicy" class="customer">
                         <div *ngFor="let policy of customerPolicies" style="display: flex;
                         flex-direction: column;
                         justify-content: space-between;
                         background-color: rgb(220, 228, 237);
-                        padding: 10px 30px 20px 30px;
-                        margin-bottom: 20px;
-                        border-radius: 30px;">
-                            <div class="policy">
-                                <pre>Policy name          :       {{policy.policyName}}</pre>
-                                <pre>Premium amount       :       {{policy.premiumAmount}}</pre>
-                                <pre>Policy duration      :       {{policy.duration}}</pre>
-                                <pre>Policy coverage      :       {{policy.coverage}}</pre>
-                                <pre>Premium paid         :       {{policy.premiumPaid}}</pre>
-                                <pre>Policy start date    :       {{policy.policyStartDate | date: 'yyyy-MM-dd'}}</pre>
-                                <pre>Policy status        :       {{policy.status}}</pre>
-                                <pre>Pending Premium      :       {{policy.pendingPremium}}</pre>
-                            </div>
+                        padding: 30px 40px 30px 40px;
+                        margin: 0px 50px 20px 50px;
+                        border-radius: 30px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                        ">
+                        <div style="display: flex;
+                        width: 100%;
+                        justify-content: space-between;">
+                          <h1>{{policy.policyName}}</h1>
+                          <h3 class="status">Status: {{policy.status}}</h3>
+                        </div>
+                        <div style="display: flex;
+                        gap: 20px;">
+                          <div class="detail-item">
+                            <span class="label">
+                              Premium amount
+                            </span>
+                            <span class="value">₹{{ policy.premiumAmount }}</span>
+                          </div>
+  
+                          <div class="detail-item">
+                            <span class="label">
+                              Policy coverage
+                            </span>
+                            <span class="value">₹{{ policy.coverage }}</span>
+                          </div>
+
+                          <div class="detail-item">
+                            <span class="label">
+                              Policy duration
+                            </span>
+                            <span class="value">{{ policy.duration }} Months</span>
+                          </div>
+
+                          <div class="detail-item">
+                            <span class="label">
+                              Premium paid
+                            </span>
+                            <span class="value">{{policy.premiumPaid}} Premiums</span>
+                          </div>
+
+                          <div class="detail-item">
+                            <span class="label">
+                              Pending Premium
+                            </span>
+                            <span class="value">{{policy.pendingPremium}} Premiums</span>
+                          </div>
+
+                          <div class="detail-item">
+                            <span class="label">
+                              Policy start date
+                            </span>
+                            <span class="value">{{policy.policyStartDate | date: 'yyyy-MM-dd'}}</span>
+                          </div>
+                        </div>
+                        <h3 style="margin-top: 20px;">Download documents</h3>
                             <div style="display: flex;
-                            gap: 10px;
-                            margin-top: 5px;">
+                            gap: 20px;">
                                 <button (click)="downloadPdf(policy.policyApplication.data)">View Application</button>
                                 <button (click)="downloadPdf(policy.incomeProof.data)">Income Proof</button>
                                 <button (click)="downloadPdf(policy.ageProof.data)">Age Proof</button>
@@ -81,7 +196,7 @@
                     <ng-template #noPolicy>
                         <div style="display: flex;
                         justify-content: center;">
-                            <h2 style="margin-top: 20px;">No policy found</h2>
+                            <h2>No policy found</h2>
                         </div>
                     </ng-template>
                 </div>
@@ -102,30 +217,65 @@
                 <div *ngIf="pendingPolicies.length === 0 && pendingPoliciesLoader === 'none'" class="no-policies">
                       <p>No pending policies for approval are found.</p>
                 </div>
-                <div class="customer" *ngFor="let policy of pendingPolicies" style="display: flex;
+                <div class="pending" *ngFor="let policy of pendingPolicies" style="display: flex;
                 flex-direction: column;">
+
+                  <div style="display: flex;
+                  width: 100%;
+                  justify-content: space-between;
+                  margin-bottom: 30px;">
+                  <div>
+                    <h1 style="margin-bottom: 5px">{{policy.customerName}}: {{policy.policyName}}</h1>
                     <div style="display: flex;
-                    justify-content: space-between;
-                    align-items: center;">
-                        <div>
-                            <pre>Customer name      :       {{policy.customerName}}</pre>
-                            <pre>Customer email     :       {{policy.customerEmail}}</pre>
-                            <pre>Policy name        :       {{policy.policyName}}</pre>
-                            <pre>Premium amount     :       {{policy.premiumAmount}}</pre>
-                            <pre>Policy duration    :       {{policy.duration}}</pre>
-                            <pre>Policy coverage    :       {{policy.coverage}}</pre>
-                        </div>
-                        <div>
-                            <button style="width: 150px;" (click)="forwardButton(policy._id)">Forward to admin</button>
-                        </div>
+                    align-items: center;
+                    gap: 5px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                      </svg>
+                      <span>{{policy.customerEmail}}</span>
                     </div>
-                    <div style="display: flex;
-                    gap: 10px;">
-                        <button (click)="downloadPdf(policy.policyApplication.data)">View Application</button>
-                        <button (click)="downloadPdf(policy.incomeProof.data)">Income Proof</button>
-                        <button (click)="downloadPdf(policy.ageProof.data)">Age Proof</button>
-                        <button (click)="downloadPdf(policy.idProof.data)">Identity Proof</button>
+                  </div>
+                    <button style="width: 150px;" (click)="forwardButton(policy._id)">Forward to admin</button>
+                  </div>
+                  <div style="display: flex;
+                  gap: 20px;">
+                    <div class="detail-item">
+                      <span class="label">
+                        Premium amount
+                      </span>
+                      <span class="value">₹{{ policy.premiumAmount }}</span>
                     </div>
+
+                    <div class="detail-item">
+                      <span class="label">
+                        Policy coverage
+                      </span>
+                      <span class="value">₹{{ policy.coverage }}</span>
+                    </div>
+
+                    <div class="detail-item">
+                      <span class="label">
+                        Policy duration
+                      </span>
+                      <span class="value">{{ policy.duration }} Months</span>
+                    </div>
+
+                  </div>
+                  <div style="padding: 30px;
+                  margin-top: 20px;
+                  border-radius: 20px;
+                  background-color: #f8fafc;">
+                    <p style="margin: 0">{{policy.description}}</p>
+                  </div>
+                  <h3 style="margin-top: 20px;">Download documents</h3>
+                      <div style="display: flex;
+                      gap: 20px;">
+                          <button (click)="downloadPdf(policy.policyApplication.data)">View Application</button>
+                          <button (click)="downloadPdf(policy.incomeProof.data)">Income Proof</button>
+                          <button (click)="downloadPdf(policy.ageProof.data)">Age Proof</button>
+                          <button (click)="downloadPdf(policy.idProof.data)">Identity Proof</button>
+                      </div>
                 </div>
                 <div class="pagination" *ngIf="pendingPoliciesLoader === 'none' && pendingTotalPages>1">              
                   <button mat-button (click)="prevPage2()" [disabled]="pendingCurrentPage === 1">Previous</button>
@@ -137,13 +287,13 @@
             <ng-template #profile>
                 <div class="customer-profile">
               
-                  <section class="profile-section">
-                    <div class="profile-picture">
+                  <section class="profiletab-section">
+                    <div class="profiletab-picture">
                       <!-- Dynamically show the profile picture -->
                       <img [src]="profilePicUrl" alt="Profile Picture" *ngIf="profilePicUrl" />
                       <p *ngIf="!profilePicUrl">No profile picture available</p>
                     </div>
-                    <div class="profile-info">
+                    <div class="profiletab-info">
                       <form #profileFrom="ngForm">
                         <!-- Username Field -->
                         <div class="form-group">
