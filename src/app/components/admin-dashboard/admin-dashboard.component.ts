@@ -46,6 +46,7 @@ export class AdminDashboardComponent {
     this.fetchAgents();
     this.fetchPendingPolicies();
     this.loadAdminDetails();
+    this.fetchCustomers();
     this.tabSwitch('allPlans');
   }
 
@@ -154,34 +155,26 @@ export class AdminDashboardComponent {
     });
   }
 
+  fetchCustomers(): void {
+    const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
+    this.httpService.getApiCall('/api/v1/customer/admin', header).subscribe({
+      next: (res: any) => {
+        this.customers = res.data;
+      },
+      error: (err: any) => {
+        console.error('Error fetching customers:', err);
+      },
+    });
+  }
+
   fetchPendingPolicies(): void {
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken')}`);
-    
-    // Check if customers are already loaded
-    if (!this.customers.length) {
-      this.httpService.getApiCall('/api/v1/customer/admin', header).subscribe({
-        next: (res: any) => {
-          console.log(res);
-          
-          this.customers = res.data;
-          this.loadPolicies(header);
-        },
-        error: (err: any) => {
-          console.error('Error fetching customers:', err);
-          this.customers = [];
-        },
-      });
-    } else {
-      this.loadPolicies(header);
-    }
-  }
   
-  private loadPolicies(header: HttpHeaders): void {
     this.httpService.getApiCall('/api/v1/policy/admin', header).subscribe({
       next: (res: any) => {
         this.pendingPolicies = res.data.filter((policy: any) => policy.status === 'Waiting for approval');
         
-        // Map customer details to each policy
+        // Map customer details to policies
         this.pendingPolicies.map(policy => {
           const customer = this.customers.find(cust => cust._id === policy.customerId);
           if (customer) {
@@ -204,25 +197,33 @@ export class AdminDashboardComponent {
       this.currentlyViewingAgent = null;
       return;
     }
-
+  
     // If viewing anything for another agent, hide it
     if (this.currentlyViewingAgent && this.currentlyViewingAgent !== agentId) {
       this.isViewingPolicies[this.currentlyViewingAgent] = false;
       this.isViewingCustomers[this.currentlyViewingAgent] = false;
     }
-
+  
     // Hide customers if they're being shown for this agent
     this.isViewingCustomers[agentId] = false;
-    this.customers = [];
-
+  
     // Show policies
     this.isViewingPolicies[agentId] = true;
     this.currentlyViewingAgent = agentId;
-
+  
     const header = new HttpHeaders().set('Authorization', `Bearer ${localStorage.getItem('authToken') || ''}`);
+    
     this.httpService.getApiCall(`/api/v1/policy/${agentId}`, header).subscribe({
       next: (res: any) => {
         this.policies = res.data;
+        // Map customer details to policies using preloaded `customers`
+        this.policies.map(policy => {
+          const customer = this.customers.find(cust => cust._id === policy.customerId);
+          if (customer) {
+            policy.customerName = customer.username;
+            policy.customerEmail = customer.email;
+          }
+        });
       },
       error: (err: any) => {
         console.error('Error fetching policies:', err);
@@ -230,7 +231,7 @@ export class AdminDashboardComponent {
       },
     });
   }
-
+  
   viewAgentCustomers(agentId: string): void {
     // If already viewing customers for this agent, hide them
     if (this.isViewingCustomers[agentId]) {
