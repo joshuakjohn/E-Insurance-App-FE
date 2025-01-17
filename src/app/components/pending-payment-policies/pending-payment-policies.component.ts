@@ -81,6 +81,8 @@ export class PendingPaymentPoliciesComponent implements OnInit {
 
   filterPolicies() {
     this.policyDetails = this.policyDetails.filter(policy => {
+      console.log(policy.premiumPaid);
+      
       return policy.status === 'Active' && this.isPremiumDue(policy.createdAt, policy.premiumPaid) 
     });
   }
@@ -115,10 +117,12 @@ export class PendingPaymentPoliciesComponent implements OnInit {
       next: (res: any) => {
         if (res.code === 200) {
           this.policyDetails.map(policy => {
-            if(policy.policyId === this.policyId){
+            if(policy._id === data.policyId){
               policy.premiumPaid++;
               policy.pendingPremium--;
             }
+            console.log(policy);
+            
           })
           this.closeOverlay()
           this.filterPolicies()
