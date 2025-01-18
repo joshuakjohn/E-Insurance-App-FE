@@ -56,7 +56,7 @@
       [ngStyle]="{display: policyApplication ? 'none': 'flex'}">
         <button (click)="buyScheme(scheme); $event.stopPropagation();">Buy now</button>
       </div>
-      <div class="policyApplication" [ngStyle]="{display: policyApplication ? 'block': 'none'}">
+      <div class="policyApplication" [ngStyle]="{display: policyApplication === scheme._id ? 'block': 'none'}">
         <app-policy (policyApplication)="applicationToggle($event)" [data]="{planId: this.planId, schemeDetails: this.selectedScheme, planDetails: this.planDetails}"></app-policy>
       </div>
     </div>

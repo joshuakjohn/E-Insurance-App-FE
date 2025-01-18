@@ -30,7 +30,7 @@ export class SchemeComponent implements OnInit {
   currentPage: number = 1; 
   itemsPerPage: number = 10; 
   totalResults: number = 0;
-  policyApplication: boolean = false;
+  policyApplication: string = '';
   height: string = '190px';
   totalPages!: number;
   private searchSubject: Subject<string> = new Subject<string>();
@@ -112,7 +112,9 @@ export class SchemeComponent implements OnInit {
   buyScheme(scheme: any): void { 
     this.selectedScheme = scheme;         
     if(localStorage.getItem('role') === 'customer'){
-      this.policyApplication = true
+      this.policyApplication = scheme._id
+      console.log(this.policyApplication);
+      
       this.height = 'auto'
     } else {
       this.loginService.triggerAction();
@@ -219,7 +221,7 @@ filter(sortOrder: 'asc' | 'desc') {
 }
   applicationToggle(event: string){
     if(event === 'close'){
-      this.policyApplication = false
+      this.policyApplication = ''
       this.height = '190px'
     }
 
