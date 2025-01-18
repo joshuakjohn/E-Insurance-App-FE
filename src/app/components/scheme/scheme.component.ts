@@ -112,9 +112,7 @@ export class SchemeComponent implements OnInit {
   buyScheme(scheme: any): void { 
     this.selectedScheme = scheme;         
     if(localStorage.getItem('role') === 'customer'){
-      this.policyApplication = scheme._id
-      console.log(this.policyApplication);
-      
+      this.policyApplication = scheme._id      
       this.height = 'auto'
     } else {
       this.loginService.triggerAction();
