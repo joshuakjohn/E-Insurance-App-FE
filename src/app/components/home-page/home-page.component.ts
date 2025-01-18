@@ -7,6 +7,7 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PROFILE_ICON } from 'src/assets/svg-icons';
 import { LoginService } from 'src/app/services/data-services/login.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
@@ -19,6 +20,7 @@ export class HomePageComponent {
   profilePhotoBuffer: string | null
   email!: string | null
   username!: string | null
+  private loginTriggeredSub!: Subscription;
 
   constructor(public dialog: MatDialog,public router:Router, public iconRegistry: MatIconRegistry, private sanitizer: DomSanitizer, public cdr: ChangeDetectorRef, private loginService: LoginService){
     iconRegistry.addSvgIconLiteral('profile-icon', sanitizer.bypassSecurityTrustHtml(PROFILE_ICON));
@@ -28,9 +30,15 @@ export class HomePageComponent {
   }
 
   ngOnInit(): void {
-    this.loginService.loginTriggered$.subscribe(() => {
+    this.loginTriggeredSub = this.loginService.loginTriggered$.subscribe(() => {      
       this.loginAndSignupDialog();
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.loginTriggeredSub) {
+      this.loginTriggeredSub.unsubscribe();
+    }
   }
 
   agentRegisterDialog(){
