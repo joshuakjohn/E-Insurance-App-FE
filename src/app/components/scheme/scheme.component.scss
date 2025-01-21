@@ -127,9 +127,11 @@ button:hover {
   text-decoration: underline;
 }
 
-.navigation-item span {
-  color: #555;
-  font-size: 1rem;
+.navigation-item p{
+  color: #214c87;
+  font-size: 1.5rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin: 0;
 }
 
 /* Adjustments for smaller screens */
@@ -153,4 +155,43 @@ pre{
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: #214c87;
   font-size: 1.5rem;
+}
+
+@media (max-width: 500px){
+
+  .dropdown {
+    padding: 0px 0px 0px 20px;
+  }
+
+  .scheme {
+    background-color: #f8faff;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    word-wrap: break-word;
+    border: 0.5px solid #d4d6d3;
+    height: auto;
+    transition: all 0.3s ease;
+  }
+
+  .container {
+    margin: 10px 30px;
+  }
+
+  .scheme-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .navigation-link {
+    font-size: 1rem;
+  }
+  
+  .navigation-item p{
+    font-size: 1rem;
+  }
+
 }

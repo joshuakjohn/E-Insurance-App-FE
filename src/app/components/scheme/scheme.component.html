@@ -4,10 +4,10 @@
   <div style="display: flex;
   justify-content: flex-end;
   width: 100%;">
-    <div  class="scheme-header">
+    <div class="scheme-header">
       <div class="navigation-item">
         <a routerLink="/dashboard/plans" class="navigation-link">Plan</a>
-        <pre> / {{ planDetails.planName }}</pre> 
+        <p>&nbsp;/ {{ planDetails.planName }}</p> 
       </div>
      <span class="search-filter"> <input type="text"[(ngModel)]="searchQuery"(input)="onSearchChange()"(blur)="onSearchBlur()"placeholder="Search for schemes..."class="search-bar"/>
       <mat-icon [matMenuTriggerFor]="filterMenu" class="filter-icon">filter_list</mat-icon>
@@ -32,7 +32,7 @@
         <p class="description">{{ scheme.description }}</p>
       </div>
 
-      <div style="padding: 0 10px 0 30px;">
+      <div class="dropdown">
         <mat-icon 
           style="transform: scale(2); transition: transform 0.5s ease;" 
           svgIcon="dropdown-icon"

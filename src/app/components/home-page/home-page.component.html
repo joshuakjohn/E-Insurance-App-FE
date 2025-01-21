@@ -1,5 +1,5 @@
 <div class="main">
-    <div class="header">
+    <div class="header1">
         <div class="outer_menu">
             <div class="menu">
                 <button class="button" (click)="this.router.navigate(['/dashboard/plans'])">Home</button>
@@ -33,34 +33,57 @@
         </div>
     </div>
 
-    <div class="message">
-        <h1 style="color: rgb(0, 0, 0);
-        margin: 50px 0px 30px 50px;
-
-        font-size: 70px;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;">Empowering you</h1>
+    <div class="header2">
+        <div class="insideHeader2_1">
+            <mat-icon>home</mat-icon>
+            <button class="button" (click)="this.router.navigate(['/about']);">About us</button>
+            <button class="button" style="width: 125px;" (click)="agentRegisterDialog()">Become an Agent</button>
+        </div>
         
-        <div style="margin-left: 57px;">
+        <div class="insideHeader2_2">
+            <mat-icon (click)="this.router.navigate(['/contact'])">contact_support</mat-icon>
+            <button class="button" style="width: 50px;" *ngIf="!role" (click)="loginAndSignupDialog()">Login</button>
+            <button class="button" *ngIf="role" style="border: 50%;
+            width: 43px;
+            height: 43px;
+            background-size: cover;" [ngStyle]="{'background-image': profilePhotoBuffer && role ? 'url(' + profilePhotoBuffer + ')' : 'url(../../../assets/pngegg.png)'}" [matMenuTriggerFor]="menu"></button>
+    
+    
+            <mat-menu #menu="matMenu">
+                <span style="margin: 0px 16px;">Hi, {{username}}!</span>
+                <div style="margin-top: 10px;">
+                    <button class="default-button" mat-menu-item (click)=goToDashboard()>
+                        <mat-icon>dashboard</mat-icon>
+                        Dashboard</button>
+                    <button class="default-button" mat-menu-item (click)=logout()>
+                        <mat-icon>logout</mat-icon>
+                        Logout</button>
+                </div>
+            </mat-menu>
+        </div>
+        
+    </div>
+
+    <div class="message">
+        <h1 class="quoteHeading">Empowering you</h1>
+        
+        <div class="quote">
 
             <h2 style="color: rgb(0, 0, 0);
             font-family: Verdana, Geneva, Tahoma, sans-serif">With reliable coverage</h2>
-
-            <p style="color: rgb(0, 0, 0);
-            width: 600px;
-            margin-top: 50px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">We are committed to providing you with the protection and security you deserve with our comprehensive insurance solutions that are designed to give you peace of mind</p>
+            <p class="messageParagraph">We are committed to providing you with the protection and security you deserve with our comprehensive insurance solutions that are designed to give you peace of mind</p>
         
             <button class="button" (click)="explore()">Explore</button>
         </div>
     </div>
 
     <div class="plans">
-        <h1 style="color: rgb(0, 0, 0);
-        margin: 10px 0px 10px 27px;
-        font-size: 40px;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;">Discover the Perfect Plan for You</h1>
-        <app-admin *ngIf="role === 'admin'"></app-admin>
-         <router-outlet></router-outlet>
+        <div class="discover">
+            <h1>Discover the Perfect Plan for You</h1>
+        </div>
+        <div class="plan-cards">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 
     <footer class="footer">

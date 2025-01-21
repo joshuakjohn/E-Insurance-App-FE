@@ -4,8 +4,11 @@
     <p class="plan-category">{{ plan.category }}</p>
 
     <div class="text">
-      <pre class="plan-details" *ngFor="let highlight of plan.highlight">
-        ✔    {{ highlight }}
+      <pre class="plan-details-1" *ngFor="let highlight of plan.highlight">
+        ✔      {{ highlight }}
+      </pre>
+      <pre class="plan-details-2" *ngFor="let highlight of plan.highlight">
+{{ highlight }}
       </pre>
     </div>
     <div class="explore">
