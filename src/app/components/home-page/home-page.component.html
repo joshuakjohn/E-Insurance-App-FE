@@ -35,7 +35,7 @@
 
     <div class="header2">
         <div class="insideHeader2_1">
-            <mat-icon>home</mat-icon>
+            <mat-icon (click)="this.router.navigate(['/dashboard/plans'])">home</mat-icon>
             <button class="button" (click)="this.router.navigate(['/about']);">About us</button>
             <button class="button" style="width: 125px;" (click)="agentRegisterDialog()">Become an Agent</button>
         </div>
