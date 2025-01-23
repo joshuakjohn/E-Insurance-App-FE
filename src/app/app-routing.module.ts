@@ -16,6 +16,7 @@ import { AboutComponent } from './components/about/about.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { EmployeeDashboardComponent } from './components/employee-dashboard/employee-dashboard.component';
 import { PendingPaymentPoliciesComponent } from './components/pending-payment-policies/pending-payment-policies.component';
+import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -31,7 +32,7 @@ const routes: Routes = [
   },
   {
     path: 'customerdashboard', 
-    component: CustomerDashboardComponent, 
+    component: CustomerDashboardComponent, canActivate: [AuthGuardService], data: { roles: ['customer'] },
     children: [
       {
         path: 'policy',  
@@ -64,7 +65,7 @@ const routes: Routes = [
       { path: 'login', component: AdminLoginComponent },
       { 
         path: 'dashboard', 
-        component: AdminDashboardComponent,
+        component: AdminDashboardComponent, canActivate: [AuthGuardService], data: { roles: ['admin'] },
         children: [
           { path: '', redirectTo: 'browse-plans', pathMatch: 'full' }, // Default tab route
           { path: 'browse-plans', component: AdminDashboardComponent }, 
@@ -84,7 +85,7 @@ const routes: Routes = [
       { path: 'login', component: AdminLoginComponent },
       { 
         path: 'dashboard', 
-        component: EmployeeDashboardComponent,
+        component: EmployeeDashboardComponent, canActivate: [AuthGuardService], data: { roles: ['employee'] },
         children: [
           { path: '', redirectTo: 'browse-plans', pathMatch: 'full' }, // Default tab route
           { path: 'browse-plans', component: EmployeeDashboardComponent}, 
@@ -94,7 +95,7 @@ const routes: Routes = [
       },
     ]
   },
-  { path: 'agent', component: AgentComponent,
+  { path: 'agent', component: AgentComponent, canActivate: [AuthGuardService], data: { roles: ['agent'] },
     children:[
       {path:'customers',component:AgentComponent},
       {path:'pendingPolicies',component:AgentComponent},

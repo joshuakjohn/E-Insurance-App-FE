@@ -74,6 +74,10 @@ export class HomePageComponent {
       this.router.navigate(['/customerdashboard/policy'])
     else if(this.role === 'agent')
       this.router.navigate(['/agent/customers'])
+    else if(this.role === 'admin')
+      this.router.navigate(['/admin/dashboard'])
+    else if(this.role === 'employee')
+      this.router.navigate(['/employee/dashboard'])
     else if(!this.role)
       this.loginAndSignupDialog()
   }
